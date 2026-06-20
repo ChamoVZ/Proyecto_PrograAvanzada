@@ -1,0 +1,13 @@
+C:\Dev\SC601\MathemaX\AP.Repositories\bin\Debug\AP.Repositories.dll
+C:\Dev\SC601\MathemaX\AP.Repositories\bin\Debug\AP.Repositories.pdb
+C:\Dev\SC601\MathemaX\AP.Repositories\bin\Debug\AP.Data.dll
+C:\Dev\SC601\MathemaX\AP.Repositories\bin\Debug\EntityFramework.dll
+C:\Dev\SC601\MathemaX\AP.Repositories\bin\Debug\EntityFramework.SqlServer.dll
+C:\Dev\SC601\MathemaX\AP.Repositories\bin\Debug\AP.Data.pdb
+C:\Dev\SC601\MathemaX\AP.Repositories\bin\Debug\EntityFramework.xml
+C:\Dev\SC601\MathemaX\AP.Repositories\bin\Debug\EntityFramework.SqlServer.xml
+C:\Dev\SC601\MathemaX\AP.Repositories\obj\Debug\AP.Repositories.csproj.AssemblyReference.cache
+C:\Dev\SC601\MathemaX\AP.Repositories\obj\Debug\AP.Repositories.csproj.CoreCompileInputs.cache
+C:\Dev\SC601\MathemaX\AP.Repositories\obj\Debug\AP.Repos.E4040626.Up2Date
+C:\Dev\SC601\MathemaX\AP.Repositories\obj\Debug\AP.Repositories.dll
+C:\Dev\SC601\MathemaX\AP.Repositories\obj\Debug\AP.Repositories.pdb

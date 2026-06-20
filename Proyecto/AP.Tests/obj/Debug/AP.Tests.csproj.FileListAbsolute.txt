@@ -1,0 +1,15 @@
+C:\Dev\SC601\MathemaX\AP.Tests\bin\Debug\AP.Tests.dll
+C:\Dev\SC601\MathemaX\AP.Tests\bin\Debug\AP.Tests.pdb
+C:\Dev\SC601\MathemaX\AP.Tests\bin\Debug\AP.Core.dll
+C:\Dev\SC601\MathemaX\AP.Tests\bin\Debug\AP.Data.dll
+C:\Dev\SC601\MathemaX\AP.Tests\bin\Debug\AP.Repositories.dll
+C:\Dev\SC601\MathemaX\AP.Tests\bin\Debug\EntityFramework.dll
+C:\Dev\SC601\MathemaX\AP.Tests\bin\Debug\AP.Data.pdb
+C:\Dev\SC601\MathemaX\AP.Tests\bin\Debug\AP.Repositories.pdb
+C:\Dev\SC601\MathemaX\AP.Tests\bin\Debug\AP.Core.pdb
+C:\Dev\SC601\MathemaX\AP.Tests\bin\Debug\EntityFramework.xml
+C:\Dev\SC601\MathemaX\AP.Tests\obj\Debug\AP.Tests.csproj.AssemblyReference.cache
+C:\Dev\SC601\MathemaX\AP.Tests\obj\Debug\AP.Tests.csproj.CoreCompileInputs.cache
+C:\Dev\SC601\MathemaX\AP.Tests\obj\Debug\AP.Tests.csproj.Up2Date
+C:\Dev\SC601\MathemaX\AP.Tests\obj\Debug\AP.Tests.dll
+C:\Dev\SC601\MathemaX\AP.Tests\obj\Debug\AP.Tests.pdb

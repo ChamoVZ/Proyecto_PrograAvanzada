@@ -1,0 +1,6 @@
+C:\Dev\SC601\MathemaX\AP.Services\bin\Debug\AP.Services.dll
+C:\Dev\SC601\MathemaX\AP.Services\bin\Debug\AP.Services.pdb
+C:\Dev\SC601\MathemaX\AP.Services\obj\Debug\AP.Services.csproj.AssemblyReference.cache
+C:\Dev\SC601\MathemaX\AP.Services\obj\Debug\AP.Services.csproj.CoreCompileInputs.cache
+C:\Dev\SC601\MathemaX\AP.Services\obj\Debug\AP.Services.dll
+C:\Dev\SC601\MathemaX\AP.Services\obj\Debug\AP.Services.pdb

@@ -1,0 +1,13 @@
+C:\Dev\SC601\MathemaX\AP.Core\bin\Debug\AP.Core.dll
+C:\Dev\SC601\MathemaX\AP.Core\bin\Debug\AP.Core.pdb
+C:\Dev\SC601\MathemaX\AP.Core\bin\Debug\AP.Data.dll
+C:\Dev\SC601\MathemaX\AP.Core\bin\Debug\AP.Repositories.dll
+C:\Dev\SC601\MathemaX\AP.Core\bin\Debug\EntityFramework.dll
+C:\Dev\SC601\MathemaX\AP.Core\bin\Debug\AP.Data.pdb
+C:\Dev\SC601\MathemaX\AP.Core\bin\Debug\AP.Repositories.pdb
+C:\Dev\SC601\MathemaX\AP.Core\bin\Debug\EntityFramework.xml
+C:\Dev\SC601\MathemaX\AP.Core\obj\Debug\AP.Core.csproj.AssemblyReference.cache
+C:\Dev\SC601\MathemaX\AP.Core\obj\Debug\AP.Core.csproj.CoreCompileInputs.cache
+C:\Dev\SC601\MathemaX\AP.Core\obj\Debug\AP.Core.csproj.Up2Date
+C:\Dev\SC601\MathemaX\AP.Core\obj\Debug\AP.Core.dll
+C:\Dev\SC601\MathemaX\AP.Core\obj\Debug\AP.Core.pdb

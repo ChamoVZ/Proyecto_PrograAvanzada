@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title — MathemaX</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400..905;1,400..905&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body class="mx-app">
+
+    <aside id="mx-sidebar" class="mx-sidebar">
+        <div class="mx-sidebar-header">
+            <a href="@Url.Action("Index", "Home")" class="mx-brand">
+                <span class="mx-brand-icon">Σ</span>
+                <span class="mx-brand-text">
+                    <span class="mx-brand-name">MathemaX</span>
+                    <span class="mx-brand-tagline">Entrenamiento Mental</span>
+                </span>
+            </a>
+            <button id="mx-sidebar-collapse" class="mx-sidebar-collapse-btn" title="Colapsar menú" aria-label="Colapsar menú">
+                <i class="bi bi-chevron-left"></i>
+            </button>
+        </div>
+
+        <nav class="mx-sidebar-nav" aria-label="Navegación principal">
+            <ul class="mx-nav-list">
+                <li class="mx-nav-item">
+                    <a href="@Url.Action("Index", "Home")" class="mx-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")">
+                        <i class="bi bi-house mx-nav-icon"></i>
+                        <span class="mx-nav-label">Inicio</span>
+                    </a>
+                </li>
+                <li class="mx-nav-item">
+                    <a href="#" class="mx-nav-link disabled" aria-disabled="true" tabindex="-1">
+                        <i class="bi bi-trophy mx-nav-icon"></i>
+                        <span class="mx-nav-label">Marcadores</span>
+                    </a>
+                </li>
+                <li class="mx-nav-item">
+                    <a href="#" class="mx-nav-link disabled" aria-disabled="true" tabindex="-1">
+                        <i class="bi bi-chat-square-text mx-nav-icon"></i>
+                        <span class="mx-nav-label">Comunidad</span>
+                    </a>
+                </li>
+                <li class="mx-nav-item">
+                    <a href="#" class="mx-nav-link disabled" aria-disabled="true" tabindex="-1">
+                        <i class="bi bi-headset mx-nav-icon"></i>
+                        <span class="mx-nav-label">Soporte TI</span>
+                    </a>
+                </li>
+                <li class="mx-nav-item">
+                    <a href="#" class="mx-nav-link disabled" aria-disabled="true" tabindex="-1">
+                        <i class="bi bi-envelope mx-nav-icon"></i>
+                        <span class="mx-nav-label">Quejas</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="mx-sidebar-footer">
+            <a href="@Url.Action("Index", "Manage")" class="mx-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Manage" ? "active" : "")">
+                <i class="bi bi-gear mx-nav-icon"></i>
+                <span class="mx-nav-label">Ajustes</span>
+            </a>
+            <div class="mx-login-partial">
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </aside>
+
+    <div id="mx-sidebar-overlay" class="mx-sidebar-overlay"></div>
+
+    <div class="mx-main-wrapper">
+        <header class="mx-topbar">
+            <button id="mx-sidebar-toggle" class="mx-hamburger" aria-label="Abrir menú">
+                <i class="bi bi-list"></i>
+            </button>
+            <a href="@Url.Action("Index", "Home")" class="mx-topbar-brand">MathemaX</a>
+        </header>
+
+        <main class="mx-content">
+            @RenderBody()
+        </main>
+
+        <footer class="mx-footer">
+            <p>&copy; @DateTime.Now.Year MathemaX &mdash; SC-601 Universidad Fidélitas</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <script>
+        (function () {
+            var sidebar = document.getElementById('mx-sidebar');
+            var overlay = document.getElementById('mx-sidebar-overlay');
+            var toggleBtn = document.getElementById('mx-sidebar-toggle');
+            var collapseBtn = document.getElementById('mx-sidebar-collapse');
+            var app = document.querySelector('.mx-app');
+
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', function () {
+                    sidebar.classList.toggle('mx-sidebar-open');
+                    overlay.classList.toggle('mx-sidebar-overlay-visible');
+                });
+            }
+
+            if (overlay) {
+                overlay.addEventListener('click', function () {
+                    sidebar.classList.remove('mx-sidebar-open');
+                    overlay.classList.remove('mx-sidebar-overlay-visible');
+                });
+            }
+
+            if (collapseBtn) {
+                collapseBtn.addEventListener('click', function () {
+                    app.classList.toggle('sidebar-collapsed');
+                    var icon = collapseBtn.querySelector('i');
+                    if (app.classList.contains('sidebar-collapsed')) {
+                        icon.className = 'bi bi-chevron-right';
+                        collapseBtn.setAttribute('title', 'Expandir');
+                    } else {
+                        icon.className = 'bi bi-chevron-left';
+                        collapseBtn.setAttribute('title', 'Colapsar menú');
+                    }
+                });
+            }
+        })();
+    </script>
+</body>
+</html>

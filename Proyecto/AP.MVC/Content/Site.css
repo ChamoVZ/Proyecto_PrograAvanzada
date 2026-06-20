@@ -1,0 +1,536 @@
+/* =====================================================================
+   MathemaX — Site.css
+   Sistema de diseño: paleta, tipografías, layout sidebar + área principal
+   Referencia: _documentos/DISENO.md
+   ===================================================================== */
+
+/* ----- Variables del sistema de diseño -------------------------------- */
+:root {
+    /* Pergamino (fondos) */
+    --color-parchment:        #FAF8F5;
+    --color-parchment-dark:   #F2ECE1;
+    --color-parchment-border: #E4DDD3;
+
+    /* Tinta (texto) */
+    --color-ink:       #2C2925;
+    --color-ink-muted: #645F57;
+    --color-ink-light: #9B9489;
+
+    /* Terracota (acento principal: botones, nav activo) */
+    --color-terracotta:       #A64E3D;
+    --color-terracotta-hover: #8D3E30;
+
+    /* Academia (acento secundario: éxito, toggles activos) */
+    --color-academy:       #3F5245;
+    --color-academy-hover: #314035;
+
+    /* Ocre (detalles, iconos, etiquetas) */
+    --color-ochre:       #B0824B;
+    --color-ochre-hover: #966E3E;
+
+    /* Sidebar oscuro */
+    --color-sidebar-bg:     #1C1A18;
+    --color-sidebar-surface:#242220;
+    --color-sidebar-text:   #EBEAE6;
+    --color-sidebar-muted:  #9B9489;
+    --color-sidebar-border: rgba(255, 255, 255, 0.08);
+
+    /* Fuentes */
+    --font-sans:    "Plus Jakarta Sans", system-ui, sans-serif;
+    --font-display: "Playfair Display", Georgia, serif;
+    --font-mono:    "JetBrains Mono", monospace;
+
+    /* Sombras */
+    --shadow-sm: 0 1px 2px 0 rgba(44, 41, 37, 0.05);
+    --shadow-md: 0 4px 10px -1px rgba(44, 41, 37, 0.08);
+    --shadow-lg: 0 12px 24px -3px rgba(44, 41, 37, 0.06);
+
+    /* Dimensiones del sidebar */
+    --sidebar-width:           256px;
+    --sidebar-collapsed-width: 64px;
+    --topbar-height:           56px;
+}
+
+/* ----- Sobrescritura de variables Bootstrap 5 ------------------------ */
+:root {
+    --bs-font-sans-serif: var(--font-sans);
+    --bs-body-bg:         var(--color-parchment);
+    --bs-body-color:      var(--color-ink);
+    --bs-primary:         var(--color-terracotta);
+    --bs-link-color:      var(--color-terracotta);
+    --bs-link-hover-color:var(--color-terracotta-hover);
+}
+
+/* =====================================================================
+   RESET / BASE
+   ===================================================================== */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--color-parchment);
+    color: var(--color-ink);
+    margin: 0;
+    min-height: 100vh;
+}
+
+h1, h2, h3, h4, .display {
+    font-family: var(--font-display);
+}
+
+/* =====================================================================
+   LAYOUT PRINCIPAL: sidebar + área principal
+   ===================================================================== */
+.mx-app {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* =====================================================================
+   SIDEBAR
+   ===================================================================== */
+.mx-sidebar {
+    width: var(--sidebar-width);
+    min-height: 100vh;
+    background-color: var(--color-sidebar-bg);
+    color: var(--color-sidebar-text);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 1000;
+    overflow: hidden;
+    transition: width 0.25s ease, transform 0.25s ease;
+    border-right: 1px solid var(--color-sidebar-border);
+}
+
+/* Encabezado: logo + brand */
+.mx-sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1rem;
+    border-bottom: 1px solid var(--color-sidebar-border);
+    min-height: 72px;
+    flex-shrink: 0;
+}
+
+.mx-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    text-decoration: none;
+    overflow: hidden;
+    flex: 1;
+    min-width: 0;
+}
+
+.mx-brand:hover {
+    text-decoration: none;
+}
+
+.mx-brand-icon {
+    width: 36px;
+    height: 36px;
+    background-color: var(--color-terracotta);
+    color: #fff;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.mx-brand-text {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 0;
+    transition: opacity 0.2s ease;
+}
+
+.mx-brand-name {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+}
+
+.mx-brand-tagline {
+    font-family: var(--font-mono);
+    font-size: 0.5rem;
+    color: var(--color-sidebar-muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.mx-sidebar-collapse-btn {
+    background: none;
+    border: none;
+    color: var(--color-sidebar-muted);
+    cursor: pointer;
+    padding: 0.25rem 0.375rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    transition: color 0.15s, background 0.15s;
+    flex-shrink: 0;
+}
+
+.mx-sidebar-collapse-btn:hover {
+    color: #fff;
+    background: var(--color-sidebar-surface);
+}
+
+/* Navegación */
+.mx-sidebar-nav {
+    flex: 1;
+    padding: 0.75rem 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.mx-nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.mx-nav-item {
+    margin: 2px 0.5rem;
+}
+
+.mx-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.625rem 0.75rem;
+    border-radius: 6px;
+    color: var(--color-sidebar-muted);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.mx-nav-link:hover:not(.disabled) {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--color-sidebar-text);
+    text-decoration: none;
+}
+
+.mx-nav-link.active {
+    background: var(--color-terracotta);
+    color: #fff;
+    text-decoration: none;
+}
+
+.mx-nav-link.active:hover {
+    background: var(--color-terracotta-hover);
+    color: #fff;
+}
+
+.mx-nav-link.disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.mx-nav-icon {
+    font-size: 1rem;
+    flex-shrink: 0;
+    color: var(--color-ochre);
+    transition: color 0.15s;
+    width: 18px;
+    text-align: center;
+}
+
+.mx-nav-link:hover:not(.disabled) .mx-nav-icon,
+.mx-nav-link.active .mx-nav-icon {
+    color: inherit;
+}
+
+.mx-nav-label {
+    transition: opacity 0.2s ease;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Pie de sidebar */
+.mx-sidebar-footer {
+    padding: 0.5rem;
+    border-top: 1px solid var(--color-sidebar-border);
+    flex-shrink: 0;
+}
+
+/* LoginPartial dentro del sidebar: sobreescribir clases Bootstrap de navbar */
+.mx-login-partial .navbar-nav {
+    flex-direction: column;
+    padding: 0.25rem 0;
+    margin: 0;
+}
+
+.mx-login-partial .navbar-nav li {
+    margin: 0;
+}
+
+.mx-login-partial .navbar-nav .nav-link,
+.mx-login-partial .navbar-nav a.nav-link,
+.mx-login-partial .navbar-nav a {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8125rem;
+    color: var(--color-sidebar-muted);
+    text-decoration: none;
+    border-radius: 4px;
+    transition: color 0.15s, background 0.15s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mx-login-partial .navbar-nav .nav-link:hover,
+.mx-login-partial .navbar-nav a:hover {
+    color: var(--color-sidebar-text);
+    background: rgba(255, 255, 255, 0.05);
+    text-decoration: none;
+}
+
+/* Formulario de LogOff (envuelve el ul cuando está autenticado) */
+.mx-login-partial #logoutForm {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+/* =====================================================================
+   OVERLAY (mobile — fondo oscuro al abrir sidebar)
+   ===================================================================== */
+.mx-sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.mx-sidebar-overlay.mx-sidebar-overlay-visible {
+    display: block;
+}
+
+/* =====================================================================
+   ÁREA PRINCIPAL (main wrapper)
+   ===================================================================== */
+.mx-main-wrapper {
+    margin-left: var(--sidebar-width);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    transition: margin-left 0.25s ease;
+}
+
+/* Topbar (oculto en desktop, visible en mobile) */
+.mx-topbar {
+    display: none;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0 1rem;
+    height: var(--topbar-height);
+    background-color: var(--color-parchment);
+    border-bottom: 1px solid var(--color-parchment-border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-sm);
+}
+
+.mx-hamburger {
+    background: none;
+    border: 1px solid var(--color-parchment-border);
+    border-radius: 4px;
+    padding: 0.25rem 0.5rem;
+    color: var(--color-ink);
+    font-size: 1.25rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background 0.15s;
+}
+
+.mx-hamburger:hover {
+    background: var(--color-parchment-dark);
+}
+
+.mx-topbar-brand {
+    font-family: var(--font-mono);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--color-ink);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+}
+
+.mx-topbar-brand:hover {
+    color: var(--color-terracotta);
+    text-decoration: none;
+}
+
+/* Contenido de la página */
+.mx-content {
+    flex: 1;
+    padding: 2rem;
+}
+
+/* Pie de página */
+.mx-footer {
+    padding: 1rem 2rem;
+    border-top: 1px solid var(--color-parchment-border);
+}
+
+.mx-footer p {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--color-ink-light);
+    letter-spacing: 0.03em;
+}
+
+/* =====================================================================
+   SIDEBAR COLAPSADO (desktop) — clase toggle en .mx-app
+   ===================================================================== */
+.sidebar-collapsed .mx-sidebar {
+    width: var(--sidebar-collapsed-width);
+}
+
+.sidebar-collapsed .mx-main-wrapper {
+    margin-left: var(--sidebar-collapsed-width);
+}
+
+.sidebar-collapsed .mx-brand-text,
+.sidebar-collapsed .mx-nav-label {
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+    overflow: hidden;
+}
+
+.sidebar-collapsed .mx-sidebar-header {
+    justify-content: center;
+    padding: 1.25rem 0.5rem;
+}
+
+.sidebar-collapsed .mx-brand {
+    justify-content: center;
+    flex: 0 0 auto;
+}
+
+.sidebar-collapsed .mx-nav-link {
+    justify-content: center;
+    padding: 0.625rem;
+    gap: 0;
+}
+
+.sidebar-collapsed .mx-nav-icon {
+    width: auto;
+}
+
+.sidebar-collapsed .mx-login-partial {
+    display: none;
+}
+
+/* =====================================================================
+   RESPONSIVE — mobile (< 768 px)
+   ===================================================================== */
+@media (max-width: 767.98px) {
+    .mx-sidebar {
+        transform: translateX(-100%);
+        width: var(--sidebar-width);
+    }
+
+    .mx-sidebar.mx-sidebar-open {
+        transform: translateX(0);
+    }
+
+    .mx-main-wrapper {
+        margin-left: 0;
+    }
+
+    .mx-topbar {
+        display: flex;
+    }
+
+    .mx-sidebar-collapse-btn {
+        display: none;
+    }
+
+    .mx-content {
+        padding: 1.25rem;
+    }
+}
+
+/* =====================================================================
+   UTILIDADES
+   ===================================================================== */
+.text-mono-label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-ochre);
+}
+
+.btn-mx-primary {
+    display: inline-block;
+    background-color: var(--color-terracotta);
+    color: #fff;
+    border: none;
+    border-radius: 2px;
+    padding: 0.5rem 1.25rem;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background 0.15s;
+    text-decoration: none;
+}
+
+.btn-mx-primary:hover,
+.btn-mx-primary:focus {
+    background-color: var(--color-terracotta-hover);
+    color: #fff;
+    text-decoration: none;
+}
+
+/* =====================================================================
+   LEGADO — compatibilidad con plantilla original
+   ===================================================================== */
+.body-content {
+    padding: 1.5rem;
+}
+
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+input,
+select,
+textarea {
+    max-width: 280px;
+}
