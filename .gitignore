@@ -1,0 +1,40 @@
+# Binarios y compilados
+[Bb]in/
+[Oo]bj/
+*.user
+*.suo
+*.userprefs
+*.pidb
+*.sdf
+*.cachefile
+*.aps
+*.ncb
+*.opensdf
+
+# NuGet - se restauran con "NuGet Restore"
+packages/
+*.nupkg
+!packages/repositories.config
+
+# Visual Studio
+.vs/
+_ReSharper*/
+*.DotSettings.user
+
+# Archivos de publicacion
+*.pubxml
+*.pubxml.user
+PublishScripts/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Variables de entorno locales
+*.env
+.env.local

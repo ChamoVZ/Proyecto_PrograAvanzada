@@ -1,6 +1,0 @@
-C:\Dev\SC601\MathemaX\AP.Models\bin\Debug\AP.Models.dll
-C:\Dev\SC601\MathemaX\AP.Models\bin\Debug\AP.Models.pdb
-C:\Dev\SC601\MathemaX\AP.Models\obj\Debug\AP.Models.csproj.AssemblyReference.cache
-C:\Dev\SC601\MathemaX\AP.Models\obj\Debug\AP.Models.csproj.CoreCompileInputs.cache
-C:\Dev\SC601\MathemaX\AP.Models\obj\Debug\AP.Models.dll
-C:\Dev\SC601\MathemaX\AP.Models\obj\Debug\AP.Models.pdb
