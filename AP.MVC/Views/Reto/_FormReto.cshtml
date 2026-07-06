@@ -1,0 +1,54 @@
+@model AP.Models.Juegos.RetoViewModel
+
+@Html.AntiForgeryToken()
+
+<div class="row">
+    <div class="col-md-6 mb-3">
+        @Html.LabelFor(model => model.Titulo, new { @class = "form-label" })
+        @Html.TextBoxFor(model => model.Titulo, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Titulo, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="col-md-6 mb-3">
+        @Html.LabelFor(model => model.Modo, new { @class = "form-label" })
+        <!-- Usamos EnumHelper para generar el DropDown desde el Enum ModoJuego -->
+        @Html.DropDownListFor(model => model.Modo, EnumHelper.GetSelectList(typeof(AP.Data.Entities.ModoJuego)), "Seleccione un modo...", new { @class = "form-select" })
+        @Html.ValidationMessageFor(model => model.Modo, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="mb-3">
+    @Html.LabelFor(model => model.Enunciado, new { @class = "form-label" })
+    @Html.TextAreaFor(model => model.Enunciado, new { @class = "form-control", rows = 3 })
+    @Html.ValidationMessageFor(model => model.Enunciado, "", new { @class = "text-danger" })
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-3">
+        @Html.LabelFor(model => model.RespuestaCorrecta, new { @class = "form-label" })
+        @Html.TextBoxFor(model => model.RespuestaCorrecta, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.RespuestaCorrecta, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="col-md-3 mb-3">
+        @Html.LabelFor(model => model.Dificultad, new { @class = "form-label" })
+        @Html.TextBoxFor(model => model.Dificultad, new { @class = "form-control", type = "number", min = "1", max = "5" })
+        @Html.ValidationMessageFor(model => model.Dificultad, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="col-md-3 mb-3">
+        @Html.LabelFor(model => model.TiempoLimiteSegundos, new { @class = "form-label" })
+        @Html.TextBoxFor(model => model.TiempoLimiteSegundos, new { @class = "form-control", type = "number", min = "5" })
+        @Html.ValidationMessageFor(model => model.TiempoLimiteSegundos, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="mb-4 form-check">
+    @Html.CheckBoxFor(model => model.Activo, new { @class = "form-check-input" })
+    @Html.LabelFor(model => model.Activo, new { @class = "form-check-label" })
+</div>
+
+<div class="d-flex justify-content-end gap-2">
+    <a href="@Url.Action("Index")" class="btn btn-secondary">Cancelar</a>
+    <button type="submit" class="btn btn-primary">Guardar Reto</button>
+</div>

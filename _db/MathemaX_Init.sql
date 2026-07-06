@@ -169,6 +169,25 @@ BEGIN
 END
 GO
 
+-- Publicaciones: módulo de foro
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Publicacions]') AND type = 'U')
+BEGIN
+    CREATE TABLE [dbo].[Publicacions] (
+        [PublicacionId]        INT             IDENTITY (1, 1) NOT NULL,
+        [UsuarioId]            NVARCHAR (128)  NOT NULL,
+        [Titulo]               NVARCHAR (200)  NOT NULL,
+        [Contenido]            NVARCHAR (2000) NOT NULL,
+        [FechaPublicacion]     DATETIME        NOT NULL DEFAULT (GETDATE()),
+        [Activo]               BIT             NOT NULL DEFAULT (1),
+        [CreatedAt]            DATETIME        NOT NULL DEFAULT (GETDATE()),
+        [CreatedBy]            NVARCHAR (MAX)  NULL,
+        [LastModified]         DATETIME        NULL,
+        [ModifiedBy]           NVARCHAR (MAX)  NULL,
+        CONSTRAINT [PK_dbo.Publicacions] PRIMARY KEY CLUSTERED ([PublicacionId] ASC)
+    );
+END
+GO
+
 -- ============================================================
 -- DATOS INICIALES
 -- ============================================================
@@ -183,6 +202,21 @@ BEGIN
         (NEWID(), 'Support');
 END
 GO
+
+-- ============================================================
+-- USUARIO ADMIN DE EJEMPLO (Instrucciones)
+-- ============================================================
+-- Para crear un usuario administrador de prueba sin quemar contraseñas en código:
+-- 1. Regístrese normalmente en la aplicación desde el navegador.
+-- 2. Busque el Id generado para su usuario en la tabla AspNetUsers.
+-- 3. Ejecute el siguiente INSERT cambiando '<su-id-de-usuario>':
+-- 
+-- INSERT INTO [dbo].[AspNetUserRoles] ([UserId], [RoleId])
+-- VALUES (
+--    '<su-id-de-usuario>',
+--    (SELECT [Id] FROM [dbo].[AspNetRoles] WHERE [Name] = 'Admin')
+-- );
+-- GO
 
 -- Retos de ejemplo para demostrar el modelo
 IF NOT EXISTS (SELECT 1 FROM [dbo].[Retoes])
