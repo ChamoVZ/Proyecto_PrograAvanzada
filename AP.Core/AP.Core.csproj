@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Business\ForoBusiness.cs" />
     <Compile Include="Business\RetoBusiness.cs" />
+    <Compile Include="Business\SolicitudTIBusiness.cs" />
     <Compile Include="Exceptions\AppException.cs" />
     <Compile Include="Validations\GlobalValidation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
