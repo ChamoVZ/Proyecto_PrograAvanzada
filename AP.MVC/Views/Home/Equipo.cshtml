@@ -1,0 +1,29 @@
+@{
+    ViewBag.Title = "Acerca del Equipo";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h2 class="display-5 mb-4">@ViewBag.Title</h2>
+            <p class="lead mb-5">@ViewBag.Message</p>
+            
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-5 text-start">
+                    <p class="mb-4">
+                        <strong>MathemaX</strong> es un proyecto universitario desarrollado por un equipo de 4 estudiantes 
+                        como parte del curso <em>SC-601 Programaci&oacute;n Avanzada</em> en la Universidad Fid&eacute;litas.
+                    </p>
+                    <p class="mb-4">
+                        El objetivo de esta plataforma es fomentar el entrenamiento mental a trav&eacute;s de retos matem&aacute;ticos 
+                        interactivos, dise&ntilde;ados bajo una arquitectura N-capas s&oacute;lida, utilizando tecnolog&iacute;as como 
+                        ASP.NET MVC 5, Entity Framework 6 y SQL Server.
+                    </p>
+                    <div class="text-center mt-5">
+                        <a href="@Url.Action("Index", "Home")" class="btn-mx-primary">Volver al Inicio</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

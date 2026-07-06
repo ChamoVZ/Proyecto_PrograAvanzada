@@ -534,3 +534,26 @@ select,
 textarea {
     max-width: 280px;
 }
+
+/* =====================================================================
+   LANDING PAGE (Home)
+   ===================================================================== */
+.mx-hero {
+    background-color: var(--color-parchment-dark);
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+.mx-mode-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background-color: #fff;
+}
+
+.mx-mode-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md) !important;
+}
+
+.mx-xp-card {
+    border-radius: 12px;
+}

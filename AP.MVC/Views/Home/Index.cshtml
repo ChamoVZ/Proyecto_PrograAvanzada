@@ -1,33 +1,103 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+@{
+    ViewBag.Title = "Entrenamiento Mental";
 }
 
-<main>
-    <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
-    </section>
-
-    <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
-            </p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </section>
+<!-- Hero Section -->
+<div class="mx-hero text-center py-5 mb-5">
+    <div class="container py-5">
+        <h1 class="display-3 fw-bold mb-3" style="color: var(--color-terracotta);">MathemaX</h1>
+        <p class="lead mb-4" style="color: var(--color-ink-muted);">
+            Despierta tu agilidad mental con los retos matem&aacute;ticos m&aacute;s desafiantes.<br />
+            Demuestra tu destreza, acumula XP y domina los marcadores.
+        </p>
+        <div>
+            @if (Request.IsAuthenticated)
+            {
+                <!-- TODO: Apuntar a la futura pantalla de juego -->
+                <a href="#" class="btn-mx-primary btn-lg shadow-sm">
+                    <i class="bi bi-play-circle me-2"></i>Comenzar a jugar
+                </a>
+            }
+            else
+            {
+                <a href="@Url.Action("Login", "Account")" class="btn-mx-primary btn-lg shadow-sm">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesi&oacute;n
+                </a>
+            }
+        </div>
     </div>
-</main>
+</div>
+
+<!-- Seccion: Modos de Juego -->
+<div class="container mb-5">
+    <h2 class="text-center mb-5" style="color: var(--color-ink);">Modos de Juego</h2>
+    <div class="row g-4">
+        
+        <!-- Operador Perdido -->
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 mx-mode-card">
+                <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                        <i class="bi bi-patch-question text-mx-terracotta" style="font-size: 3rem; color: var(--color-terracotta);"></i>
+                    </div>
+                    <h4 class="card-title fw-bold">Operador Perdido</h4>
+                    <p class="card-text text-muted">
+                        Descubre cu&aacute;l es el operador matem&aacute;tico (+, -, *, /) que falta para que la ecuaci&oacute;n tenga sentido. &iexcl;Piensa r&aacute;pido!
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contrarreloj -->
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 mx-mode-card">
+                <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                        <i class="bi bi-stopwatch text-mx-terracotta" style="font-size: 3rem; color: var(--color-terracotta);"></i>
+                    </div>
+                    <h4 class="card-title fw-bold">Contrarreloj</h4>
+                    <p class="card-text text-muted">
+                        Resuelve la mayor cantidad de retos matem&aacute;ticos antes de que se acabe el tiempo. La presi&oacute;n est&aacute; al m&aacute;ximo.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Secuencias Lógicas -->
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 mx-mode-card">
+                <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                        <i class="bi bi-sort-numeric-down text-mx-terracotta" style="font-size: 3rem; color: var(--color-terracotta);"></i>
+                    </div>
+                    <h4 class="card-title fw-bold">Secuencias L&oacute;gicas</h4>
+                    <p class="card-text text-muted">
+                        Encuentra el patr&oacute;n oculto en una serie de n&uacute;meros y descubre cu&aacute;l es el siguiente paso l&oacute;gico.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Seccion: XP y Marcadores -->
+<div class="container mb-5">
+    <div class="card shadow-sm border-0 mx-xp-card" style="background-color: var(--color-parchment-dark);">
+        <div class="card-body p-5">
+            <div class="row align-items-center">
+                <div class="col-md-8 text-md-start text-center mb-4 mb-md-0">
+                    <h3 class="fw-bold mb-3" style="color: var(--color-academy);">Progreso y Competencia</h3>
+                    <p class="mb-0" style="color: var(--color-ink-muted);">
+                        Cada vez que resuelves un reto correctamente, obtienes Puntos de Experiencia (XP) basados en la 
+                        <strong>dificultad</strong> del problema. Entre m&aacute;s r&aacute;pido resuelvas y m&aacute;s dif&iacute;ciles sean los retos, 
+                        m&aacute;s alto escalar&aacute;s en nuestros <strong>Marcadores Globales</strong>. &iquest;Tienes lo necesario para ser el n&uacute;mero uno?
+                    </p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <i class="bi bi-trophy" style="font-size: 5rem; color: var(--color-ochre);"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
