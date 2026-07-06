@@ -188,6 +188,29 @@ BEGIN
 END
 GO
 
+-- Solicitudes TI: solicitudes de soporte tecnico de usuarios
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SolicitudTIs]') AND type = 'U')
+BEGIN
+    CREATE TABLE [dbo].[SolicitudTIs] (
+        [SolicitudTIId]        INT             IDENTITY (1, 1) NOT NULL,
+        [UsuarioId]            NVARCHAR (128)  NOT NULL,
+        [Asunto]               NVARCHAR (200)  NOT NULL,
+        [Descripcion]          NVARCHAR (2000) NOT NULL,
+        -- Estado: 1=Abierta, 2=EnProceso, 3=Cerrada
+        [Estado]               INT             NOT NULL DEFAULT (1),
+        [FechaCreacion]        DATETIME        NOT NULL DEFAULT (GETDATE()),
+        [CreatedAt]            DATETIME        NOT NULL DEFAULT (GETDATE()),
+        [CreatedBy]            NVARCHAR (MAX)  NULL,
+        [LastModified]         DATETIME        NULL,
+        [ModifiedBy]           NVARCHAR (MAX)  NULL,
+        CONSTRAINT [PK_dbo.SolicitudTIs] PRIMARY KEY CLUSTERED ([SolicitudTIId] ASC)
+    );
+
+    CREATE NONCLUSTERED INDEX [IX_SolicitudTIs_UsuarioId] ON [dbo].[SolicitudTIs]([UsuarioId] ASC);
+    CREATE NONCLUSTERED INDEX [IX_SolicitudTIs_Estado] ON [dbo].[SolicitudTIs]([Estado] ASC);
+END
+GO
+
 -- ============================================================
 -- DATOS INICIALES
 -- ============================================================

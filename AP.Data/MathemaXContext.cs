@@ -22,7 +22,7 @@ namespace AP.Data
         // Pendientes (se agregan conforme avancen los módulos):
         // public DbSet<Insignia> Insignias { get; set; }
         public DbSet<Publicacion> Publicaciones { get; set; } // Foro
-        // public DbSet<SolicitudTI> SolicitudesTI { get; set; }      // Request IT
+        public DbSet<SolicitudTI> SolicitudesTI { get; set; }  // Request IT
         // public DbSet<Queja> Quejas { get; set; }                   // Buzón de Quejas
         // public DbSet<Amistad> Amistades { get; set; }
 

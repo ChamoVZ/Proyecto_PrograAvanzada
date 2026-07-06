@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Comunidad\PublicacionViewModel.cs" />
     <Compile Include="Juegos\RetoViewModel.cs" />
+    <Compile Include="Soporte\SolicitudTIViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
 
