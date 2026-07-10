@@ -33,6 +33,15 @@
                         <span class="mx-nav-label">Inicio</span>
                     </a>
                 </li>
+                @if (User.IsInRole("Admin"))
+                {
+                    <li class="mx-nav-item">
+                        <a href="@Url.Action("Index", "Reto")" class="mx-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Reto" ? "active" : "")">
+                            <i class="bi bi-puzzle mx-nav-icon"></i>
+                            <span class="mx-nav-label">Retos</span>
+                        </a>
+                    </li>
+                }
                 <li class="mx-nav-item">
                     <a href="#" class="mx-nav-link disabled" aria-disabled="true" tabindex="-1">
                         <i class="bi bi-trophy mx-nav-icon"></i>
@@ -40,13 +49,13 @@
                     </a>
                 </li>
                 <li class="mx-nav-item">
-                    <a href="#" class="mx-nav-link disabled" aria-disabled="true" tabindex="-1">
+                    <a href="@Url.Action("Index", "Foro")" class="mx-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Foro" ? "active" : "")">
                         <i class="bi bi-chat-square-text mx-nav-icon"></i>
                         <span class="mx-nav-label">Comunidad</span>
                     </a>
                 </li>
                 <li class="mx-nav-item">
-                    <a href="#" class="mx-nav-link disabled" aria-disabled="true" tabindex="-1">
+                    <a href="@Url.Action("Index", "SolicitudTI")" class="mx-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "SolicitudTI" ? "active" : "")">
                         <i class="bi bi-headset mx-nav-icon"></i>
                         <span class="mx-nav-label">Soporte TI</span>
                     </a>
@@ -86,7 +95,10 @@
         </main>
 
         <footer class="mx-footer">
-            <p>&copy; @DateTime.Now.Year MathemaX &mdash; SC-601 Universidad Fidélitas</p>
+            <p>
+                &copy; @DateTime.Now.Year MathemaX &mdash; SC-601 Universidad Fid&eacute;litas | 
+                <a href="@Url.Action("Equipo", "Home")" style="color: var(--color-terracotta); text-decoration: none;">Acerca del Equipo</a>
+            </p>
         </footer>
     </div>
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,18 +13,12 @@ namespace AP.MVC.Controllers
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult Equipo()
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "SC-601 Programación Avanzada";
 
             return View();
         }
     }
 }
+

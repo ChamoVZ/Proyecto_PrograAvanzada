@@ -1,0 +1,62 @@
+@model AP.Models.Soporte.SolicitudTIViewModel
+
+@{
+    ViewBag.Title = "Nueva Solicitud TI";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center g-4">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white">
+                    <h3 class="card-title mb-0">Crear Solicitud TI</h3>
+                </div>
+                <div class="card-body p-4">
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <strong>Atenci&oacute;n:</strong> @TempData["ErrorMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                        </div>
+                    }
+
+                    @using (Html.BeginForm("Create", "SolicitudTI", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            @Html.LabelFor(model => model.Asunto, new { @class = "form-label fw-bold" })
+                            @Html.TextBoxFor(model => model.Asunto, new { @class = "form-control", placeholder = "Ejemplo: No puedo iniciar un reto" })
+                            @Html.ValidationMessageFor(model => model.Asunto, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="mb-4">
+                            @Html.LabelFor(model => model.Descripcion, new { @class = "form-label fw-bold" })
+                            @Html.TextAreaFor(model => model.Descripcion, new { @class = "form-control", rows = 6, placeholder = "Describe el problema con el mayor detalle posible." })
+                            @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                        </div>
+
+                        @Html.HiddenFor(model => model.Estado)
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="@Url.Action("Index")" class="btn btn-secondary">Cancelar</a>
+                            <button type="submit" class="btn-mx-primary">Crear Solicitud</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white">
+                    <h4 class="card-title mb-0"><i class="bi bi-chat-dots me-2"></i>Asistente</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Avance 3: este panel sera interactivo con las preguntas del usuario. -->
+                    <p class="mb-0">@ViewBag.RespuestaAsistente</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
