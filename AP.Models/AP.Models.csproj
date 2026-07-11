@@ -42,6 +42,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Buzon\QuejaViewModel.cs" />
     <Compile Include="Comunidad\PublicacionViewModel.cs" />
     <Compile Include="Juegos\RetoViewModel.cs" />
     <Compile Include="Soporte\SolicitudTIViewModel.cs" />

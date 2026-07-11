@@ -23,7 +23,7 @@ namespace AP.Data
         // public DbSet<Insignia> Insignias { get; set; }
         public DbSet<Publicacion> Publicaciones { get; set; } // Foro
         public DbSet<SolicitudTI> SolicitudesTI { get; set; }  // Request IT
-        // public DbSet<Queja> Quejas { get; set; }                   // Buzón de Quejas
+        public DbSet<Queja> Quejas { get; set; }                   // Buzón de Quejas
         // public DbSet<Amistad> Amistades { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
