@@ -1,0 +1,31 @@
+@model AP.Models.Juegos.RetoViewModel
+
+@{
+    ViewBag.Title = "Nuevo Reto";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-white">
+            <h3 class="card-title mb-0">Crear Nuevo Reto</h3>
+        </div>
+        <div class="card-body">
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>Atenci&oacute;n:</strong> @TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                </div>
+            }
+
+            @using (Html.BeginForm("Create", "Reto", FormMethod.Post))
+            {
+                @Html.Partial("_FormReto", Model)
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

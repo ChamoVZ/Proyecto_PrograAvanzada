@@ -49,7 +49,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RepositoryBase.cs" />
+    <Compile Include="RepositoryPublicacion.cs" />
+    <Compile Include="RepositoryQueja.cs" />
     <Compile Include="RepositoryReto.cs" />
+    <Compile Include="RepositorySolicitudTI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

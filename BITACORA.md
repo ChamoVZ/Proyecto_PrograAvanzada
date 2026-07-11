@@ -35,17 +35,20 @@
 ## Avance 2 — Lógica de negocio y vistas base
 **Fecha estimada:** Por confirmar | **Valor:** 20 pts
 
-### Pendiente
-- [ ] Convenciones de nomenclatura aplicadas en todo el código
-- [ ] Conexión completa de capas: MVC → Core → Repositories → Data
-- [ ] Vistas esqueleto para todos los módulos:
-  - [ ] Landing page / Home con descripción del juego
-  - [ ] Pantalla de mantenimiento de Retos (CRUD admin)
-  - [ ] Módulo Foro (estructura inicial)
-  - [ ] Módulo Solicitud TI (Request IT)
-  - [ ] Módulo Buzón de Quejas
-- [ ] Roles de Identity configurados: Admin, Player, Support
-- [ ] Principios SOLID identificados y comentados en el código
+### Estado (actualizado 2026-07-11)
+- [ ] Convenciones de nomenclatura aplicadas en todo el código (falta revisión final contra `_documentos/CONVENCIONES.md`)
+- [x] Conexión completa de capas: MVC → Core → Repositories → Data (funcionando en Retos, Foro, Solicitud TI y Quejas)
+- [x] Vistas esqueleto para todos los módulos:
+  - [x] Landing page / Home con descripción del juego
+  - [x] Pantalla de mantenimiento de Retos (CRUD admin)
+  - [x] Módulo Foro (estructura inicial)
+  - [x] Módulo Solicitud TI (Request IT)
+  - [x] Módulo Buzón de Quejas
+- [x] Roles de Identity configurados: Admin, Player, Support (seed en `Startup.CreateRoles()`, rol Player al registrarse, `[Authorize(Roles)]` en controladores)
+- [ ] Principios SOLID identificados y comentados en el código (parcial: solo módulo Quejas; falta en Retos, Foro y Solicitud TI)
+
+### Notas
+- 2026-07-11: se corrigió staging agregando la migración `InicializarQueja`, que faltó al subir el módulo Buzón de Quejas (el modelo EF quedó desincronizado de `__MigrationHistory` y daba error al correr la app en BDs creadas con migraciones). Acordado: toda entidad nueva debe subir con su migración.
 
 ---
 
