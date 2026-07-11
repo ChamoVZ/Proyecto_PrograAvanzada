@@ -1,0 +1,80 @@
+﻿@model AP.Models.Buzon.QuejaViewModel
+
+@{
+    ViewBag.Title = "Nueva Queja";
+
+    var categorias = new[]
+    {
+        new SelectListItem { Value = "1", Text = "Error / Bug" },
+        new SelectListItem { Value = "2", Text = "Contenido" },
+        new SelectListItem { Value = "3", Text = "Cuenta" },
+        new SelectListItem { Value = "4", Text = "Sugerencia" },
+        new SelectListItem { Value = "5", Text = "Otro" }
+    };
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center g-4">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white">
+                    <h3 class="card-title mb-0">Registrar Queja</h3>
+                </div>
+                <div class="card-body p-4">
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <strong>Atenci&oacute;n:</strong> @TempData["ErrorMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                        </div>
+                    }
+
+                    @using (Html.BeginForm("Create", "Queja", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            @Html.LabelFor(model => model.Asunto, new { @class = "form-label fw-bold" })
+                            @Html.TextBoxFor(model => model.Asunto, new { @class = "form-control", placeholder = "Ejemplo: El marcador no actualiza mi puntaje" })
+                            @Html.ValidationMessageFor(model => model.Asunto, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(model => model.Categoria, new { @class = "form-label fw-bold" })
+                            @Html.DropDownListFor(model => model.Categoria, categorias, new { @class = "form-select" })
+                            @Html.ValidationMessageFor(model => model.Categoria, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="mb-4">
+                            @Html.LabelFor(model => model.Descripcion, new { @class = "form-label fw-bold" })
+                            @Html.TextAreaFor(model => model.Descripcion, new { @class = "form-control", rows = 6, placeholder = "Describe tu queja o sugerencia con el mayor detalle posible." })
+                            @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                        </div>
+
+                        @Html.HiddenFor(model => model.Estado)
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="@Url.Action("Index")" class="btn btn-secondary">Cancelar</a>
+                            <button type="submit" class="btn-mx-primary">Enviar Queja</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white">
+                    <h4 class="card-title mb-0"><i class="bi bi-info-circle me-2"></i>¿Cómo funciona?</h4>
+                </div>
+                <div class="card-body">
+                    <p class="mb-0">
+                        Cuéntanos qué salió mal o qué te gustaría mejorar. El equipo de soporte revisará
+                        tu queja y le dará seguimiento. Toda queja nueva queda en estado
+                        <strong>Pendiente</strong> hasta que sea atendida.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

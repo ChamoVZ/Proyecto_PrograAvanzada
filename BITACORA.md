@@ -43,7 +43,7 @@
   - [ ] Pantalla de mantenimiento de Retos (CRUD admin)
   - [ ] Módulo Foro (estructura inicial)
   - [ ] Módulo Solicitud TI (Request IT)
-  - [ ] Módulo Buzón de Quejas
+  - [x] Módulo Buzón de Quejas
 - [ ] Roles de Identity configurados: Admin, Player, Support
 - [ ] Principios SOLID identificados y comentados en el código
 

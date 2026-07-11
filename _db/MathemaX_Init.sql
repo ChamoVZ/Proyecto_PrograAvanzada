@@ -211,6 +211,31 @@ BEGIN
 END
 GO
 
+-- Quejas: módulo de Buzón de Quejas
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Quejas]') AND type = 'U')
+BEGIN
+    CREATE TABLE [dbo].[Quejas] (
+        [QuejaId]              INT             IDENTITY (1, 1) NOT NULL,
+        [UsuarioId]            NVARCHAR (128)  NOT NULL,
+        [Asunto]               NVARCHAR (200)  NOT NULL,
+        [Descripcion]          NVARCHAR (2000) NOT NULL,
+        -- Categoria: 1=Bug, 2=Contenido, 3=Cuenta, 4=Sugerencia, 5=Otro
+        [Categoria]            INT             NOT NULL DEFAULT (5),
+        -- Estado: 1=Pendiente, 2=EnRevision, 3=Resuelta
+        [Estado]               INT             NOT NULL DEFAULT (1),
+        [FechaCreacion]        DATETIME        NOT NULL DEFAULT (GETDATE()),
+        [CreatedAt]            DATETIME        NOT NULL DEFAULT (GETDATE()),
+        [CreatedBy]            NVARCHAR (MAX)  NULL,
+        [LastModified]         DATETIME        NULL,
+        [ModifiedBy]           NVARCHAR (MAX)  NULL,
+        CONSTRAINT [PK_dbo.Quejas] PRIMARY KEY CLUSTERED ([QuejaId] ASC)
+    );
+
+    CREATE NONCLUSTERED INDEX [IX_Quejas_UsuarioId] ON [dbo].[Quejas]([UsuarioId] ASC);
+    CREATE NONCLUSTERED INDEX [IX_Quejas_Estado] ON [dbo].[Quejas]([Estado] ASC);
+END
+GO
+
 -- ============================================================
 -- DATOS INICIALES
 -- ============================================================

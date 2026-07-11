@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Business\ForoBusiness.cs" />
+    <Compile Include="Business\QuejaBusiness.cs" />
     <Compile Include="Business\RetoBusiness.cs" />
     <Compile Include="Business\SolicitudTIBusiness.cs" />
     <Compile Include="Exceptions\AppException.cs" />
