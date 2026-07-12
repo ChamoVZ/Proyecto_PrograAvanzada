@@ -44,11 +44,12 @@
   <ItemGroup>
     <Compile Include="Buzon\QuejaViewModel.cs" />
     <Compile Include="Comunidad\PublicacionViewModel.cs" />
+    <Compile Include="Juegos\ResponderRetoViewModel.cs" />
+    <Compile Include="Juegos\ResultadoJuegoViewModel.cs" />
+    <Compile Include="Juegos\RetoJuegoViewModel.cs" />
     <Compile Include="Juegos\RetoViewModel.cs" />
     <Compile Include="Soporte\SolicitudTIViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-
-
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

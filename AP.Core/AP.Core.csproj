@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Business\ExperienciaBusiness.cs" />
     <Compile Include="Business\ForoBusiness.cs" />
+    <Compile Include="Business\OperadorPerdidoBusiness.cs" />
     <Compile Include="Business\QuejaBusiness.cs" />
     <Compile Include="Business\RetoBusiness.cs" />
     <Compile Include="Business\SolicitudTIBusiness.cs" />
