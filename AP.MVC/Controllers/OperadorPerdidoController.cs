@@ -1,9 +1,11 @@
 ﻿using AP.Core.Business;
+using AP.Core.Exceptions;
 using AP.Data.Entities;
 using AP.Models.Juegos;
 using AP.MVC.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using System;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -14,6 +16,9 @@ namespace AP.MVC.Controllers
     [Authorize]
     public class OperadorPerdidoController : BaseController
     {
+        private const string UltimoRetoSessionKey = "OperadorPerdido_UltimoRetoId";
+        private const string ResultadoTempDataKey = "OperadorPerdido_Resultado";
+
         private readonly OperadorPerdidoBusiness _juegoBusiness;
         private readonly ExperienciaBusiness _experienciaBusiness;
 
@@ -33,9 +38,26 @@ namespace AP.MVC.Controllers
         // GET: OperadorPerdido/Jugar
         public ActionResult Jugar()
         {
-            var reto = _juegoBusiness.ObtenerRetoAleatorio();
-            var model = MapToJuegoViewModel(reto);
-            return View(model);
+            TempData.Remove(ResultadoTempDataKey);
+
+            try
+            {
+                int? ultimoRetoId = Session[UltimoRetoSessionKey] is int id ? id : (int?)null;
+                var reto = _juegoBusiness.ObtenerRetoAleatorio(ultimoRetoId);
+
+                Session[ObtenerHoraInicioSessionKey(reto.RetoId)] = DateTime.UtcNow;
+                Session[UltimoRetoSessionKey] = reto.RetoId;
+
+                var model = MapToJuegoViewModel(reto);
+                return View(model);
+            }
+            catch (AppException ex)
+            {
+                return View(new RetoJuegoViewModel
+                {
+                    MensajeEstadoVacio = ex.Message
+                });
+            }
         }
 
         // POST: OperadorPerdido/Responder
@@ -49,15 +71,26 @@ namespace AP.MVC.Controllers
                 return RedirectToAction("Jugar");
             }
 
-            // Tiempo empleado = ahora menos el momento en que se mostró el reto
-            var horaInicio = new System.DateTime(model.HoraInicioTicks);
-            var tiempoEmpleadoSegundos = (int)(System.DateTime.Now - horaInicio).TotalSeconds;
+            var horaInicioSessionKey = ObtenerHoraInicioSessionKey(model.RetoId);
+            if (!(Session[horaInicioSessionKey] is DateTime horaInicio))
+            {
+                TempData["ErrorMessage"] = "El reto expiró. Intente con uno nuevo.";
+                return RedirectToAction("Jugar");
+            }
+
+            // Evita enviar el mismo reto dos veces.
+            Session.Remove(horaInicioSessionKey);
+
+            var segundosTranscurridos = (DateTime.UtcNow - horaInicio).TotalSeconds;
+            var tiempoEmpleadoSegundos = Math.Max(0, (int)Math.Ceiling(segundosTranscurridos));
 
             var resultado = _juegoBusiness.ResolverReto(
                 model.RetoId,
                 User.Identity.GetUserId(),
                 model.RespuestaUsuario,
                 tiempoEmpleadoSegundos);
+
+            Session[UltimoRetoSessionKey] = resultado.Reto.RetoId;
 
             // Actualizar XP y Nivel del usuario (ApplicationUser vive en AP.MVC,
             // por eso esto no puede hacerse desde AP.Core/AP.Repositories).
@@ -66,8 +99,7 @@ namespace AP.MVC.Controllers
             var resultadoXp = _experienciaBusiness.AplicarResultadoPartida(
                 usuario.ExperienciaTotal,
                 usuario.Nivel,
-                resultado.Reto.Dificultad,
-                resultado.Acertado);
+                resultado.XpGanado);
 
             usuario.ExperienciaTotal = resultadoXp.ExperienciaTotal;
             usuario.Nivel = resultadoXp.NivelNuevo;
@@ -80,10 +112,23 @@ namespace AP.MVC.Controllers
                 XpGanado = resultado.XpGanado,
                 ExperienciaTotal = resultadoXp.ExperienciaTotal,
                 Nivel = resultadoXp.NivelNuevo,
-                SubioDeNivel = resultadoXp.SubioDeNivel
+                SubioDeNivel = resultadoXp.SubioDeNivel,
+                FueraDeTiempo = resultado.FueraDeTiempo
             };
 
-            return View("Resultado", viewModel);
+            TempData[ResultadoTempDataKey] = viewModel;
+            return RedirectToAction("Resultado");
+        }
+
+        // GET: OperadorPerdido/Resultado
+        public ActionResult Resultado()
+        {
+            // Mantiene el resultado al refrescar.
+            var model = TempData.Peek(ResultadoTempDataKey) as ResultadoJuegoViewModel;
+            if (model == null)
+                return RedirectToAction("Jugar");
+
+            return View(model);
         }
 
         #region Mapeo Manual
@@ -95,9 +140,13 @@ namespace AP.MVC.Controllers
                 RetoId = entity.RetoId,
                 Enunciado = entity.Enunciado,
                 Dificultad = entity.Dificultad,
-                TiempoLimiteSegundos = entity.TiempoLimiteSegundos,
-                HoraInicioTicks = System.DateTime.Now.Ticks
+                TiempoLimiteSegundos = entity.TiempoLimiteSegundos
             };
+        }
+
+        private static string ObtenerHoraInicioSessionKey(int retoId)
+        {
+            return $"OperadorPerdido_HoraInicio_{retoId}";
         }
 
         #endregion

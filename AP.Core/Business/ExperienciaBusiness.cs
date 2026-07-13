@@ -56,9 +56,8 @@ namespace AP.Core.Business
             return xpSiguienteNivel - experienciaTotal;
         }
 
-        public ResultadoExperiencia AplicarResultadoPartida(int experienciaActual, int nivelActual, int dificultadReto, bool acertado)
+        public ResultadoExperiencia AplicarResultadoPartida(int experienciaActual, int nivelActual, int xpGanado)
         {
-            int xpGanado = CalcularXpGanado(dificultadReto, acertado);
             int nuevaExperiencia = experienciaActual + xpGanado;
             int nuevoNivel = CalcularNivelPorXp(nuevaExperiencia);
 

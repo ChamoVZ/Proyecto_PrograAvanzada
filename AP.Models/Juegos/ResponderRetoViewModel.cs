@@ -15,8 +15,5 @@ namespace AP.Models.Juegos
         [Required (ErrorMessage = "Seleccione un operador.")]
         [Display(Name = "Operador")]
         public string RespuestaUsuario { get; set; }
-
-        [Required]
-        public long HoraInicioTicks { get; set; }
     }
 }

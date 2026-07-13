@@ -47,6 +47,8 @@ BEGIN
         [LockoutEnabled]       BIT            NOT NULL,
         [AccessFailedCount]    INT            NOT NULL,
         [UserName]             NVARCHAR (256) NOT NULL,
+        [ExperienciaTotal]     INT            NOT NULL DEFAULT (0),
+        [Nivel]                INT            NOT NULL DEFAULT (1),
         CONSTRAINT [PK_dbo.AspNetUsers] PRIMARY KEY CLUSTERED ([Id] ASC)
     );
 
