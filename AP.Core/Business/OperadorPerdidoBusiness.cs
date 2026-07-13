@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AP.Core.Exceptions;
 using AP.Data.Entities;
 using AP.Repositories;
 
@@ -11,6 +12,7 @@ namespace AP.Core.Business
         public bool Acertado { get; set; }
         public string RespuestaCorrecta { get; set; }
         public int XpGanado { get; set; }
+        public bool FueraDeTiempo { get; set; }
         public Reto Reto { get; set; }
     }
 
@@ -28,12 +30,33 @@ namespace AP.Core.Business
             _experienciaBusiness= new ExperienciaBusiness();
         }
 
-        public Reto ObtenerRetoAleatorio()
+        public Reto ObtenerRetoAleatorio(int? excluirRetoId = null)
         {
             var retos = _repositoryReto.GetActivosPorModo(Data.Entities.ModoJuego.OperadorPerdido).ToList();
 
             if (!retos.Any())
-                throw new ApplicationException("No hay retos activos de Operador Perdido en este momento");
+                throw new AppException("No hay retos activos de Operador Perdido en este momento.");
+
+            if (excluirRetoId.HasValue && retos.Count > 1)
+            {
+                var retoAnterior = retos.FirstOrDefault(r => r.RetoId == excluirRetoId.Value);
+                var candidatos = retos.Where(r => r.RetoId != excluirRetoId.Value).ToList();
+
+                if (retoAnterior != null)
+                {
+                    var candidatosDistintos = candidatos
+                        .Where(r => !string.Equals(
+                            r.Enunciado?.Trim(),
+                            retoAnterior.Enunciado?.Trim(),
+                            StringComparison.OrdinalIgnoreCase))
+                        .ToList();
+
+                    if (candidatosDistintos.Any())
+                        candidatos = candidatosDistintos;
+                }
+
+                retos = candidatos;
+            }
 
             var indice = _random.Next(retos.Count);
             return retos[indice];
@@ -43,7 +66,7 @@ namespace AP.Core.Business
         {
             var reto = _repositoryReto.GetById(retoId);
             if (reto == null)
-                throw new ApplicationException("El reto solicitado ya no existe.");
+                throw new AppException("El reto solicitado ya no existe.");
 
             var dentroDeTiempo = tiempoEmpleadoSegundos <= reto.TiempoLimiteSegundos;
             var respuestaCorrecta = string.Equals(
@@ -71,6 +94,7 @@ namespace AP.Core.Business
                 Acertado = acertado,
                 RespuestaCorrecta = reto.RespuestaCorrecta,
                 XpGanado = xpGanado,
+                FueraDeTiempo = !dentroDeTiempo,
                 Reto = reto
             };
         }

@@ -14,5 +14,6 @@ namespace AP.Models.Juegos
         public int ExperienciaTotal { get; set; }
         public int Nivel { get; set; }
         public bool SubioDeNivel { get; set; }
+        public bool FueraDeTiempo { get; set; }
     }
 }

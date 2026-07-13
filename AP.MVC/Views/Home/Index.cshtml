@@ -35,12 +35,16 @@
         
         <!-- Operador Perdido -->
         <div class="col-md-4">
-            <div class="card h-100 shadow-sm border-0 mx-mode-card">
+            <div class="card h-100 shadow-sm border-0 mx-mode-card position-relative">
                 <div class="card-body text-center p-4">
                     <div class="mb-3">
                         <i class="bi bi-patch-question text-mx-terracotta" style="font-size: 3rem; color: var(--color-terracotta);"></i>
                     </div>
-                    <h4 class="card-title fw-bold">Operador Perdido</h4>
+                    <h4 class="card-title fw-bold">
+                        <a href="@Url.Action("Jugar", "OperadorPerdido")" class="stretched-link text-decoration-none" style="color: inherit;">
+                            Operador Perdido
+                        </a>
+                    </h4>
                     <p class="card-text text-muted">
                         Descubre cu&aacute;l es el operador matem&aacute;tico (+, -, *, /) que falta para que la ecuaci&oacute;n tenga sentido. &iexcl;Piensa r&aacute;pido!
                     </p>

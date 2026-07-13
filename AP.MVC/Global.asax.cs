@@ -14,6 +14,7 @@ namespace AP.MVC
     {
         protected void Application_Start()
         {
+            // Identity se administra desde _db/.
             Database.SetInitializer<ApplicationDbContext>(null);
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

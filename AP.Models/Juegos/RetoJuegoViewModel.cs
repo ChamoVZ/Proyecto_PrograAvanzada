@@ -12,6 +12,6 @@ namespace AP.Models.Juegos
         public string Enunciado { get; set; }
         public int Dificultad { get; set; }
         public int TiempoLimiteSegundos { get; set; }
-        public long HoraInicioTicks { get; set; }
+        public string MensajeEstadoVacio { get; set; }
     }
 }
