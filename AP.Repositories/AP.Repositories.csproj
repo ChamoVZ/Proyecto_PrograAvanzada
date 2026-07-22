@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RepositoryBase.cs" />
+    <Compile Include="RepositoryPartida.cs" />
     <Compile Include="RepositoryPublicacion.cs" />
     <Compile Include="RepositoryQueja.cs" />
     <Compile Include="RepositoryReto.cs" />

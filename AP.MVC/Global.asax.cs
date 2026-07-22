@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using System.Data.Entity;
+using AP.MVC.Models;
 
 namespace AP.MVC
 {
@@ -12,6 +14,8 @@ namespace AP.MVC
     {
         protected void Application_Start()
         {
+            // Identity se administra desde _db/.
+            Database.SetInitializer<ApplicationDbContext>(null);
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

@@ -7,8 +7,10 @@ using AP.Repositories;
 namespace AP.Core.Business
 {
     // Controller -> Business -> Repository -> Data. Nunca saltarse capas.
+    // SOLID: SRP - esta clase solo contiene las reglas de negocio de los retos.
     public class RetoBusiness
     {
+        // SOLID: DIP - depende de la abstraccion IRepositoryReto, no de la implementacion concreta.
         private readonly IRepositoryReto _repositoryReto;
 
         public RetoBusiness()

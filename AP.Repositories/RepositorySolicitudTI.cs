@@ -4,12 +4,14 @@ using AP.Data.Entities;
 
 namespace AP.Repositories
 {
+    // SOLID: ISP - contrato especifico de soporte; solo expone las consultas que su cliente necesita.
     public interface IRepositorySolicitudTI : IRepositoryBase<SolicitudTI>
     {
         IEnumerable<SolicitudTI> GetPorUsuario(string usuarioId);
         IEnumerable<SolicitudTI> GetPorEstado(EstadoSolicitud estado);
     }
 
+    // SOLID: LSP - hereda el CRUD generico de RepositoryBase sin alterar su comportamiento.
     public class RepositorySolicitudTI : RepositoryBase<SolicitudTI>, IRepositorySolicitudTI
     {
         public IEnumerable<SolicitudTI> GetPorUsuario(string usuarioId)

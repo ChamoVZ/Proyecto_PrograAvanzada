@@ -1,0 +1,91 @@
+@model AP.Models.Juegos.RetoJuegoViewModel
+
+@{
+    ViewBag.Title = "Operador Perdido";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white">
+                    <h3 class="card-title mb-0">Operador Perdido</h3>
+                    @if (string.IsNullOrWhiteSpace(Model.MensajeEstadoVacio))
+                    {
+                        <small class="text-muted">
+                            Dificultad @Model.Dificultad &middot;
+                            Tiempo restante: <strong id="contador-segundos">@Model.TiempoLimiteSegundos</strong> s
+                        </small>
+                    }
+                </div>
+                <div class="card-body p-4 text-center">
+                    @if (!string.IsNullOrWhiteSpace(Model.MensajeEstadoVacio))
+                    {
+                        <div class="alert alert-warning" role="alert">
+                            @Model.MensajeEstadoVacio
+                        </div>
+                        <a href="@Url.Action("Index", "Home")" class="btn-mx-primary">Volver al inicio</a>
+                    }
+                    else
+                    {
+                        if (TempData["ErrorMessage"] != null)
+                        {
+                            <div class="alert alert-warning" role="alert">
+                                @TempData["ErrorMessage"]
+                            </div>
+                        }
+
+                        <p class="fs-3 fw-bold my-4">@Model.Enunciado</p>
+
+                        using (Html.BeginForm("Responder", "OperadorPerdido", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.HiddenFor(m => m.RetoId)
+
+                            <div class="d-flex justify-content-center gap-2 flex-wrap">
+                                @foreach (var operador in new[] { "+", "-", "*", "/" })
+                                {
+                                    <button type="submit" name="RespuestaUsuario" value="@operador" class="btn btn-outline-primary btn-lg px-4 respuesta-operador">
+                                        @operador
+                                    </button>
+                                }
+                            </div>
+                        }
+
+                        <div id="aviso-tiempo-agotado" class="alert alert-warning mt-4 d-none" role="alert">
+                            Se acab&oacute; el tiempo.
+                            <a href="@Url.Action("Jugar", "OperadorPerdido")" class="alert-link">Intentar otro reto</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    @if (string.IsNullOrWhiteSpace(Model.MensajeEstadoVacio))
+    {
+        <script>
+            (function () {
+                var segundosRestantes = @Model.TiempoLimiteSegundos;
+                var contador = document.getElementById("contador-segundos");
+                var aviso = document.getElementById("aviso-tiempo-agotado");
+                var botones = document.querySelectorAll(".respuesta-operador");
+
+                var intervalo = window.setInterval(function () {
+                    segundosRestantes--;
+                    contador.textContent = Math.max(segundosRestantes, 0);
+
+                    if (segundosRestantes <= 0) {
+                        window.clearInterval(intervalo);
+                        botones.forEach(function (boton) {
+                            boton.disabled = true;
+                        });
+                        aviso.classList.remove("d-none");
+                    }
+                }, 1000);
+            })();
+        </script>
+    }
+}

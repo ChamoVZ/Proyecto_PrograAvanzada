@@ -53,16 +53,24 @@ git checkout dev/tu-rama
 
 **2. Restaurar base de datos**
 
-Abrir SQL Server Management Studio, conectarse a `localhost` y ejecutar:
+Abrir SQL Server Management Studio, conectarse a `localhost` y ejecutar los scripts **en este orden**:
+
 ```
-_db/MathemaX_Init.sql
+1) _db/MathemaX_Init.sql                        → crea la base MathemaX con las tablas base y datos de ejemplo
+2) _db/scripts/2026-07-12_experiencia_y_retos.sql → agrega columnas de experiencia (ExperienciaTotal, Nivel) y siembra retos de los modos de juego
 ```
 
-Esto crea la base de datos `MathemaX` con todas las tablas e inserta datos de ejemplo.
+El segundo script valida que el primero ya se haya corrido, así que no se puede ejecutar solo. Las columnas de experiencia se agregan por script porque viven en la tabla de Identity (`AspNetUsers`), que no usa el inicializador de EF.
 
-**3. Verificar cadena de conexión**
+**3. Configurar la cadena de conexión**
 
-En `AP.MVC/Web.config` ajustar `Data Source` según la instancia local:
+El `Web.config` real no se versiona (cada quien usa su propia instancia de SQL Server). Copiar la plantilla y ajustar el `Data Source`:
+
+```bash
+cp AP.MVC/Web.config.example AP.MVC/Web.config
+```
+
+En el `Web.config` recién copiado, ajustar `Data Source` según la instancia local:
 ```xml
 <add name="MathemaXContext"
      connectionString="Data Source=localhost;Initial Catalog=MathemaX;Integrated Security=True;TrustServerCertificate=True"
