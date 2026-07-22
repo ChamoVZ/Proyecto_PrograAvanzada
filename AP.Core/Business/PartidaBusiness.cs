@@ -17,6 +17,15 @@ namespace AP.Core.Business
         public Reto Reto { get; set; }
     }
 
+    // Fila del ranking que expone la capa de negocio; asi la MVC no depende de AP.Repositories.
+    public class RankingGlobal
+    {
+        public string UsuarioId { get; set; }
+        public int ExperienciaTotal { get; set; }
+        public int PartidasJugadas { get; set; }
+        public int Aciertos { get; set; }
+    }
+
     // DP: Strategy - actua como contexto: elige la estrategia del modo y corre el flujo comun sin condicionales.
     public class PartidaBusiness
     {
@@ -111,6 +120,19 @@ namespace AP.Core.Business
         public IEnumerable<Partida> GetHistorial(string usuarioId)
         {
             return _repositoryPartida.GetHistorialPorUsuario(usuarioId);
+        }
+
+        public IEnumerable<RankingGlobal> GetRankingGlobal()
+        {
+            return _repositoryPartida.GetRankingGlobal()
+                .Select(r => new RankingGlobal
+                {
+                    UsuarioId = r.UsuarioId,
+                    ExperienciaTotal = r.ExperienciaTotal,
+                    PartidasJugadas = r.PartidasJugadas,
+                    Aciertos = r.Aciertos
+                })
+                .ToList();
         }
 
         // Modos soportados hoy; agregar uno nuevo es sumarlo a esta lista.
