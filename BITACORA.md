@@ -45,7 +45,7 @@
   - [x] Módulo Solicitud TI (Request IT)
   - [x] Módulo Buzón de Quejas
 - [x] Roles de Identity configurados: Admin, Player, Support (seed en `Startup.CreateRoles()`, rol Player al registrarse, `[Authorize(Roles)]` en controladores)
-- [ ] Principios SOLID identificados y comentados en el código (parcial: solo módulo Quejas; falta en Retos, Foro y Solicitud TI)
+- [x] Principios SOLID identificados y comentados en el código (completado en el Avance 3)
 
 ### Notas
 - 2026-07-11: se corrigió staging agregando la migración `InicializarQueja`, que faltó al subir el módulo Buzón de Quejas (el modelo EF quedó desincronizado de `__MigrationHistory` y daba error al correr la app en BDs creadas con migraciones). Acordado: toda entidad nueva debe subir con su migración.
@@ -70,20 +70,9 @@
 - [ ] Solicitud TI y Buzón de Quejas sin edición/borrado por el autor (por ahora solo creación y cambio de estado).
 
 ### Notas
-- 2026-07-11 (Evan): funcionalidad de experiencia — `ExperienciaBusiness` (cálculo de XP y niveles) y campos `ExperienciaTotal`/`Nivel` en `ApplicationUser`.
-- 2026-07-12 (Evan): modo de juego Operador Perdido — lógica de negocio, controlador, vistas Jugar/Resultado y `RepositoryPartida`.
-- 2026-07-12 (Sebastián): correcciones del juego (anti-repetición de reto, cronómetro en el servidor), persistencia real de XP/Nivel con `UserManager` y primeras pruebas unitarias; script `_db/scripts/2026-07-12_experiencia_y_retos.sql`.
-- 2026-07-20 (equipo): documento del patrón de diseño Strategy (`Patron_Diseno_Strategy_MathemaX.pdf`).
-- 2026-07-22 (Sebastián): Etapa 1 — patrón Strategy en `AP.Core` (`IModoJuegoStrategy`, tres estrategias y `PartidaBusiness` como contexto), alineando el código con el PDF entregado.
-- 2026-07-22 (Sebastián): Etapa 2 — marcadores globales e historial de partidas (`MarcadorController`, ranking agregado desde `Partidas`).
-- 2026-07-22 (Sebastián): Etapa 3 — CRUD completo del Foro (edición y borrado lógico, con validación de autor/Admin en negocio y vistas).
-- 2026-07-22 (Sebastián): Etapa 4 — cambio de estado en Solicitud TI y Buzón de Quejas, restringido al rol Support.
-- 2026-07-22 (Sebastián): Etapa 5 — comentarios SOLID y Design Patterns en todos los módulos.
-- 2026-07-22 (Sebastián): Etapa 6 — correcciones menores (warning CS0168, README con orden de scripts, pruebas de las estrategias, `Web.config.example`).
-
-### Excepción al acuerdo de migraciones (ver Avance 2, Notas)
-- Los campos `ExperienciaTotal` y `Nivel` se agregaron con el script `_db/scripts/2026-07-12_experiencia_y_retos.sql`, **no** con una migración de Entity Framework. Esto contradice el acuerdo registrado en el Avance 2 ("toda entidad nueva debe subir con su migración").
-- Se acepta como excepción explícita porque estas columnas viven en `AspNetUsers`, la tabla de ASP.NET Identity, que no usa el inicializador de EF (`Database.SetInitializer(null)` en `Global.asax`); una migración Code First no administra ese esquema. El script queda como fuente de verdad para esas columnas y debe correrse después de `MathemaX_Init.sql`.
+- Base del avance (Evan, 2026-07-11/12): funcionalidad de experiencia y modo Operador Perdido. Correcciones del juego y persistencia de XP con `UserManager` (Sebastián, 2026-07-12).
+- Cierre del avance (Sebastián, 2026-07-22): patrón Strategy en `AP.Core` alineado con el PDF de diseño, marcadores, CRUD del Foro, cambio de estado en Solicitud TI/Quejas, comentarios SOLID/DP y correcciones menores.
+- Excepción al acuerdo del Avance 2: `ExperienciaTotal`/`Nivel` se agregaron por script SQL (`_db/scripts/2026-07-12_experiencia_y_retos.sql`), no por migración EF, por ser columnas de `AspNetUsers` (Identity, sin inicializador de EF). El script debe correrse tras `MathemaX_Init.sql`.
 
 ---
 
