@@ -67,9 +67,101 @@ namespace AP.MVC.Controllers
             }
         }
 
-        // TODO: Avance 3 - GET/POST Edit
-        // TODO: Avance 3 - GET/POST Delete
-        // TODO: Avance 3 - GET Details
+        // GET: Foro/Details/5
+        public ActionResult Details(int id)
+        {
+            var publicacion = _foroBusiness.GetPorId(id);
+            if (publicacion == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(MapToViewModel(publicacion));
+        }
+
+        // GET: Foro/Edit/5
+        public ActionResult Edit(int id)
+        {
+            var publicacion = _foroBusiness.GetPorId(id);
+            if (publicacion == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (!PuedeModificar(publicacion))
+            {
+                TempData["ErrorMessage"] = "Solo el autor puede modificar esta publicación.";
+                return RedirectToAction("Index");
+            }
+
+            return View(MapToViewModel(publicacion));
+        }
+
+        // POST: Foro/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(PublicacionViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var publicacion = _foroBusiness.GetPorId(model.PublicacionId);
+            if (publicacion == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (!PuedeModificar(publicacion))
+            {
+                TempData["ErrorMessage"] = "Solo el autor puede modificar esta publicación.";
+                return RedirectToAction("Index");
+            }
+
+            try
+            {
+                // Recargamos la entidad y solo tocamos lo editable, así no perdemos UsuarioId ni la auditoría de creación.
+                publicacion.Titulo = model.Titulo;
+                publicacion.Contenido = model.Contenido;
+                publicacion.ModifiedBy = User.Identity.Name;
+
+                _foroBusiness.Actualizar(publicacion);
+                return RedirectToAction("Index");
+            }
+            catch (AP.Core.Exceptions.AppException ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+                return View(model);
+            }
+        }
+
+        // POST: Foro/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id)
+        {
+            var publicacion = _foroBusiness.GetPorId(id);
+            if (publicacion == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (!PuedeModificar(publicacion))
+            {
+                TempData["ErrorMessage"] = "Solo el autor puede eliminar esta publicación.";
+                return RedirectToAction("Index");
+            }
+
+            _foroBusiness.Desactivar(id);
+            return RedirectToAction("Index");
+        }
+
+        // El autor gestiona su publicación; el Admin puede moderar cualquiera.
+        private bool PuedeModificar(Publicacion publicacion)
+        {
+            return publicacion.UsuarioId == User.Identity.GetUserId() || User.IsInRole("Admin");
+        }
 
         #region Mapeo Manual
 

@@ -26,6 +26,38 @@ namespace AP.Core.Business
             return _repository.GetActivasRecientes();
         }
 
+        public Publicacion GetPorId(int id)
+        {
+            return _repository.GetById(id);
+        }
+
+        public void Actualizar(Publicacion publicacion)
+        {
+            if (publicacion == null)
+                throw new AppException("La publicación no puede ser nula.");
+
+            if (string.IsNullOrWhiteSpace(publicacion.Titulo))
+                throw new AppException("El título de la publicación es obligatorio.");
+
+            if (string.IsNullOrWhiteSpace(publicacion.Contenido))
+                throw new AppException("El contenido de la publicación no puede estar vacío.");
+
+            publicacion.LastModified = DateTime.Now;
+            _repository.Update(publicacion);
+        }
+
+        public void Desactivar(int id)
+        {
+            var publicacion = _repository.GetById(id);
+            if (publicacion == null)
+                throw new AppException("La publicación que intenta eliminar no existe.");
+
+            // Borrado lógico: el registro se conserva pero deja de listarse en el foro.
+            publicacion.Activo = false;
+            publicacion.LastModified = DateTime.Now;
+            _repository.Update(publicacion);
+        }
+
         public void Save(Publicacion publicacion)
         {
             if (publicacion == null)

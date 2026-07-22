@@ -1,4 +1,5 @@
 @model IEnumerable<AP.Models.Comunidad.PublicacionViewModel>
+@using Microsoft.AspNet.Identity
 
 @{
     ViewBag.Title = "Foro de la Comunidad";
@@ -35,9 +36,17 @@
                                 @item.Contenido
                             </p>
                         </div>
-                        <div class="card-footer bg-white border-top-0 d-flex justify-content-end pb-3">
-                            <!-- TODO: Avance 3 - Botones para Detalle, Editar y Eliminar -->
-                            <button class="btn btn-sm btn-outline-secondary disabled" title="Disponible en el Avance 3">Ver Detalles</button>
+                        <div class="card-footer bg-white border-top-0 d-flex justify-content-end gap-2 pb-3">
+                            <a href="@Url.Action("Details", new { id = item.PublicacionId })" class="btn btn-sm btn-outline-secondary">Ver Detalles</a>
+                            @if (item.UsuarioId == User.Identity.GetUserId() || User.IsInRole("Admin"))
+                            {
+                                <a href="@Url.Action("Edit", new { id = item.PublicacionId })" class="btn btn-sm btn-outline-primary">Editar</a>
+                                using (Html.BeginForm("Delete", "Foro", new { id = item.PublicacionId }, FormMethod.Post, new { style = "display:inline", onsubmit = "return confirm('¿Eliminar esta publicación?');" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                                }
+                            }
                         </div>
                     </div>
                 </div>
