@@ -173,6 +173,7 @@
     <Compile Include="Controllers\ForoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MarcadorController.cs" />
     <Compile Include="Controllers\OperadorPerdidoController.cs" />
     <Compile Include="Controllers\QuejaController.cs" />
     <Compile Include="Controllers\RetoController.cs" />

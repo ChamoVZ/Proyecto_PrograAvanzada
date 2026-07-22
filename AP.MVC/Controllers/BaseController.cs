@@ -8,6 +8,7 @@ namespace AP.MVC.Controllers
     /// Su propósito principal es interceptar las excepciones de negocio (AppException)
     /// y mostrarlas amigablemente al usuario, en lugar de mostrar la pantalla amarilla de error.
     /// </summary>
+    // DP: MVC - los controladores solo coordinan; la logica vive en Business y los datos en las vistas.
     public class BaseController : Controller
     {
         protected override void OnException(ExceptionContext filterContext)

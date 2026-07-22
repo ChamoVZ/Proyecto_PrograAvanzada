@@ -13,6 +13,7 @@ namespace AP.MVC
         {
             ConfigureAuth(app);
             CreateRoles();
+            CreateUsers();
         }
 
         private void CreateRoles()
@@ -32,6 +33,37 @@ namespace AP.MVC
                     var role = new IdentityRole { Name = roleName };
                     roleManager.Create(role);
                 }
+            }
+        }
+
+        // Crea un usuario de prueba por cada rol si no existen (idempotente).
+        // Credenciales documentadas en _documentos/CREDENCIALES.md. Solo para uso local.
+        private void CreateUsers()
+        {
+            var context = new ApplicationDbContext();
+            var userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(context));
+
+            SeedUser(userManager, "admin@mathemax.local", "Admin123!", "Admin");
+            SeedUser(userManager, "player@mathemax.local", "Player123!", "Player");
+            SeedUser(userManager, "support@mathemax.local", "Support123!", "Support");
+        }
+
+        private void SeedUser(ApplicationUserManager userManager, string email, string password, string rol)
+        {
+            if (userManager.FindByName(email) != null)
+                return;
+
+            var user = new ApplicationUser
+            {
+                UserName = email,
+                Email = email,
+                EmailConfirmed = true
+            };
+
+            var resultado = userManager.Create(user, password);
+            if (resultado.Succeeded)
+            {
+                userManager.AddToRole(user.Id, rol);
             }
         }
     }

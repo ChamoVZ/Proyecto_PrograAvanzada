@@ -79,6 +79,24 @@ namespace AP.MVC.Controllers
             }
         }
 
+        // POST: SolicitudTI/CambiarEstado
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Support")]
+        public ActionResult CambiarEstado(int id, int estado)
+        {
+            try
+            {
+                _solicitudTIBusiness.CambiarEstado(id, (EstadoSolicitud)estado);
+            }
+            catch (AppException ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+            }
+
+            return RedirectToAction("Index");
+        }
+
         private void CargarRespuestaAsistente()
         {
             ViewBag.RespuestaAsistente = _chatbotService.GetRespuesta(string.Empty);

@@ -40,10 +40,22 @@
                                 @item.Descripcion
                             </p>
                         </div>
-                        <div class="card-footer bg-white border-top-0 d-flex justify-content-end pb-3">
-                            <!-- TODO: Avance 3 - Detalle, cambio de estado y respuesta de soporte -->
-                            <button class="btn btn-sm btn-outline-secondary disabled" title="Disponible en el Avance 3">Ver Detalles</button>
-                        </div>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Support"))
+                        {
+                            <div class="card-footer bg-white border-top-0 d-flex justify-content-end pb-3">
+                                @using (Html.BeginForm("CambiarEstado", "SolicitudTI", FormMethod.Post, new { @class = "d-flex gap-2 align-items-center" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@item.SolicitudTIId" />
+                                    <select name="estado" class="form-select form-select-sm" style="width:auto;">
+                                        <option value="1" selected="@(item.Estado == 1)">Abierta</option>
+                                        <option value="2" selected="@(item.Estado == 2)">En proceso</option>
+                                        <option value="3" selected="@(item.Estado == 3)">Cerrada</option>
+                                    </select>
+                                    <button type="submit" class="btn btn-sm btn-outline-primary">Actualizar estado</button>
+                                }
+                            </div>
+                        }
                     </div>
                 </div>
             }

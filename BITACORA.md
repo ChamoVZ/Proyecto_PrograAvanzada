@@ -45,7 +45,7 @@
   - [x] Módulo Solicitud TI (Request IT)
   - [x] Módulo Buzón de Quejas
 - [x] Roles de Identity configurados: Admin, Player, Support (seed en `Startup.CreateRoles()`, rol Player al registrarse, `[Authorize(Roles)]` en controladores)
-- [ ] Principios SOLID identificados y comentados en el código (parcial: solo módulo Quejas; falta en Retos, Foro y Solicitud TI)
+- [x] Principios SOLID identificados y comentados en el código (completado en el Avance 3)
 
 ### Notas
 - 2026-07-11: se corrigió staging agregando la migración `InicializarQueja`, que faltó al subir el módulo Buzón de Quejas (el modelo EF quedó desincronizado de `__MigrationHistory` y daba error al correr la app en BDs creadas con migraciones). Acordado: toda entidad nueva debe subir con su migración.
@@ -53,18 +53,26 @@
 ---
 
 ## Avance 3 — Pantallas completas con lógica
-**Fecha estimada:** Por confirmar | **Valor:** 20 pts
+**Fecha:** 2026-07-22 | **Valor:** 20 pts
 
-### Pendiente
-- [ ] Todas las pantallas funcionales con lógica conectada
-- [ ] Juego de Math Riddles jugable (al menos un modo)
-- [ ] Sistema de XP y marcadores (tabla Partidas)
-- [ ] Foro funcional (CRUD de publicaciones)
-- [ ] Request IT funcional
-- [ ] Buzón de Quejas funcional
-- [ ] Comentarios SOLID y Design Patterns en código
+### Completado
+- [x] Juego de Math Riddles jugable (modo Operador Perdido, de punta a punta)
+- [x] Sistema de XP y marcadores (XP persistido en `AspNetUsers`; ranking e historial desde la tabla `Partidas`)
+- [x] Foro funcional (CRUD de publicaciones con borrado lógico y validación de autor/Admin)
+- [x] Request IT funcional (crear, listar y cambio de estado por soporte)
+- [x] Buzón de Quejas funcional (crear, listar y cambio de estado por soporte)
+- [x] Comentarios SOLID y Design Patterns en código (Business, Repositories y Controllers)
   - Formato: `// SOLID: [principio aplicado]`
   - Formato: `// DP: [patrón aplicado]`
+
+### Pendiente / parcial
+- [ ] Modos Contrarreloj y Secuencias Lógicas: la lógica ya existe como estrategias (`AP.Core/Business/Estrategias`), pero aún no tienen pantalla propia ni retos sembrados; solo Operador Perdido está conectado a la UI.
+- [ ] Solicitud TI y Buzón de Quejas sin edición/borrado por el autor (por ahora solo creación y cambio de estado).
+
+### Notas
+- Base del avance (Evan, 2026-07-11/12): funcionalidad de experiencia y modo Operador Perdido. Correcciones del juego y persistencia de XP con `UserManager` (Sebastián, 2026-07-12).
+- Cierre del avance (Sebastián, 2026-07-22): patrón Strategy en `AP.Core` alineado con el PDF de diseño, marcadores, CRUD del Foro, cambio de estado en Solicitud TI/Quejas, comentarios SOLID/DP y correcciones menores.
+- Excepción al acuerdo del Avance 2: `ExperienciaTotal`/`Nivel` se agregaron por script SQL (`_db/scripts/2026-07-12_experiencia_y_retos.sql`), no por migración EF, por ser columnas de `AspNetUsers` (Identity, sin inicializador de EF). El script debe correrse tras `MathemaX_Init.sql`.
 
 ---
 

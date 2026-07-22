@@ -41,9 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Business\Estrategias\IModoJuegoStrategy.cs" />
+    <Compile Include="Business\Estrategias\OperadorPerdidoStrategy.cs" />
+    <Compile Include="Business\Estrategias\ContrarrelojStrategy.cs" />
+    <Compile Include="Business\Estrategias\SecuenciasLogicasStrategy.cs" />
     <Compile Include="Business\ExperienciaBusiness.cs" />
     <Compile Include="Business\ForoBusiness.cs" />
-    <Compile Include="Business\OperadorPerdidoBusiness.cs" />
+    <Compile Include="Business\PartidaBusiness.cs" />
     <Compile Include="Business\QuejaBusiness.cs" />
     <Compile Include="Business\RetoBusiness.cs" />
     <Compile Include="Business\SolicitudTIBusiness.cs" />

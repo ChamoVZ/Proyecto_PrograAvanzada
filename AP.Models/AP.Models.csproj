@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Buzon\QuejaViewModel.cs" />
     <Compile Include="Comunidad\PublicacionViewModel.cs" />
+    <Compile Include="Juegos\MarcadorViewModel.cs" />
     <Compile Include="Juegos\ResponderRetoViewModel.cs" />
     <Compile Include="Juegos\ResultadoJuegoViewModel.cs" />
     <Compile Include="Juegos\RetoJuegoViewModel.cs" />

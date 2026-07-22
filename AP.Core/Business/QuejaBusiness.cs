@@ -57,12 +57,25 @@ namespace AP.Core.Business
                 queja.FechaCreacion = DateTime.Now;
             }
 
-            // Toda queja nueva entra como Pendiente. Avance 3: flujo de revision y resolucion.
             queja.Estado = EstadoQueja.Pendiente;
             queja.CreatedAt = DateTime.Now;
 
             _repository.Add(queja);
             _repository.Save();
+        }
+
+        public void CambiarEstado(int id, EstadoQueja nuevoEstado)
+        {
+            if (!Enum.IsDefined(typeof(EstadoQueja), nuevoEstado))
+                throw new AppException("El estado seleccionado no es válido.");
+
+            var queja = _repository.GetById(id);
+            if (queja == null)
+                throw new AppException("La queja que intenta actualizar no existe.");
+
+            queja.Estado = nuevoEstado;
+            queja.LastModified = DateTime.Now;
+            _repository.Update(queja);
         }
     }
 }

@@ -38,3 +38,9 @@ desktop.ini
 # Variables de entorno locales
 *.env
 .env.local
+
+# Configuracion local con la cadena de conexion (usar Web.config.example como plantilla)
+AP.MVC/Web.config
+
+# Salida temporal de precompilacion de ASP.NET (aspnet_compiler / Temporary ASP.NET Files)
+_program files_git/

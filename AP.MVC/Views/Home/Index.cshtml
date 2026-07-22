@@ -13,8 +13,7 @@
         <div>
             @if (Request.IsAuthenticated)
             {
-                <!-- TODO: Apuntar a la futura pantalla de juego -->
-                <a href="#" class="btn-mx-primary btn-lg shadow-sm">
+                <a href="@Url.Action("Jugar", "OperadorPerdido")" class="btn-mx-primary btn-lg shadow-sm">
                     <i class="bi bi-play-circle me-2"></i>Comenzar a jugar
                 </a>
             }

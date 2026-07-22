@@ -78,6 +78,24 @@ namespace AP.MVC.Controllers
             }
         }
 
+        // POST: Queja/CambiarEstado
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Support")]
+        public ActionResult CambiarEstado(int id, int estado)
+        {
+            try
+            {
+                _quejaBusiness.CambiarEstado(id, (EstadoQueja)estado);
+            }
+            catch (AppException ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+            }
+
+            return RedirectToAction("Index");
+        }
+
         #region Mapeo Manual
 
         private QuejaViewModel MapToViewModel(Queja entity)
