@@ -19,7 +19,7 @@ namespace AP.MVC.Controllers
         private const string UltimoRetoSessionKey = "OperadorPerdido_UltimoRetoId";
         private const string ResultadoTempDataKey = "OperadorPerdido_Resultado";
 
-        private readonly OperadorPerdidoBusiness _juegoBusiness;
+        private readonly PartidaBusiness _juegoBusiness;
         private readonly ExperienciaBusiness _experienciaBusiness;
 
         private ApplicationUserManager _userManager;
@@ -31,7 +31,7 @@ namespace AP.MVC.Controllers
 
         public OperadorPerdidoController()
         {
-            _juegoBusiness = new OperadorPerdidoBusiness();
+            _juegoBusiness = new PartidaBusiness();
             _experienciaBusiness = new ExperienciaBusiness();
         }
 
@@ -43,7 +43,7 @@ namespace AP.MVC.Controllers
             try
             {
                 int? ultimoRetoId = Session[UltimoRetoSessionKey] is int id ? id : (int?)null;
-                var reto = _juegoBusiness.ObtenerRetoAleatorio(ultimoRetoId);
+                var reto = _juegoBusiness.ObtenerRetoAleatorio(ModoJuego.OperadorPerdido, ultimoRetoId);
 
                 Session[ObtenerHoraInicioSessionKey(reto.RetoId)] = DateTime.UtcNow;
                 Session[UltimoRetoSessionKey] = reto.RetoId;
