@@ -25,6 +25,7 @@ namespace AP.Repositories
     /// Los repositorios concretos (RepositoryReto, RepositoryPartida...)
     /// heredan de aquí y solo agregan consultas específicas.
     /// </summary>
+    // DP: Repository - centraliza el acceso a datos y aisla a la capa de negocio de EF.
     public class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {
         /// <summary>Contexto compartido con las clases hijas para sus consultas LINQ.</summary>

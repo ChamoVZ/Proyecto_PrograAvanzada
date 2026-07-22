@@ -6,8 +6,10 @@ using AP.Repositories;
 
 namespace AP.Core.Business
 {
+    // SOLID: SRP - esta clase solo contiene las reglas de negocio de las solicitudes de soporte.
     public class SolicitudTIBusiness
     {
+        // SOLID: DIP - depende de la abstraccion IRepositorySolicitudTI, no de la implementacion concreta.
         private readonly IRepositorySolicitudTI _repository;
 
         public SolicitudTIBusiness()
@@ -52,12 +54,26 @@ namespace AP.Core.Business
                 solicitud.FechaCreacion = DateTime.Now;
             }
 
-            // Avance 3: aqui se completa el flujo de estados y asignacion de agentes.
+            // Toda solicitud nueva entra Abierta; el soporte la avanza con CambiarEstado.
             solicitud.Estado = EstadoSolicitud.Abierta;
             solicitud.CreatedAt = DateTime.Now;
 
             _repository.Add(solicitud);
             _repository.Save();
+        }
+
+        public void CambiarEstado(int id, EstadoSolicitud nuevoEstado)
+        {
+            if (!Enum.IsDefined(typeof(EstadoSolicitud), nuevoEstado))
+                throw new AppException("El estado seleccionado no es válido.");
+
+            var solicitud = _repository.GetById(id);
+            if (solicitud == null)
+                throw new AppException("La solicitud que intenta actualizar no existe.");
+
+            solicitud.Estado = nuevoEstado;
+            solicitud.LastModified = DateTime.Now;
+            _repository.Update(solicitud);
         }
     }
 }

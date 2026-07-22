@@ -6,8 +6,10 @@ using AP.Core.Exceptions;
 
 namespace AP.Core.Business
 {
+    // SOLID: SRP - esta clase solo contiene las reglas de negocio del foro.
     public class ForoBusiness
     {
+        // SOLID: DIP - depende de la abstraccion IRepositoryPublicacion, no de la implementacion concreta.
         private readonly IRepositoryPublicacion _repository;
 
         public ForoBusiness()

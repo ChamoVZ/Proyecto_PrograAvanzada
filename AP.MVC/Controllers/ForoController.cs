@@ -60,7 +60,7 @@ namespace AP.MVC.Controllers
                 TempData["ErrorMessage"] = ex.Message;
                 return View(model);
             }
-            catch (System.Exception ex)
+            catch (System.Exception)
             {
                 TempData["ErrorMessage"] = "Ocurrió un error inesperado al publicar. Intente más tarde.";
                 return View(model);

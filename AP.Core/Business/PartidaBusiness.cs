@@ -39,6 +39,7 @@ namespace AP.Core.Business
         {
         }
 
+        // SOLID: DIP - recibe las abstracciones (repositorios y estrategias), no las crea aca.
         // Inyeccion manual para pruebas o para sumar modos sin tocar el controller.
         public PartidaBusiness(
             IRepositoryReto repositoryReto,

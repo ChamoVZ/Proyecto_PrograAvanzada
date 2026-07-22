@@ -13,12 +13,14 @@ namespace AP.Repositories
         public int Aciertos { get; set; }
     }
 
+    // SOLID: ISP - contrato especifico de partidas; solo expone el historial y el ranking que su cliente necesita.
     public interface IRepositoryPartida : IRepositoryBase<Partida>
     {
         IEnumerable<Partida> GetHistorialPorUsuario(string usuarioId);
         IEnumerable<RankingUsuario> GetRankingGlobal();
     }
 
+    // SOLID: LSP - hereda el CRUD generico de RepositoryBase sin alterar su comportamiento.
     public class RepositoryPartida : RepositoryBase<Partida>, IRepositoryPartida
     {
         public IEnumerable<Partida> GetHistorialPorUsuario(string usuarioId)

@@ -15,6 +15,7 @@ namespace AP.Core.Business
         public bool SubioDeNivel => NivelNuevo > NivelAnterior;
     }
 
+    // SOLID: SRP - solo calcula XP y niveles; no toca persistencia ni conoce repositorios.
     public class ExperienciaBusiness
     {
         private const int XpPorPuntoDeDificultad = 10;

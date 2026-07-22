@@ -53,18 +53,37 @@
 ---
 
 ## Avance 3 — Pantallas completas con lógica
-**Fecha estimada:** Por confirmar | **Valor:** 20 pts
+**Fecha:** 2026-07-22 | **Valor:** 20 pts
 
-### Pendiente
-- [ ] Todas las pantallas funcionales con lógica conectada
-- [ ] Juego de Math Riddles jugable (al menos un modo)
-- [ ] Sistema de XP y marcadores (tabla Partidas)
-- [ ] Foro funcional (CRUD de publicaciones)
-- [ ] Request IT funcional
-- [ ] Buzón de Quejas funcional
-- [ ] Comentarios SOLID y Design Patterns en código
+### Completado
+- [x] Juego de Math Riddles jugable (modo Operador Perdido, de punta a punta)
+- [x] Sistema de XP y marcadores (XP persistido en `AspNetUsers`; ranking e historial desde la tabla `Partidas`)
+- [x] Foro funcional (CRUD de publicaciones con borrado lógico y validación de autor/Admin)
+- [x] Request IT funcional (crear, listar y cambio de estado por soporte)
+- [x] Buzón de Quejas funcional (crear, listar y cambio de estado por soporte)
+- [x] Comentarios SOLID y Design Patterns en código (Business, Repositories y Controllers)
   - Formato: `// SOLID: [principio aplicado]`
   - Formato: `// DP: [patrón aplicado]`
+
+### Pendiente / parcial
+- [ ] Modos Contrarreloj y Secuencias Lógicas: la lógica ya existe como estrategias (`AP.Core/Business/Estrategias`), pero aún no tienen pantalla propia ni retos sembrados; solo Operador Perdido está conectado a la UI.
+- [ ] Solicitud TI y Buzón de Quejas sin edición/borrado por el autor (por ahora solo creación y cambio de estado).
+
+### Notas
+- 2026-07-11 (Evan): funcionalidad de experiencia — `ExperienciaBusiness` (cálculo de XP y niveles) y campos `ExperienciaTotal`/`Nivel` en `ApplicationUser`.
+- 2026-07-12 (Evan): modo de juego Operador Perdido — lógica de negocio, controlador, vistas Jugar/Resultado y `RepositoryPartida`.
+- 2026-07-12 (Sebastián): correcciones del juego (anti-repetición de reto, cronómetro en el servidor), persistencia real de XP/Nivel con `UserManager` y primeras pruebas unitarias; script `_db/scripts/2026-07-12_experiencia_y_retos.sql`.
+- 2026-07-20 (equipo): documento del patrón de diseño Strategy (`Patron_Diseno_Strategy_MathemaX.pdf`).
+- 2026-07-22 (Sebastián): Etapa 1 — patrón Strategy en `AP.Core` (`IModoJuegoStrategy`, tres estrategias y `PartidaBusiness` como contexto), alineando el código con el PDF entregado.
+- 2026-07-22 (Sebastián): Etapa 2 — marcadores globales e historial de partidas (`MarcadorController`, ranking agregado desde `Partidas`).
+- 2026-07-22 (Sebastián): Etapa 3 — CRUD completo del Foro (edición y borrado lógico, con validación de autor/Admin en negocio y vistas).
+- 2026-07-22 (Sebastián): Etapa 4 — cambio de estado en Solicitud TI y Buzón de Quejas, restringido al rol Support.
+- 2026-07-22 (Sebastián): Etapa 5 — comentarios SOLID y Design Patterns en todos los módulos.
+- 2026-07-22 (Sebastián): Etapa 6 — correcciones menores (warning CS0168, README con orden de scripts, pruebas de las estrategias, `Web.config.example`).
+
+### Excepción al acuerdo de migraciones (ver Avance 2, Notas)
+- Los campos `ExperienciaTotal` y `Nivel` se agregaron con el script `_db/scripts/2026-07-12_experiencia_y_retos.sql`, **no** con una migración de Entity Framework. Esto contradice el acuerdo registrado en el Avance 2 ("toda entidad nueva debe subir con su migración").
+- Se acepta como excepción explícita porque estas columnas viven en `AspNetUsers`, la tabla de ASP.NET Identity, que no usa el inicializador de EF (`Database.SetInitializer(null)` en `Global.asax`); una migración Code First no administra ese esquema. El script queda como fuente de verdad para esas columnas y debe correrse después de `MathemaX_Init.sql`.
 
 ---
 
