@@ -38,7 +38,7 @@ namespace AP.Data.Entities
 
         public bool Activo { get; set; }
 
-        // Auditoría (mismo patrón del proyecto de referencia del profesor)
+        // Datos de auditoría.
         public DateTime CreatedAt { get; set; }
         public string CreatedBy { get; set; }
         public DateTime? LastModified { get; set; }

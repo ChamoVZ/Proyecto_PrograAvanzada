@@ -57,6 +57,7 @@
 
 ### Completado
 - [x] Juego de Math Riddles jugable (modo Operador Perdido, de punta a punta)
+- [x] Modo Contrarreloj jugable, con tiempo validado en servidor, bono de XP y resultado persistido
 - [x] Sistema de XP y marcadores (XP persistido en `AspNetUsers`; ranking e historial desde la tabla `Partidas`)
 - [x] Foro funcional (CRUD de publicaciones con borrado lógico y validación de autor/Admin)
 - [x] Request IT funcional (crear, listar y cambio de estado por soporte)
@@ -66,13 +67,16 @@
   - Formato: `// DP: [patrón aplicado]`
 
 ### Pendiente / parcial
-- [ ] Modos Contrarreloj y Secuencias Lógicas: la lógica ya existe como estrategias (`AP.Core/Business/Estrategias`), pero aún no tienen pantalla propia ni retos sembrados; solo Operador Perdido está conectado a la UI.
+- [ ] Secuencias Lógicas: la estrategia y el reto inicial ya existen, pero falta conectar el modo a un controlador y a sus vistas.
 - [ ] Solicitud TI y Buzón de Quejas sin edición/borrado por el autor (por ahora solo creación y cambio de estado).
 
 ### Notas
 - Base del avance (Evan, 2026-07-11/12): funcionalidad de experiencia y modo Operador Perdido. Correcciones del juego y persistencia de XP con `UserManager` (Sebastián, 2026-07-12).
 - Cierre del avance (Sebastián, 2026-07-22): patrón Strategy en `AP.Core` alineado con el PDF de diseño, marcadores, CRUD del Foro, cambio de estado en Solicitud TI/Quejas, comentarios SOLID/DP y correcciones menores.
+- Contrarreloj (Sebastián, 2026-07-25): controlador y vistas conectados a la estrategia existente, validación de reto activo y modo, y transacción compartida para registrar la partida y actualizar XP de forma atómica.
 - Excepción al acuerdo del Avance 2: `ExperienciaTotal`/`Nivel` se agregaron por script SQL (`_db/scripts/2026-07-12_experiencia_y_retos.sql`), no por migración EF, por ser columnas de `AspNetUsers` (Identity, sin inicializador de EF). El script debe correrse tras `MathemaX_Init.sql`.
+- Los scripts SQL incluyen retos iniciales para Operador Perdido, Contrarreloj y Secuencias Lógicas.
+- Validación del 2026-07-25: solución y vistas Razor compilaron sin errores; las 36 pruebas disponibles finalizaron correctamente después del ajuste transaccional.
 
 ---
 
@@ -81,7 +85,7 @@
 
 ### Pendiente
 - [ ] Todos los módulos terminados y conectados
-- [ ] Pruebas unitarias completas en AP.Tests
+- [ ] Ampliar AP.Tests a los módulos que todavía no tienen cobertura
 - [ ] Sin código muerto ni vistas vacías
 - [ ] README actualizado con instrucciones de setup
 - [ ] Tag `avance-4` creado en rama `production`

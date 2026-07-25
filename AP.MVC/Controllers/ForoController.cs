@@ -175,8 +175,6 @@ namespace AP.MVC.Controllers
                 Contenido = entity.Contenido,
                 FechaPublicacion = entity.FechaPublicacion,
                 Activo = entity.Activo,
-                // El nombre del autor se podría cruzar con la tabla AspNetUsers en la capa Business o Repositorio en el futuro,
-                // por ahora usaremos CreatedBy como workaround simple (contiene el email/username si se asignó al crear)
                 NombreAutor = entity.CreatedBy ?? "Usuario"
             };
         }
