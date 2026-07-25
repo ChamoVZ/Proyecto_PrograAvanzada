@@ -2,11 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AP.Models.Juegos
 {
-    /// <summary>
-    /// ViewModel de Reto: lo ÚNICO que llega a las vistas Razor (Regla de Oro:
-    /// las entidades de EF nunca salen de las capas inferiores).
-    /// Las DataAnnotations alimentan la validación de MVC (cliente y servidor).
-    /// </summary>
+    /// <summary>Datos de un reto usados por las vistas de mantenimiento.</summary>
     public class RetoViewModel
     {
         public int RetoId { get; set; }

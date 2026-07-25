@@ -11,7 +11,6 @@ namespace AP.MVC.Controllers
     [Authorize(Roles = "Admin")]
     public class RetoController : BaseController
     {
-        // Se instancia la capa de negocio, nunca el Repositorio directo.
         private readonly RetoBusiness _retoBusiness;
 
         public RetoController()
@@ -22,10 +21,7 @@ namespace AP.MVC.Controllers
         // GET: Reto
         public ActionResult Index()
         {
-            // Obtenemos las entidades desde la capa de negocio
             var retos = _retoBusiness.GetRetos();
-            
-            // Mapeo manual a ViewModels (no mandamos entidades a la vista)
             var viewModels = retos.Select(MapToViewModel).ToList();
             
             return View(viewModels);
@@ -52,7 +48,6 @@ namespace AP.MVC.Controllers
             // Auditoría: seteamos quién está creando el registro
             reto.CreatedBy = User.Identity.Name;
 
-            // RetoBusiness.SaveOrUpdate validará las reglas y arrojará AppException si falla
             _retoBusiness.SaveOrUpdate(reto);
             
             return RedirectToAction("Index");
@@ -122,7 +117,6 @@ namespace AP.MVC.Controllers
 
         #region Mapeo Manual
 
-        // Mapeamos explícitamente sin AutoMapper, paso a paso para ser legibles
         private RetoViewModel MapToViewModel(Reto entity)
         {
             return new RetoViewModel

@@ -171,6 +171,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ForoController.cs" />
+    <Compile Include="Controllers\ContrarrelojController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MarcadorController.cs" />
@@ -270,6 +271,8 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\OperadorPerdido\Jugar.cshtml" />
     <Content Include="Views\OperadorPerdido\Resultado.cshtml" />
+    <Content Include="Views\Contrarreloj\Jugar.cshtml" />
+    <Content Include="Views\Contrarreloj\Resultado.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
