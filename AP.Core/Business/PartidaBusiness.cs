@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AP.Core.Business.Estrategias;
 using AP.Core.Exceptions;
+using AP.Data;
 using AP.Data.Entities;
 using AP.Repositories;
 
@@ -36,6 +37,16 @@ namespace AP.Core.Business
 
         public PartidaBusiness()
             : this(new RepositoryReto(), new RepositoryPartida(), EstrategiasPorDefecto())
+        {
+        }
+
+        public PartidaBusiness(IRepositoryReto repositoryReto, IRepositoryPartida repositoryPartida)
+            : this(repositoryReto, repositoryPartida, EstrategiasPorDefecto())
+        {
+        }
+
+        public PartidaBusiness(MathemaXContext context)
+            : this(new RepositoryReto(context), new RepositoryPartida(context), EstrategiasPorDefecto())
         {
         }
 
@@ -83,11 +94,22 @@ namespace AP.Core.Business
             return retos[indice];
         }
 
-        public ResultadoReto ResolverReto(int retoId, string usuarioId, string respuestaUsuario, int tiempoEmpleadoSegundos)
+        public ResultadoReto ResolverReto(
+            int retoId,
+            string usuarioId,
+            string respuestaUsuario,
+            int tiempoEmpleadoSegundos,
+            ModoJuego? modoEsperado = null)
         {
             var reto = _repositoryReto.GetById(retoId);
             if (reto == null)
                 throw new AppException("El reto solicitado ya no existe.");
+
+            if (!reto.Activo)
+                throw new AppException("El reto ya no está disponible.");
+
+            if (modoEsperado.HasValue && reto.Modo != modoEsperado.Value)
+                throw new AppException("El reto no pertenece al modo solicitado.");
 
             if (!_estrategias.TryGetValue(reto.Modo, out var estrategia))
                 throw new AppException("Modo de juego no soportado.");
