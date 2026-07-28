@@ -1,4 +1,4 @@
-@{
+﻿@{
     ViewBag.Title = "Entrenamiento Mental";
 }
 
@@ -7,20 +7,20 @@
     <div class="container py-5">
         <h1 class="display-3 fw-bold mb-3" style="color: var(--color-terracotta);">MathemaX</h1>
         <p class="lead mb-4" style="color: var(--color-ink-muted);">
-            Despierta tu agilidad mental con los retos matem&aacute;ticos m&aacute;s desafiantes.<br />
+            Despierta tu agilidad mental con los retos matemáticos más desafiantes.<br />
             Demuestra tu destreza, acumula XP y domina los marcadores.
         </p>
         <div>
             @if (Request.IsAuthenticated)
             {
-                <a href="@Url.Action("Jugar", "OperadorPerdido")" class="btn-mx-primary btn-lg shadow-sm">
+                <a href="@Url.Action("Index", "Juego")" class="btn-mx-primary btn-lg shadow-sm">
                     <i class="bi bi-play-circle me-2"></i>Comenzar a jugar
                 </a>
             }
             else
             {
                 <a href="@Url.Action("Login", "Account")" class="btn-mx-primary btn-lg shadow-sm">
-                    <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesi&oacute;n
+                    <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión
                 </a>
             }
         </div>
@@ -45,7 +45,7 @@
                         </a>
                     </h4>
                     <p class="card-text text-muted">
-                        Descubre cu&aacute;l es el operador matem&aacute;tico (+, -, *, /) que falta para que la ecuaci&oacute;n tenga sentido. &iexcl;Piensa r&aacute;pido!
+                        Descubre cuál es el operador matemático (+, -, *, /) que falta para que la ecuación tenga sentido. ¡Piensa rápido!
                     </p>
                 </div>
             </div>
@@ -64,7 +64,7 @@
                         </a>
                     </h4>
                     <p class="card-text text-muted">
-                        Resuelve la mayor cantidad de retos matem&aacute;ticos antes de que se acabe el tiempo. La presi&oacute;n est&aacute; al m&aacute;ximo.
+                        Resuelve la mayor cantidad de retos matemáticos antes de que se acabe el tiempo. La presión está al máximo.
                     </p>
                 </div>
             </div>
@@ -77,9 +77,9 @@
                     <div class="mb-3">
                         <i class="bi bi-sort-numeric-down text-mx-terracotta" style="font-size: 3rem; color: var(--color-terracotta);"></i>
                     </div>
-                    <h4 class="card-title fw-bold">Secuencias L&oacute;gicas</h4>
+                    <h4 class="card-title fw-bold">Secuencias Lógicas</h4>
                     <p class="card-text text-muted">
-                        Encuentra el patr&oacute;n oculto en una serie de n&uacute;meros y descubre cu&aacute;l es el siguiente paso l&oacute;gico.
+                        Encuentra el patrón oculto en una serie de números y descubre cuál es el siguiente paso lógico.
                     </p>
                 </div>
             </div>
@@ -97,8 +97,8 @@
                     <h3 class="fw-bold mb-3" style="color: var(--color-academy);">Progreso y Competencia</h3>
                     <p class="mb-0" style="color: var(--color-ink-muted);">
                         Cada vez que resuelves un reto correctamente, obtienes Puntos de Experiencia (XP) basados en la 
-                        <strong>dificultad</strong> del problema. Entre m&aacute;s r&aacute;pido resuelvas y m&aacute;s dif&iacute;ciles sean los retos, 
-                        m&aacute;s alto escalar&aacute;s en nuestros <strong>Marcadores Globales</strong>. &iquest;Tienes lo necesario para ser el n&uacute;mero uno?
+                        <strong>dificultad</strong> del problema. Entre más rápido resuelvas y más difíciles sean los retos, 
+                        más alto escalarás en nuestros <strong>Marcadores Globales</strong>. ¿Tienes lo necesario para ser el número uno?
                     </p>
                 </div>
                 <div class="col-md-4 text-center">

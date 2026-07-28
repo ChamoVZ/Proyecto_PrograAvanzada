@@ -1,4 +1,4 @@
-namespace AP.Services
+﻿namespace AP.Services
 {
     /// <summary>
     /// Servicio auxiliar del chatbot de soporte (módulo Request IT).

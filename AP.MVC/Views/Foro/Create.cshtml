@@ -1,4 +1,4 @@
-@model AP.Models.Comunidad.PublicacionViewModel
+﻿@model AP.Models.Comunidad.PublicacionViewModel
 
 @{
     ViewBag.Title = "Nueva Publicación";
@@ -9,13 +9,13 @@
         <div class="col-md-8">
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-white">
-                    <h3 class="card-title mb-0">Crear Nueva Publicaci&oacute;n</h3>
+                    <h3 class="card-title mb-0">Crear Nueva Publicación</h3>
                 </div>
                 <div class="card-body p-4">
                     @if (TempData["ErrorMessage"] != null)
                     {
                         <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                            <strong>Atenci&oacute;n:</strong> @TempData["ErrorMessage"]
+                            <strong>Atención:</strong> @TempData["ErrorMessage"]
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
                         </div>
                     }
@@ -26,13 +26,13 @@
 
                         <div class="mb-3">
                             @Html.LabelFor(model => model.Titulo, new { @class = "form-label fw-bold" })
-                            @Html.TextBoxFor(model => model.Titulo, new { @class = "form-control", placeholder = "Escribe un t\u00EDtulo descriptivo..." })
+                            @Html.TextBoxFor(model => model.Titulo, new { @class = "form-control", placeholder = "Escribe un título descriptivo..." })
                             @Html.ValidationMessageFor(model => model.Titulo, "", new { @class = "text-danger" })
                         </div>
 
                         <div class="mb-4">
                             @Html.LabelFor(model => model.Contenido, new { @class = "form-label fw-bold" })
-                            @Html.TextAreaFor(model => model.Contenido, new { @class = "form-control", rows = 6, placeholder = "\u00BFQu\u00E9 quieres compartir con la comunidad?" })
+                            @Html.TextAreaFor(model => model.Contenido, new { @class = "form-control", rows = 6, placeholder = "¿Qué quieres compartir con la comunidad?" })
                             @Html.ValidationMessageFor(model => model.Contenido, "", new { @class = "text-danger" })
                         </div>
 

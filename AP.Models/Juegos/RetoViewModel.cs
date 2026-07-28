@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace AP.Models.Juegos
 {
@@ -7,9 +7,9 @@ namespace AP.Models.Juegos
     {
         public int RetoId { get; set; }
 
-        [Required(ErrorMessage = "El t\u00EDtulo es obligatorio.")]
+        [Required(ErrorMessage = "El título es obligatorio.")]
         [StringLength(120)]
-        [Display(Name = "T\u00EDtulo del reto")]
+        [Display(Name = "Título del reto")]
         public string Titulo { get; set; }
 
         [Required(ErrorMessage = "Seleccione un modo de juego.")]
@@ -30,8 +30,8 @@ namespace AP.Models.Juegos
         [Display(Name = "Dificultad")]
         public int Dificultad { get; set; }
 
-        [Range(5, 600, ErrorMessage = "El tiempo l\u00EDmite debe estar entre 5 y 600 segundos.")]
-        [Display(Name = "Tiempo l\u00EDmite (segundos)")]
+        [Range(5, 600, ErrorMessage = "El tiempo límite debe estar entre 5 y 600 segundos.")]
+        [Display(Name = "Tiempo límite (segundos)")]
         public int TiempoLimiteSegundos { get; set; }
 
         [Display(Name = "Activo")]

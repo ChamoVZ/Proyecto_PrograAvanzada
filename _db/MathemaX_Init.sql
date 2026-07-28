@@ -1,4 +1,4 @@
--- MathemaX — Script de inicialización de base de datos
+﻿-- MathemaX — Script de inicialización de base de datos
 -- ASP.NET MVC 5 + Entity Framework 6 + ASP.NET Identity 2
 -- Ejecutar en SQL Server Management Studio conectado a localhost
 -- Fecha: 2026-06-21
@@ -274,11 +274,12 @@ BEGIN
     INSERT INTO [dbo].[Retoes]
         ([Titulo], [Modo], [Enunciado], [RespuestaCorrecta], [Dificultad], [TiempoLimiteSegundos], [Activo], [CreatedAt], [CreatedBy])
     VALUES
-        ('Operador perdido básico',  1, '4 _ 3 = 12',        '*', 1, 30,  1, GETDATE(), 'seed'),
-        ('Operador perdido medio',   1, '15 _ 3 = 5',        '/', 2, 25,  1, GETDATE(), 'seed'),
-        ('Contrarreloj: suma',       2, '¿Cuánto es 47+36?', '83',3, 20,  1, GETDATE(), 'seed'),
-        ('Secuencia lógica simple',  3, '2, 4, 8, 16, ?',    '32',2, 40,  1, GETDATE(), 'seed'),
-        ('Operador perdido difícil', 1, '81 _ 9 = 9',        '/', 4, 20,  1, GETDATE(), 'seed');
+        -- Los literales llevan N para que los acentos no dependan de la collation del servidor
+        (N'Operador perdido básico',  1, N'4 _ 3 = 12',        N'*', 1, 30,  1, GETDATE(), 'seed'),
+        (N'Operador perdido medio',   1, N'15 _ 3 = 5',        N'/', 2, 25,  1, GETDATE(), 'seed'),
+        (N'Contrarreloj: suma',       2, N'¿Cuánto es 47+36?', N'83',3, 20,  1, GETDATE(), 'seed'),
+        (N'Secuencia lógica simple',  3, N'2, 4, 8, 16, ?',    N'32',2, 40,  1, GETDATE(), 'seed'),
+        (N'Operador perdido difícil', 1, N'81 _ 9 = 9',        N'/', 4, 20,  1, GETDATE(), 'seed');
 END
 GO
 

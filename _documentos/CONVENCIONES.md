@@ -27,6 +27,16 @@ Este documento define las reglas de nomenclatura y estilo de código para manten
 - **Constantes:** `PascalCase`.
   - *Ejemplos:* `MinPasswordLength`, `MaxRetries`.
 
+## Codificación de archivos
+
+Antes teníamos tres formas distintas de escribir la misma tilde, así que se unificó todo a una sola.
+
+- Todos los archivos de código (`.cs`, `.cshtml`, `.css`, `.sql`) se guardan en **UTF-8 con BOM**. En Visual Studio: *Archivo → Guardar como… → flecha del botón Guardar → Guardar con codificación → Unicode (UTF-8 con firma)*.
+- Las tildes y los signos `¿ ¡ ñ` se escriben **literales**, tanto en las vistas Razor como en las cadenas de C#.
+- No usar entidades HTML (`&aacute;`) ni escapes Unicode (`ó`) para los acentos. Sí se admiten `&copy;`, `&mdash;`, `&middot;` y `&nbsp;`, que son entidades tipográficas y no parches de codificación.
+- Los literales SQL con acentos llevan prefijo `N'...'` para no depender de la collation del servidor.
+- El `Web.config` declara `<globalization ... fileEncoding="utf-8" />`. Sin esa línea ASP.NET lee las vistas con el codepage ANSI de Windows y las tildes salen mal. Al copiar `Web.config.example` a `Web.config`, no la borre.
+
 ## Comentarios
 
 - Breves, útiles y en español.

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace AP.Models.Soporte
@@ -14,15 +14,15 @@ namespace AP.Models.Soporte
         [Display(Name = "Asunto")]
         public string Asunto { get; set; }
 
-        [Required(ErrorMessage = "La descripci\u00F3n es obligatoria.")]
-        [StringLength(2000, ErrorMessage = "La descripci\u00F3n no puede exceder los 2000 caracteres.")]
-        [Display(Name = "Descripci\u00F3n")]
+        [Required(ErrorMessage = "La descripción es obligatoria.")]
+        [StringLength(2000, ErrorMessage = "La descripción no puede exceder los 2000 caracteres.")]
+        [Display(Name = "Descripción")]
         public string Descripcion { get; set; }
 
         [Display(Name = "Estado")]
         public int Estado { get; set; }
 
-        [Display(Name = "Fecha de Creaci\u00F3n")]
+        [Display(Name = "Fecha de Creación")]
         public DateTime FechaCreacion { get; set; }
 
         [Display(Name = "Solicitante")]

@@ -83,12 +83,23 @@
 ## Avance 4 — Trabajo completo
 **Fecha estimada:** Semana 14, 2026 | **Valor:** 20 pts
 
+### Completado
+- [x] Codificación UTF-8 unificada en todo el proyecto (ver `_documentos/CONVENCIONES.md`)
+- [x] Selector de modos de juego: la opción "Jugar" del menú abre `/Juego/Index` en vez de entrar directo a Operador Perdido
+
 ### Pendiente
 - [ ] Todos los módulos terminados y conectados
 - [ ] Ampliar AP.Tests a los módulos que todavía no tienen cobertura
 - [ ] Sin código muerto ni vistas vacías
 - [ ] README actualizado con instrucciones de setup
 - [ ] Tag `avance-4` creado en rama `production`
+
+---
+
+### Notas
+- Codificación (Sebastián, 2026-07-27): no había texto dañado en el repositorio, pero sí la causa. Faltaba `<globalization>` en el `Web.config` y varias vistas con tildes estaban guardadas en UTF-8 sin BOM, entre ellas `_Layout.cshtml`; sin esas dos cosas ASP.NET las lee con el codepage ANSI de Windows. Para esquivarlo el equipo había usado tres estilos distintos a la vez —entidades HTML, escapes `\uXXXX` y tildes literales—, a veces para el mismo mensaje en archivos diferentes. Se corrigió la causa y se unificó todo a tildes literales sobre UTF-8 con BOM.
+- De paso se detectó que `_db/scripts/2026-07-12_experiencia_y_retos.sql` sembraba los mismos retos con los títulos sin tilde, y como deduplica comparando por `Titulo` insertaba duplicados de los de `MathemaX_Init.sql`. Ya coinciden los dos scripts. En las BD donde ya se corrieron ambos quedaron retos repetidos: se limpian con `_db/scripts/2026-07-27_desactivar_retos_duplicados.sql`, que los desactiva en vez de borrarlos porque algunos ya tienen partidas jugadas.
+- Selector de modos (Sebastián, 2026-07-27): `JuegoController` + `Views/Juego/Index.cshtml` con las tarjetas de los tres modos. Secuencias Lógicas aparece marcado como "Próximamente" porque sigue sin controlador. El resaltado del menú ahora se enciende con cualquier controlador de juego, no solo con Operador Perdido.
 
 ---
 
