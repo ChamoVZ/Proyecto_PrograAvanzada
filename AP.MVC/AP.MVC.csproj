@@ -173,6 +173,7 @@
     <Compile Include="Controllers\ForoController.cs" />
     <Compile Include="Controllers\ContrarrelojController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\JuegoController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MarcadorController.cs" />
     <Compile Include="Controllers\OperadorPerdidoController.cs" />
@@ -239,6 +240,7 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Juego\Index.cshtml" />
     <Content Include="Views\Foro\Index.cshtml" />
     <Content Include="Views\Foro\Create.cshtml" />
     <Content Include="Views\SolicitudTI\Index.cshtml" />

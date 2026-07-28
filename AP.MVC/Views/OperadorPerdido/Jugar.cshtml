@@ -1,4 +1,4 @@
-@model AP.Models.Juegos.RetoJuegoViewModel
+﻿@model AP.Models.Juegos.RetoJuegoViewModel
 
 @{
     ViewBag.Title = "Operador Perdido";
@@ -24,7 +24,7 @@
                         <div class="alert alert-warning" role="alert">
                             @Model.MensajeEstadoVacio
                         </div>
-                        <a href="@Url.Action("Index", "Home")" class="btn-mx-primary">Volver al inicio</a>
+                        <a href="@Url.Action("Index", "Juego")" class="btn-mx-primary">Volver a los modos</a>
                     }
                     else
                     {
@@ -53,7 +53,7 @@
                         }
 
                         <div id="aviso-tiempo-agotado" class="alert alert-warning mt-4 d-none" role="alert">
-                            Se acab&oacute; el tiempo.
+                            Se acabó el tiempo.
                             <a href="@Url.Action("Jugar", "OperadorPerdido")" class="alert-link">Intentar otro reto</a>
                         </div>
                     }

@@ -1,4 +1,4 @@
-namespace AP.Services
+﻿namespace AP.Services
 {
     /// <summary>
     /// Servicio auxiliar de correo (recuperación de contraseña, avisos del foro).

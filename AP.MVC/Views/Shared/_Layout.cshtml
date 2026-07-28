@@ -1,3 +1,11 @@
+﻿@{
+    var controladorActual = ViewContext.RouteData.Values["controller"]?.ToString();
+
+    // "Jugar" abre el selector, pero debe quedar resaltado tambien mientras se
+    // juega cualquier modo. SecuenciasLogicas se deja listo para cuando exista.
+    var controladoresDeJuego = new[] { "Juego", "OperadorPerdido", "Contrarreloj", "SecuenciasLogicas" };
+    var jugandoAhora = controladoresDeJuego.Contains(controladorActual);
+}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -28,7 +36,7 @@
         <nav class="mx-sidebar-nav" aria-label="Navegación principal">
             <ul class="mx-nav-list">
                 <li class="mx-nav-item">
-                    <a href="@Url.Action("Index", "Home")" class="mx-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")">
+                    <a href="@Url.Action("Index", "Home")" class="mx-nav-link @(controladorActual == "Home" ? "active" : "")">
                         <i class="bi bi-house mx-nav-icon"></i>
                         <span class="mx-nav-label">Inicio</span>
                     </a>
@@ -36,38 +44,38 @@
                 @if (User.IsInRole("Admin"))
                 {
                     <li class="mx-nav-item">
-                        <a href="@Url.Action("Index", "Reto")" class="mx-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Reto" ? "active" : "")">
+                        <a href="@Url.Action("Index", "Reto")" class="mx-nav-link @(controladorActual == "Reto" ? "active" : "")">
                             <i class="bi bi-puzzle mx-nav-icon"></i>
                             <span class="mx-nav-label">Retos</span>
                         </a>
                     </li>
                 }
                 <li class="mx-nav-item">
-                    <a href="@Url.Action("Jugar", "OperadorPerdido")" class="mx-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "OperadorPerdido" ? "active" : "")">
+                    <a href="@Url.Action("Index", "Juego")" class="mx-nav-link @(jugandoAhora ? "active" : "")">
                         <i class="bi bi-controller mx-nav-icon"></i>
                         <span class="mx-nav-label">Jugar</span>
                     </a>
                 </li>
                 <li class="mx-nav-item">
-                    <a href="@Url.Action("Index", "Marcador")" class="mx-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Marcador" ? "active" : "")">
+                    <a href="@Url.Action("Index", "Marcador")" class="mx-nav-link @(controladorActual == "Marcador" ? "active" : "")">
                         <i class="bi bi-trophy mx-nav-icon"></i>
                         <span class="mx-nav-label">Marcadores</span>
                     </a>
                 </li>
                 <li class="mx-nav-item">
-                    <a href="@Url.Action("Index", "Foro")" class="mx-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Foro" ? "active" : "")">
+                    <a href="@Url.Action("Index", "Foro")" class="mx-nav-link @(controladorActual == "Foro" ? "active" : "")">
                         <i class="bi bi-chat-square-text mx-nav-icon"></i>
                         <span class="mx-nav-label">Comunidad</span>
                     </a>
                 </li>
                 <li class="mx-nav-item">
-                    <a href="@Url.Action("Index", "SolicitudTI")" class="mx-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "SolicitudTI" ? "active" : "")">
+                    <a href="@Url.Action("Index", "SolicitudTI")" class="mx-nav-link @(controladorActual == "SolicitudTI" ? "active" : "")">
                         <i class="bi bi-headset mx-nav-icon"></i>
                         <span class="mx-nav-label">Soporte TI</span>
                     </a>
                 </li>
                 <li class="mx-nav-item">
-                    <a href="@Url.Action("Index", "Queja")" class="mx-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Queja" ? "active" : "")">
+                    <a href="@Url.Action("Index", "Queja")" class="mx-nav-link @(controladorActual == "Queja" ? "active" : "")">
                         <i class="bi bi-envelope mx-nav-icon"></i>
                         <span class="mx-nav-label">Quejas</span>
                     </a>
@@ -76,7 +84,7 @@
         </nav>
 
         <div class="mx-sidebar-footer">
-            <a href="@Url.Action("Index", "Manage")" class="mx-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Manage" ? "active" : "")">
+            <a href="@Url.Action("Index", "Manage")" class="mx-nav-link @(controladorActual == "Manage" ? "active" : "")">
                 <i class="bi bi-gear mx-nav-icon"></i>
                 <span class="mx-nav-label">Ajustes</span>
             </a>
@@ -102,7 +110,7 @@
 
         <footer class="mx-footer">
             <p>
-                &copy; @DateTime.Now.Year MathemaX &mdash; SC-601 Universidad Fid&eacute;litas | 
+                &copy; @DateTime.Now.Year MathemaX &mdash; SC-601 Universidad Fidélitas | 
                 <a href="@Url.Action("Equipo", "Home")" style="color: var(--color-terracotta); text-decoration: none;">Acerca del Equipo</a>
             </p>
         </footer>

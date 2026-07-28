@@ -1,4 +1,4 @@
-@model IEnumerable<AP.Models.Juegos.RetoViewModel>
+﻿@model IEnumerable<AP.Models.Juegos.RetoViewModel>
 
 @{
     ViewBag.Title = "Mantenimiento de Retos";
@@ -13,7 +13,7 @@
     @if (TempData["ErrorMessage"] != null)
     {
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>Atenci&oacute;n:</strong> @TempData["ErrorMessage"]
+            <strong>Atención:</strong> @TempData["ErrorMessage"]
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
         </div>
     }
@@ -22,10 +22,10 @@
         <table class="table table-striped table-hover align-middle">
             <thead class="table-dark">
                 <tr>
-                    <th>T&iacute;tulo</th>
+                    <th>Título</th>
                     <th>Modo</th>
                     <th>Dificultad</th>
-                    <th>Tiempo L&iacute;mite</th>
+                    <th>Tiempo Límite</th>
                     <th>Estado</th>
                     <th class="text-end">Acciones</th>
                 </tr>
@@ -57,7 +57,7 @@
                                 <a href="@Url.Action("Edit", new { id = item.RetoId })" class="btn btn-sm btn-outline-secondary">Editar</a>
                                 
                                 <!-- Formulario para Eliminar con confirmación básica -->
-                                <form action="@Url.Action("Delete", new { id = item.RetoId })" method="post" style="display:inline;" onsubmit="return confirm('&iquest;Est&aacute; seguro que desea eliminar este reto?');">
+                                <form action="@Url.Action("Delete", new { id = item.RetoId })" method="post" style="display:inline;" onsubmit="return confirm('¿Está seguro que desea eliminar este reto?');">
                                     @Html.AntiForgeryToken()
                                     <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
                                 </form>

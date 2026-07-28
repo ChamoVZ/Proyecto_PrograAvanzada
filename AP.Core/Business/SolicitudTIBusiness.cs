@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using AP.Core.Exceptions;
 using AP.Data.Entities;
@@ -47,7 +47,7 @@ namespace AP.Core.Business
                 throw new AppException("El asunto de la solicitud es obligatorio.");
 
             if (string.IsNullOrWhiteSpace(solicitud.Descripcion))
-                throw new AppException("La descripci\u00F3n de la solicitud es obligatoria.");
+                throw new AppException("La descripción de la solicitud es obligatoria.");
 
             if (solicitud.FechaCreacion == default(DateTime))
             {
