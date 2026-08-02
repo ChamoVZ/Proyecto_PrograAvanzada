@@ -1,6 +1,7 @@
 ﻿-- MathemaX — Script de inicialización de base de datos
 -- ASP.NET MVC 5 + Entity Framework 6 + ASP.NET Identity 2
 -- Ejecutar en SQL Server Management Studio conectado a localhost
+-- Los scripts de _db/ son la unica fuente del esquema; no correr Update-Database.
 -- Fecha: 2026-06-21
 
 USE master;
@@ -102,22 +103,6 @@ BEGIN
     );
 
     CREATE NONCLUSTERED INDEX [IX_UserId] ON [dbo].[AspNetUserLogins]([UserId] ASC);
-END
-GO
-
--- ============================================================
--- HISTORIAL DE MIGRACIONES DE ENTITY FRAMEWORK
--- ============================================================
-
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[__MigrationHistory]') AND type = 'U')
-BEGIN
-    CREATE TABLE [dbo].[__MigrationHistory] (
-        [MigrationId]    NVARCHAR (150) NOT NULL,
-        [ContextKey]     NVARCHAR (300) NOT NULL,
-        [Model]          VARBINARY (MAX) NOT NULL,
-        [ProductVersion] NVARCHAR (32)  NOT NULL,
-        CONSTRAINT [PK_dbo.__MigrationHistory] PRIMARY KEY CLUSTERED ([MigrationId] ASC, [ContextKey] ASC)
-    );
 END
 GO
 

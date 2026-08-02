@@ -177,16 +177,15 @@ git checkout dev/nombre
 # 4. Restaurar la base de datos
 #    → Abrir SQL Server Management Studio
 #    → Conectar a localhost (o .\SQLEXPRESS)
-#    → Abrir y ejecutar el archivo _db/MathemaX_Init.sql
+#    → Ejecutar _db/MathemaX_Init.sql y luego los scripts de _db/scripts/
+#      en orden de fecha (ver README, sección "Restaurar base de datos")
+#    → No correr Update-Database: la base se administra solo con scripts
 
 # 5. Verificar la cadena de conexión en AP.MVC/Web.config
 #    Si usa instancia con nombre: Data Source=.\SQLEXPRESS
 #    Si usa instancia default: Data Source=localhost
 
-# 6. Ejecutar las migraciones de EF desde la consola de NuGet en VS:
-#    PM> Update-Database
-
-# 7. Correr el proyecto con F5
+# 6. Correr el proyecto con F5
 ```
 
 ---
