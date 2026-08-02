@@ -1,4 +1,4 @@
-﻿@{
+@{
     var controladorActual = ViewContext.RouteData.Values["controller"]?.ToString();
 
     // "Jugar" abre el selector, pero debe quedar resaltado tambien mientras se
@@ -17,9 +17,11 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
-<body class="mx-app">
+<body class="mx-app @(!Request.IsAuthenticated ? "mx-app-anonymous" : "")">
 
-    <aside id="mx-sidebar" class="mx-sidebar">
+    @if (Request.IsAuthenticated)
+    {
+        <aside id="mx-sidebar" class="mx-sidebar">
         <div class="mx-sidebar-header">
             <a href="@Url.Action("Index", "Home")" class="mx-brand">
                 <span class="mx-brand-icon">Σ</span>
@@ -95,13 +97,23 @@
     </aside>
 
     <div id="mx-sidebar-overlay" class="mx-sidebar-overlay"></div>
+    }
 
     <div class="mx-main-wrapper">
         <header class="mx-topbar">
-            <button id="mx-sidebar-toggle" class="mx-hamburger" aria-label="Abrir menú">
-                <i class="bi bi-list"></i>
-            </button>
+            @if (Request.IsAuthenticated)
+            {
+                <button id="mx-sidebar-toggle" class="mx-hamburger" aria-label="Abrir menú">
+                    <i class="bi bi-list"></i>
+                </button>
+            }
             <a href="@Url.Action("Index", "Home")" class="mx-topbar-brand">MathemaX</a>
+            @if (!Request.IsAuthenticated)
+            {
+                <div class="ms-auto mx-login-partial">
+                    @Html.Partial("_LoginPartial")
+                </div>
+            }
         </header>
 
         <main class="mx-content">
