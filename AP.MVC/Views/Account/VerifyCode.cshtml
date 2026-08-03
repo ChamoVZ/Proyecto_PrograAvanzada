@@ -1,6 +1,6 @@
 ﻿@model AP.MVC.Models.VerifyCodeViewModel
 @{
-    ViewBag.Title = "Verify";
+    ViewBag.Title = "Verificar";
 }
 
 <main aria-labelledby="title">
@@ -10,7 +10,7 @@
         @Html.AntiForgeryToken()
         @Html.Hidden("provider", @Model.Provider)
         @Html.Hidden("rememberMe", @Model.RememberMe)
-        <h4>Enter verification code</h4>
+        <h4>Ingrese el código de verificación</h4>
         <hr />
         @Html.ValidationSummary("", new { @class = "text-danger" })
         <div class="row">
@@ -29,7 +29,7 @@
         </div>
         <div class="row">
             <div class="offset-md-2 col-md-10">
-                <input type="submit" class="btn btn-outline-dark" value="Submit" />
+                <input type="submit" class="btn btn-outline-dark" value="Verificar" />
             </div>
         </div>
     }

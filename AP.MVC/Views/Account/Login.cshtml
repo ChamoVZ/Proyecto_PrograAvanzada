@@ -1,7 +1,7 @@
 ﻿@using AP.MVC.Models
 @model LoginViewModel
 @{
-    ViewBag.Title = "Log in";
+    ViewBag.Title = "Iniciar sesión";
 }
 
 <main aria-labelledby="title">
@@ -12,7 +12,7 @@
                 @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
                 {
                     @Html.AntiForgeryToken()
-                    <h4>Use a local account to log in.</h4>
+                    <h4>Use una cuenta local para iniciar sesión.</h4>
                     <hr />
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     <div class="row">
@@ -39,15 +39,15 @@
                     </div>
                     <div class="row">
                         <div class="offset-md-2 col-md-10">
-                            <input type="submit" value="Log in" class="btn btn-outline-dark" />
+                            <input type="submit" value="Iniciar sesión" class="btn btn-outline-dark" />
                         </div>
                     </div>
                     <p>
-                        @Html.ActionLink("Register as a new user", "Register")
+                        @Html.ActionLink("Registrarse como nuevo usuario", "Register")
                     </p>
-                    @* Enable this once you have account confirmation enabled for password reset functionality
+                    @* Habilitar cuando la confirmación de cuenta esté activa para restablecer contraseñas
                         <p>
-                            @Html.ActionLink("Forgot your password?", "ForgotPassword")
+                            @Html.ActionLink("¿Olvidó su contraseña?", "ForgotPassword")
                         </p>*@
                 }
             </section>

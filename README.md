@@ -58,9 +58,12 @@ Abrir SQL Server Management Studio, conectarse a `localhost` y ejecutar los scri
 ```
 1) _db/MathemaX_Init.sql                        → crea la base MathemaX con las tablas base y datos de ejemplo
 2) _db/scripts/2026-07-12_experiencia_y_retos.sql → agrega columnas de experiencia (ExperienciaTotal, Nivel) y siembra retos de los modos de juego
+3) _db/scripts/2026-07-27_desactivar_retos_duplicados.sql → desactiva retos duplicados de un seed viejo (en una base nueva no hace nada)
 ```
 
 El segundo script valida que el primero ya se haya corrido, así que no se puede ejecutar solo. Las columnas de experiencia se agregan por script porque viven en la tabla de Identity (`AspNetUsers`), que no usa el inicializador de EF.
+
+Estos scripts son la única fuente del esquema: **no** hay que correr `Update-Database` ni ninguna migración de EF (los inicializadores están desactivados en `Global.asax.cs`).
 
 **3. Configurar la cadena de conexión**
 
@@ -84,14 +87,7 @@ Si SQL Server usa instancia con nombre: `Data Source=.\SQLEXPRESS`
 - Click derecho en la solución → **Restore NuGet Packages**
 - **Build → Build Solution** (`Ctrl+Shift+B`)
 
-**5. Ejecutar migraciones de EF** (si es la primera vez)
-
-En la Consola de Administrador de Paquetes (Tools → NuGet Package Manager):
-```
-PM> Update-Database
-```
-
-**6. Correr el proyecto**
+**5. Correr el proyecto**
 
 Presionar `F5` o el botón de inicio en Visual Studio.
 

@@ -81,7 +81,6 @@ namespace AP.Core.Business
             publicacion.CreatedAt = DateTime.Now;
 
             _repository.Add(publicacion);
-            _repository.Save();
         }
     }
 }
