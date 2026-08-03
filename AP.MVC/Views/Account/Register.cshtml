@@ -3,39 +3,77 @@
     ViewBag.Title = "Registrarse";
 }
 
-<main aria-labelledby="title">
-    <h2 id="title">@ViewBag.Title.</h2>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito+Sans:wght@400;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link href="~/Content/auth.css" rel="stylesheet">
 
-    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { role = "form" }))
-    {
-        @Html.AntiForgeryToken()
-        <h4>Cree una cuenta nueva.</h4>
-        <hr />
-        @Html.ValidationSummary("", new { @class = "text-danger" })
-        <div class="row">
-            @Html.LabelFor(m => m.Email, new { @class = "col-md-2 col-form-label" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+<main aria-labelledby="title" class="auth-stage">
+    <div class="auth-side">
+        <div class="auth-op op1">&#247;</div>
+        <div class="auth-op op2">&times;</div>
+        <div class="auth-op op3">+</div>
+        <p class="auth-wordmark">Mathema<span>X</span></p>
+        <p class="auth-tagline">Creá tu cuenta y empezá a sumar puntos, subir de nivel y desbloquear los 3 modos de juego.</p>
+        <div class="auth-modes">
+            <div class="auth-mode mode-op">
+                <div class="auth-mode-badge">?=</div>
+                <div>
+                    <div class="auth-mode-name">Operador perdido</div>
+                    <div class="auth-mode-desc">Encontrá el signo que falta</div>
+                </div>
+            </div>
+            <div class="auth-mode mode-time">
+                <div class="auth-mode-badge">00:0</div>
+                <div>
+                    <div class="auth-mode-name">Contrarreloj</div>
+                    <div class="auth-mode-desc">Resolvé antes de que se acabe el tiempo</div>
+                </div>
+            </div>
+            <div class="auth-mode mode-xp">
+                <div class="auth-mode-badge">&darr;9</div>
+                <div>
+                    <div class="auth-mode-name">Secuencias lógicas</div>
+                    <div class="auth-mode-desc">Encontrá el patrón oculto</div>
+                </div>
             </div>
         </div>
-        <div class="row">
-            @Html.LabelFor(m => m.Password, new { @class = "col-md-2 col-form-label" })
-            <div class="col-md-10">
-                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+    </div>
+
+    <div class="auth-panel">
+        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            <h2 id="title">@ViewBag.Title</h2>
+            <p class="auth-sub">Cree una cuenta nueva para empezar a jugar y guardar su progreso.</p>
+
+            @Html.ValidationSummary("", new { @class = "auth-error" })
+
+            <div class="auth-field">
+                @Html.LabelFor(m => m.Email)
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "nombre@correo.com" })
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
             </div>
-        </div>
-        <div class="row">
-            @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 col-form-label" })
-            <div class="col-md-10">
-                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+
+            <div class="auth-field">
+                @Html.LabelFor(m => m.Password)
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "••••••••" })
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
             </div>
-        </div>
-        <div class="row">
-            <div class="offset-md-2 col-md-10">
-                <input type="submit" value="Registrarse" class="btn btn-outline-dark" />
+
+            <div class="auth-field">
+                @Html.LabelFor(m => m.ConfirmPassword)
+                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "••••••••" })
+                @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
             </div>
-        </div>
-    }
+
+            <input type="submit" value="Registrarse" class="auth-btn" />
+
+            <p class="auth-footer-link">
+                ¿Ya tenés cuenta? @Html.ActionLink("Iniciá sesión", "Login")
+            </p>
+        }
+    </div>
 </main>
 
 @section Scripts {
