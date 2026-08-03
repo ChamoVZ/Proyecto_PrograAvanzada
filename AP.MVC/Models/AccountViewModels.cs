@@ -5,8 +5,8 @@ namespace AP.MVC.Models
 {
     public class ExternalLoginConfirmationViewModel
     {
-        [Required]
-        [Display(Name = "Email")]
+        [Required(ErrorMessage = "El correo electrónico es obligatorio.")]
+        [Display(Name = "Correo electrónico")]
         public string Email { get; set; }
     }
 
@@ -25,15 +25,15 @@ namespace AP.MVC.Models
 
     public class VerifyCodeViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "El proveedor es obligatorio.")]
         public string Provider { get; set; }
 
-        [Required]
-        [Display(Name = "Code")]
+        [Required(ErrorMessage = "El código es obligatorio.")]
+        [Display(Name = "Código")]
         public string Code { get; set; }
         public string ReturnUrl { get; set; }
 
-        [Display(Name = "Remember this browser?")]
+        [Display(Name = "¿Recordar este navegador?")]
         public bool RememberBrowser { get; set; }
 
         public bool RememberMe { get; set; }
@@ -41,62 +41,62 @@ namespace AP.MVC.Models
 
     public class ForgotViewModel
     {
-        [Required]
-        [Display(Name = "Email")]
+        [Required(ErrorMessage = "El correo electrónico es obligatorio.")]
+        [Display(Name = "Correo electrónico")]
         public string Email { get; set; }
     }
 
     public class LoginViewModel
     {
-        [Required]
-        [Display(Name = "Email")]
-        [EmailAddress]
+        [Required(ErrorMessage = "El correo electrónico es obligatorio.")]
+        [Display(Name = "Correo electrónico")]
+        [EmailAddress(ErrorMessage = "Ingrese un correo electrónico válido.")]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "La contraseña es obligatoria.")]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Contraseña")]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
+        [Display(Name = "¿Recordarme?")]
         public bool RememberMe { get; set; }
     }
 
     public class RegisterViewModel
     {
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
+        [Required(ErrorMessage = "El correo electrónico es obligatorio.")]
+        [EmailAddress(ErrorMessage = "Ingrese un correo electrónico válido.")]
+        [Display(Name = "Correo electrónico")]
         public string Email { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [Required(ErrorMessage = "La contraseña es obligatoria.")]
+        [StringLength(100, ErrorMessage = "La contraseña debe tener al menos {2} caracteres.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Contraseña")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(Name = "Confirmar contraseña")]
+        [Compare("Password", ErrorMessage = "La contraseña y su confirmación no coinciden.")]
         public string ConfirmPassword { get; set; }
     }
 
     public class ResetPasswordViewModel
     {
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
+        [Required(ErrorMessage = "El correo electrónico es obligatorio.")]
+        [EmailAddress(ErrorMessage = "Ingrese un correo electrónico válido.")]
+        [Display(Name = "Correo electrónico")]
         public string Email { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [Required(ErrorMessage = "La contraseña es obligatoria.")]
+        [StringLength(100, ErrorMessage = "La contraseña debe tener al menos {2} caracteres.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Contraseña")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(Name = "Confirmar contraseña")]
+        [Compare("Password", ErrorMessage = "La contraseña y su confirmación no coinciden.")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }
@@ -104,9 +104,9 @@ namespace AP.MVC.Models
 
     public class ForgotPasswordViewModel
     {
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
+        [Required(ErrorMessage = "El correo electrónico es obligatorio.")]
+        [EmailAddress(ErrorMessage = "Ingrese un correo electrónico válido.")]
+        [Display(Name = "Correo electrónico")]
         public string Email { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-@model AP.Models.Juegos.RetoViewModel
+﻿@model AP.Models.Juegos.RetoViewModel
 
 @{
     ViewBag.Title = "Editar Reto";
@@ -13,7 +13,7 @@
             @if (TempData["ErrorMessage"] != null)
             {
                 <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    <strong>Atenci&oacute;n:</strong> @TempData["ErrorMessage"]
+                    <strong>Atención:</strong> @TempData["ErrorMessage"]
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
                 </div>
             }

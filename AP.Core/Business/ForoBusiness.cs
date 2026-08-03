@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using AP.Data.Entities;
 using AP.Repositories;
@@ -81,7 +81,6 @@ namespace AP.Core.Business
             publicacion.CreatedAt = DateTime.Now;
 
             _repository.Add(publicacion);
-            _repository.Save();
         }
     }
 }

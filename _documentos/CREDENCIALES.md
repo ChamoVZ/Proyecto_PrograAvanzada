@@ -3,7 +3,6 @@
 Usuarios sembrados automáticamente al iniciar la aplicación (ver `Startup.CreateUsers()`).
 Se crean solo si no existen, así que basta con correr la app una vez tras aplicar los scripts de BD.
 
-> **Solo para ambiente local / pruebas.** No usar estas cuentas en un despliegue real.
 
 | Rol | Usuario (correo) | Contraseña |
 |-----|------------------|------------|

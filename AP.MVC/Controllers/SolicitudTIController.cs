@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Mvc;
 using AP.Core.Business;
 using AP.Core.Exceptions;
@@ -73,7 +73,7 @@ namespace AP.MVC.Controllers
             }
             catch (System.Exception)
             {
-                TempData["ErrorMessage"] = "Ocurri\u00F3 un error inesperado al crear la solicitud. Intente m\u00E1s tarde.";
+                TempData["ErrorMessage"] = "Ocurrió un error inesperado al crear la solicitud. Intente más tarde.";
                 CargarRespuestaAsistente();
                 return View(model);
             }

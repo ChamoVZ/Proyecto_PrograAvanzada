@@ -1,4 +1,4 @@
-IF DB_ID(N'MathemaX') IS NULL
+﻿IF DB_ID(N'MathemaX') IS NULL
 BEGIN
     RAISERROR('No existe la base MathemaX. Primero ejecute _db/MathemaX_Init.sql.', 16, 1);
     RETURN;
@@ -36,11 +36,13 @@ SELECT
     Seed.[Titulo], Seed.[Modo], Seed.[Enunciado], Seed.[RespuestaCorrecta],
     Seed.[Dificultad], Seed.[TiempoLimiteSegundos], 1, GETDATE(), 'seed'
 FROM (VALUES
-    (N'Operador perdido basico',  1, N'4 _ 3 = 12',       N'*',  1, 30),
-    (N'Operador perdido medio',   1, N'15 _ 3 = 5',       N'/',  2, 25),
-    (N'Contrarreloj: suma',       2, N'Cuanto es 47+36?', N'83', 3, 20),
-    (N'Secuencia logica simple',  3, N'2, 4, 8, 16, ?',   N'32', 2, 40),
-    (N'Operador perdido dificil', 1, N'81 _ 9 = 9',       N'/',  4, 20)
+    -- Los titulos deben coincidir exactamente con los de MathemaX_Init.sql:
+    -- el WHERE NOT EXISTS compara por titulo y si difieren se duplican los retos.
+    (N'Operador perdido básico',  1, N'4 _ 3 = 12',        N'*',  1, 30),
+    (N'Operador perdido medio',   1, N'15 _ 3 = 5',        N'/',  2, 25),
+    (N'Contrarreloj: suma',       2, N'¿Cuánto es 47+36?', N'83', 3, 20),
+    (N'Secuencia lógica simple',  3, N'2, 4, 8, 16, ?',    N'32', 2, 40),
+    (N'Operador perdido difícil', 1, N'81 _ 9 = 9',        N'/',  4, 20)
 ) AS Seed
     ([Titulo], [Modo], [Enunciado], [RespuestaCorrecta], [Dificultad], [TiempoLimiteSegundos])
 WHERE NOT EXISTS

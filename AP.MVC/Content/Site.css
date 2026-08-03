@@ -1,3 +1,5 @@
+@charset "UTF-8";
+
 /* =====================================================================
    MathemaX — Site.css
    Sistema de diseño: paleta, tipografías, layout sidebar + área principal
@@ -452,6 +454,31 @@ h1, h2, h3, h4, .display {
 
 .sidebar-collapsed .mx-login-partial {
     display: none;
+}
+
+/* =====================================================================
+   ANÓNIMO — Sin sidebar
+   ===================================================================== */
+.mx-app-anonymous .mx-main-wrapper {
+    margin-left: 0;
+}
+
+.mx-app-anonymous .mx-topbar {
+    display: flex;
+}
+
+.mx-app-anonymous .mx-topbar .mx-login-partial .navbar-nav {
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.mx-app-anonymous .mx-topbar .mx-login-partial .navbar-nav .nav-link {
+    color: var(--color-ink);
+}
+
+.mx-app-anonymous .mx-topbar .mx-login-partial .navbar-nav .nav-link:hover {
+    color: var(--color-terracotta);
+    background: transparent;
 }
 
 /* =====================================================================

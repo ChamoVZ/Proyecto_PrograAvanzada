@@ -1,22 +1,22 @@
 ﻿@model AP.MVC.Models.ExternalLoginConfirmationViewModel
 @{
-    ViewBag.Title = "Register";
+    ViewBag.Title = "Registrarse";
 }
 <main aria-labelledby="title">
     <h2 id="title">@ViewBag.Title.</h2>
-    <h3>Associate your @ViewBag.LoginProvider account.</h3>
+    <h3>Asocie su cuenta de @ViewBag.LoginProvider.</h3>
 
     @using (Html.BeginForm("ExternalLoginConfirmation", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
     {
         @Html.AntiForgeryToken()
 
-        <h4>Association Form</h4>
+        <h4>Formulario de asociación</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <p class="text-info">
-            You've successfully authenticated with <strong>@ViewBag.LoginProvider</strong>.
-            Please enter a user name for this site below and click the Register button to finish
-            logging in.
+            Se autenticó correctamente con <strong>@ViewBag.LoginProvider</strong>.
+            Ingrese un correo electrónico para este sitio y haga clic en Registrarse para terminar
+            de iniciar sesión.
         </p>
         <div class="row">
             @Html.LabelFor(m => m.Email, new { @class = "col-md-2 col-form-label" })
@@ -27,7 +27,7 @@
         </div>
         <div class="row">
             <div class="offset-md-2 col-md-10">
-                <input type="submit" class="btn btn-outline-dark" value="Register" />
+                <input type="submit" class="btn btn-outline-dark" value="Registrarse" />
             </div>
         </div>
     }

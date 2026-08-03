@@ -1,4 +1,4 @@
-@model AP.Models.Juegos.ResultadoJuegoViewModel
+﻿@model AP.Models.Juegos.ResultadoJuegoViewModel
 
 @{
     ViewBag.Title = "Resultado";
@@ -12,13 +12,13 @@
 
                     @if (Model.Acertado)
                     {
-                        <h3 class="text-success">&iexcl;Correcto!</h3>
+                        <h3 class="text-success">¡Correcto!</h3>
                         <p class="fs-4">Ganaste <strong>+@Model.XpGanado XP</strong></p>
                     }
                     else if (Model.FueraDeTiempo)
                     {
-                        <h3 class="text-warning">Se acab&oacute; el tiempo</h3>
-                        <p>Intenta responder m&aacute;s r&aacute;pido en el siguiente reto.</p>
+                        <h3 class="text-warning">Se acabó el tiempo</h3>
+                        <p>Intenta responder más rápido en el siguiente reto.</p>
                     }
                     else
                     {
@@ -29,7 +29,7 @@
                     @if (Model.SubioDeNivel)
                     {
                         <div class="alert alert-success mt-3">
-                            &iexcl;Subiste a nivel @Model.Nivel!
+                            ¡Subiste a nivel @Model.Nivel!
                         </div>
                     }
 
@@ -42,6 +42,7 @@
 
                     <div class="mt-4">
                         <a href="@Url.Action("Jugar", "OperadorPerdido")" class="btn-mx-primary">Jugar otra vez</a>
+                        <a href="@Url.Action("Index", "Juego")" class="btn btn-outline-secondary ms-2">Cambiar de modo</a>
                     </div>
                 </div>
             </div>
