@@ -90,9 +90,3 @@ Si SQL Server usa instancia con nombre: `Data Source=.\SQLEXPRESS`
 **5. Correr el proyecto**
 
 Presionar `F5` o el botón de inicio en Visual Studio.
-
----
-
-Para el flujo de trabajo con Git ver: [`_documentos/FLUJO_GIT.md`](_documentos/FLUJO_GIT.md)
-
-Para el estado del proyecto ver: [`BITACORA.md`](BITACORA.md)
