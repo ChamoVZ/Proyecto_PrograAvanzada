@@ -76,6 +76,12 @@ namespace AP.MVC.Controllers
                 return HttpNotFound();
             }
 
+            // Una publicación desactivada no debe seguir siendo visible por URL directa, salvo para moderación.
+            if (!publicacion.Activo && !User.IsInRole("Admin"))
+            {
+                return HttpNotFound();
+            }
+
             return View(MapToViewModel(publicacion));
         }
 

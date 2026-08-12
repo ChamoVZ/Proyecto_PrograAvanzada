@@ -56,10 +56,10 @@
                             <td class="text-end">
                                 <a href="@Url.Action("Edit", new { id = item.RetoId })" class="btn btn-sm btn-outline-secondary">Editar</a>
                                 
-                                <!-- Formulario para Eliminar con confirmación básica -->
-                                <form action="@Url.Action("Delete", new { id = item.RetoId })" method="post" style="display:inline;" onsubmit="return confirm('¿Está seguro que desea eliminar este reto?');">
+                                <!-- El reto no se borra: se desactiva para no perder las partidas jugadas -->
+                                <form action="@Url.Action("Delete", new { id = item.RetoId })" method="post" style="display:inline;" onsubmit="return confirm('¿Está seguro que desea desactivar este reto?');">
                                     @Html.AntiForgeryToken()
-                                    <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Desactivar</button>
                                 </form>
                             </td>
                         </tr>

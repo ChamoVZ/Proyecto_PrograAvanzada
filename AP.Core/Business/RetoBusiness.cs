@@ -46,6 +46,10 @@ namespace AP.Core.Business
             if (reto.TiempoLimiteSegundos <= 0)
                 throw new AppException("El reto debe tener un tiempo límite mayor a cero.");
 
+            // Sin esto se guarda un reto con un modo que ningún controlador consulta, y queda invisible.
+            if (!Enum.IsDefined(typeof(ModoJuego), reto.Modo))
+                throw new AppException("El modo de juego seleccionado no es válido.");
+
             if (reto.RetoId == 0)
             {
                 reto.CreatedAt = DateTime.Now;
@@ -61,9 +65,17 @@ namespace AP.Core.Business
             return true;
         }
 
-        public void Delete(int id)
+        public void Desactivar(int id)
         {
-            _repositoryReto.Delete(id);
+            var reto = _repositoryReto.GetById(id);
+            if (reto == null)
+                throw new AppException("El reto que intenta desactivar no existe.");
+
+            // Borrado lógico: el FK de Partidas está en cascada, así que un borrado físico se llevaría
+            // el historial jugado y dejaría el marcador desincronizado del perfil.
+            reto.Activo = false;
+            reto.LastModified = DateTime.Now;
+            _repositoryReto.Update(reto);
         }
     }
 }

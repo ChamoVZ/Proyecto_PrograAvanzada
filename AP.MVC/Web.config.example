@@ -19,6 +19,10 @@
     <add key="webpages:Enabled" value="false" />
     <add key="ClientValidationEnabled" value="true" />
     <add key="UnobtrusiveJavaScriptEnabled" value="true" />
+    <!-- Claves de los usuarios semilla. Si una clave no se configura, ese usuario no se crea. -->
+    <add key="Seed:AdminPassword" value="CambiarEsta1!" />
+    <add key="Seed:PlayerPassword" value="CambiarEsta2!" />
+    <add key="Seed:SupportPassword" value="CambiarEsta3!" />
   </appSettings>
   <system.web>
     <authentication mode="None" />

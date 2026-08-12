@@ -111,7 +111,7 @@ namespace AP.MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
-            _retoBusiness.Delete(id);
+            _retoBusiness.Desactivar(id);
             return RedirectToAction("Index");
         }
 
