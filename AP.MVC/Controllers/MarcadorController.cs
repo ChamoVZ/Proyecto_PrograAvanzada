@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using AP.Core.Business;
+using AP.Data.Entities;
 using AP.Models.Juegos;
 using AP.MVC.Models;
 using Microsoft.AspNet.Identity;
@@ -51,8 +52,26 @@ namespace AP.MVC.Controllers
                 posicion++;
             }
 
-            ViewBag.Historial = _partidaBusiness.GetHistorial(User.Identity.GetUserId()).ToList();
+            ViewBag.Historial = _partidaBusiness.GetHistorial(User.Identity.GetUserId())
+                .Select(MapToHistorialViewModel)
+                .ToList();
+
             return View(marcadores);
         }
+
+        #region Mapeo Manual
+
+        private HistorialPartidaViewModel MapToHistorialViewModel(Partida entity)
+        {
+            return new HistorialPartidaViewModel
+            {
+                FechaJuego = entity.FechaJuego,
+                Acertado = entity.Acertado,
+                TiempoEmpleadoSegundos = entity.TiempoEmpleadoSegundos,
+                XpGanado = entity.XpGanado
+            };
+        }
+
+        #endregion
     }
 }

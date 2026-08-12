@@ -59,7 +59,6 @@ namespace AP.Core.Business
             solicitud.CreatedAt = DateTime.Now;
 
             _repository.Add(solicitud);
-            _repository.Save();
         }
 
         public void CambiarEstado(int id, EstadoSolicitud nuevoEstado)

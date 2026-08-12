@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using AP.Data;
 using AP.Data.Entities;
 
 namespace AP.Repositories
@@ -14,6 +15,14 @@ namespace AP.Repositories
     // SOLID: LSP - hereda el CRUD generico de RepositoryBase sin alterar su comportamiento.
     public class RepositoryQueja : RepositoryBase<Queja>, IRepositoryQueja
     {
+        public RepositoryQueja()
+        {
+        }
+
+        public RepositoryQueja(MathemaXContext context) : base(context)
+        {
+        }
+
         public IEnumerable<Queja> GetPorUsuario(string usuarioId)
         {
             return Context.Quejas

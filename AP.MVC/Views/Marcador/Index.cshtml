@@ -1,9 +1,9 @@
 ﻿@model IEnumerable<AP.Models.Juegos.MarcadorViewModel>
-@using AP.Data.Entities
+@using AP.Models.Juegos
 
 @{
     ViewBag.Title = "Marcadores";
-    var historial = ViewBag.Historial as System.Collections.Generic.List<Partida>;
+    var historial = ViewBag.Historial as System.Collections.Generic.List<HistorialPartidaViewModel>;
 }
 
 <div class="container mt-4">

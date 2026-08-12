@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using AP.Data;
 using AP.Data.Entities;
 
 namespace AP.Repositories
@@ -13,6 +14,14 @@ namespace AP.Repositories
     // SOLID: LSP - hereda el CRUD generico de RepositoryBase sin alterar su comportamiento.
     public class RepositoryPublicacion : RepositoryBase<Publicacion>, IRepositoryPublicacion
     {
+        public RepositoryPublicacion()
+        {
+        }
+
+        public RepositoryPublicacion(MathemaXContext context) : base(context)
+        {
+        }
+
         public IEnumerable<Publicacion> GetActivasRecientes()
         {
             return Context.Publicaciones

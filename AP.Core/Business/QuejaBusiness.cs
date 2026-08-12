@@ -61,7 +61,6 @@ namespace AP.Core.Business
             queja.CreatedAt = DateTime.Now;
 
             _repository.Add(queja);
-            _repository.Save();
         }
 
         public void CambiarEstado(int id, EstadoQueja nuevoEstado)
