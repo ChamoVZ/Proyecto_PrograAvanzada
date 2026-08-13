@@ -175,6 +175,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JuegoController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\SecuenciasLogicasController.cs" />
     <Compile Include="Controllers\MarcadorController.cs" />
     <Compile Include="Controllers\OperadorPerdidoController.cs" />
     <Compile Include="Controllers\QuejaController.cs" />
@@ -276,6 +277,8 @@
     <Content Include="Views\OperadorPerdido\Resultado.cshtml" />
     <Content Include="Views\Contrarreloj\Jugar.cshtml" />
     <Content Include="Views\Contrarreloj\Resultado.cshtml" />
+    <Content Include="Views\SecuenciasLogicas\Jugar.cshtml" />
+    <Content Include="Views\SecuenciasLogicas\Resultado.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

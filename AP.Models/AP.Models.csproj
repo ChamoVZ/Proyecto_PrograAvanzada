@@ -49,6 +49,7 @@
     <Compile Include="Juegos\ModoJuegoViewModel.cs" />
     <Compile Include="Juegos\ResponderContrarrelojViewModel.cs" />
     <Compile Include="Juegos\ResponderRetoViewModel.cs" />
+    <Compile Include="Juegos\ResponderSecuenciasLogicasViewModel.cs" />
     <Compile Include="Juegos\ResultadoJuegoViewModel.cs" />
     <Compile Include="Juegos\RetoJuegoViewModel.cs" />
     <Compile Include="Juegos\RetoViewModel.cs" />

@@ -15,9 +15,7 @@ namespace AP.MVC.Controllers
             return View(ObtenerModos());
         }
 
-        // Catalogo que alimenta las tarjetas. Secuencias Logicas ya tiene su
-        // estrategia en AP.Core y sus retos en la base, pero le falta el
-        // controlador y las vistas, por eso se muestra sin enlace.
+        // Catalogo que alimenta las tarjetas.
         private static List<ModoJuegoViewModel> ObtenerModos()
         {
             return new List<ModoJuegoViewModel>
@@ -46,8 +44,8 @@ namespace AP.MVC.Controllers
                     Descripcion = "Encuentra el patrón oculto en una serie de números y descubre " +
                                   "cuál es el siguiente paso lógico.",
                     Icono = "bi-sort-numeric-down",
-                    Controlador = null,
-                    Disponible = false
+                    Controlador = "SecuenciasLogicas",
+                    Disponible = true
                 }
             };
         }
