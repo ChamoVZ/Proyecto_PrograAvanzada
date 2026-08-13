@@ -247,8 +247,10 @@
     <Content Include="Views\Foro\Create.cshtml" />
     <Content Include="Views\SolicitudTI\Index.cshtml" />
     <Content Include="Views\SolicitudTI\Create.cshtml" />
+    <Content Include="Views\SolicitudTI\Edit.cshtml" />
     <Content Include="Views\Queja\Index.cshtml" />
     <Content Include="Views\Queja\Create.cshtml" />
+    <Content Include="Views\Queja\Edit.cshtml" />
     <Content Include="Views\Reto\Index.cshtml" />
     <Content Include="Views\Reto\Create.cshtml" />
     <Content Include="Views\Reto\Edit.cshtml" />

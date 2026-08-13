@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AP.Core.Exceptions;
 using AP.Data.Entities;
 using AP.Repositories;
@@ -25,7 +26,12 @@ namespace AP.Core.Business
 
         public IEnumerable<Queja> GetTodas()
         {
-            return _repository.GetAll();
+            return _repository.GetAll().Where(q => q.Activo);
+        }
+
+        public Queja GetPorId(int id)
+        {
+            return _repository.GetById(id);
         }
 
         public IEnumerable<Queja> GetPorUsuario(string usuarioId)
@@ -58,9 +64,61 @@ namespace AP.Core.Business
             }
 
             queja.Estado = EstadoQueja.Pendiente;
+            queja.Activo = true;
             queja.CreatedAt = DateTime.Now;
 
             _repository.Add(queja);
+        }
+
+        // Quien puede editar y quien puede eliminar se decide aca; el controller y la vista
+        // solo consultan el resultado.
+        public bool PuedeEditar(Queja queja, string usuarioId)
+        {
+            // Una vez que soporte la movio de Pendiente, el autor ya no la toca.
+            return queja != null
+                && queja.UsuarioId == usuarioId
+                && queja.Estado == EstadoQueja.Pendiente;
+        }
+
+        public bool PuedeEliminar(Queja queja, string usuarioId, bool esAdmin)
+        {
+            return queja != null && (esAdmin || queja.UsuarioId == usuarioId);
+        }
+
+        public void Actualizar(Queja queja, string usuarioId)
+        {
+            if (queja == null)
+                throw new AppException("La queja no puede ser nula.");
+
+            if (!PuedeEditar(queja, usuarioId))
+                throw new AppException("Solo el autor puede editar su queja, y solo mientras siga pendiente.");
+
+            if (string.IsNullOrWhiteSpace(queja.Asunto))
+                throw new AppException("El asunto de la queja es obligatorio.");
+
+            if (string.IsNullOrWhiteSpace(queja.Descripcion))
+                throw new AppException("La descripción de la queja es obligatoria.");
+
+            if (!Enum.IsDefined(typeof(CategoriaQueja), queja.Categoria))
+                throw new AppException("La categoría seleccionada no es válida.");
+
+            queja.LastModified = DateTime.Now;
+            _repository.Update(queja);
+        }
+
+        public void Desactivar(int id, string usuarioId, bool esAdmin)
+        {
+            var queja = _repository.GetById(id);
+            if (queja == null)
+                throw new AppException("La queja que intenta eliminar no existe.");
+
+            if (!PuedeEliminar(queja, usuarioId, esAdmin))
+                throw new AppException("Solo el autor o un administrador pueden eliminar esta queja.");
+
+            // Borrado logico: el registro se conserva pero deja de listarse en el buzon.
+            queja.Activo = false;
+            queja.LastModified = DateTime.Now;
+            _repository.Update(queja);
         }
 
         public void CambiarEstado(int id, EstadoQueja nuevoEstado)

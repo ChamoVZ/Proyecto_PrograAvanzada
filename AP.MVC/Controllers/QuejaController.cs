@@ -28,9 +28,10 @@ namespace AP.MVC.Controllers
                 ? _quejaBusiness.GetTodas()
                 : _quejaBusiness.GetPorUsuario(usuarioId);
 
+            var esAdmin = User.IsInRole("Admin");
             var viewModels = quejas
                 .OrderByDescending(q => q.FechaCreacion)
-                .Select(MapToViewModel)
+                .Select(q => MapToViewModel(q, usuarioId, esAdmin))
                 .ToList();
 
             return View(viewModels);
@@ -78,6 +79,78 @@ namespace AP.MVC.Controllers
             }
         }
 
+        // GET: Queja/Edit/5
+        public ActionResult Edit(int id)
+        {
+            var queja = _quejaBusiness.GetPorId(id);
+            if (queja == null || !queja.Activo)
+            {
+                return HttpNotFound();
+            }
+
+            var usuarioId = User.Identity.GetUserId();
+            if (!_quejaBusiness.PuedeEditar(queja, usuarioId))
+            {
+                TempData["ErrorMessage"] = "Solo el autor puede editar su queja, y solo mientras siga pendiente.";
+                return RedirectToAction("Index");
+            }
+
+            return View(MapToViewModel(queja, usuarioId, User.IsInRole("Admin")));
+        }
+
+        // POST: Queja/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(QuejaViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var queja = _quejaBusiness.GetPorId(model.QuejaId);
+            if (queja == null || !queja.Activo)
+            {
+                return HttpNotFound();
+            }
+
+            try
+            {
+                // Recargamos la entidad y solo tocamos lo editable, asi no perdemos UsuarioId,
+                // el estado que puso soporte ni la auditoria de creacion.
+                queja.Asunto = model.Asunto;
+                queja.Descripcion = model.Descripcion;
+                queja.Categoria = (CategoriaQueja)model.Categoria;
+                queja.ModifiedBy = User.Identity.Name;
+
+                _quejaBusiness.Actualizar(queja, User.Identity.GetUserId());
+
+                return RedirectToAction("Index");
+            }
+            catch (AppException ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+                return View(model);
+            }
+        }
+
+        // POST: Queja/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id)
+        {
+            try
+            {
+                _quejaBusiness.Desactivar(id, User.Identity.GetUserId(), User.IsInRole("Admin"));
+            }
+            catch (AppException ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+            }
+
+            return RedirectToAction("Index");
+        }
+
         // POST: Queja/CambiarEstado
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -98,10 +171,12 @@ namespace AP.MVC.Controllers
 
         #region Mapeo Manual
 
-        private QuejaViewModel MapToViewModel(Queja entity)
+        private QuejaViewModel MapToViewModel(Queja entity, string usuarioId, bool esAdmin)
         {
             return new QuejaViewModel
             {
+                PuedeEditar = _quejaBusiness.PuedeEditar(entity, usuarioId),
+                PuedeEliminar = _quejaBusiness.PuedeEliminar(entity, usuarioId, esAdmin),
                 QuejaId = entity.QuejaId,
                 UsuarioId = entity.UsuarioId,
                 Asunto = entity.Asunto,

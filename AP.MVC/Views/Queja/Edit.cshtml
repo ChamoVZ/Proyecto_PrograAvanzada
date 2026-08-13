@@ -1,0 +1,79 @@
+﻿@model AP.Models.Buzon.QuejaViewModel
+
+@{
+    ViewBag.Title = "Editar Queja";
+
+    var categorias = new[]
+    {
+        new SelectListItem { Value = "1", Text = "Error / Bug" },
+        new SelectListItem { Value = "2", Text = "Contenido" },
+        new SelectListItem { Value = "3", Text = "Cuenta" },
+        new SelectListItem { Value = "4", Text = "Sugerencia" },
+        new SelectListItem { Value = "5", Text = "Otro" }
+    };
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center g-4">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white">
+                    <h3 class="card-title mb-0">Editar Queja</h3>
+                </div>
+                <div class="card-body p-4">
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <strong>Atención:</strong> @TempData["ErrorMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                        </div>
+                    }
+
+                    @using (Html.BeginForm("Edit", "Queja", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(model => model.QuejaId)
+
+                        <div class="mb-3">
+                            @Html.LabelFor(model => model.Asunto, new { @class = "form-label fw-bold" })
+                            @Html.TextBoxFor(model => model.Asunto, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Asunto, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(model => model.Categoria, new { @class = "form-label fw-bold" })
+                            @Html.DropDownListFor(model => model.Categoria, categorias, new { @class = "form-select" })
+                            @Html.ValidationMessageFor(model => model.Categoria, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="mb-4">
+                            @Html.LabelFor(model => model.Descripcion, new { @class = "form-label fw-bold" })
+                            @Html.TextAreaFor(model => model.Descripcion, new { @class = "form-control", rows = 6 })
+                            @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="@Url.Action("Index")" class="btn btn-secondary">Cancelar</a>
+                            <button type="submit" class="btn-mx-primary">Guardar Cambios</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white">
+                    <h4 class="card-title mb-0"><i class="bi bi-info-circle me-2"></i>Antes de guardar</h4>
+                </div>
+                <div class="card-body">
+                    <p class="mb-0">
+                        Puedes corregir tu queja mientras siga en estado <strong>Pendiente</strong>.
+                        Una vez que soporte la tome, queda bloqueada para conservar el historial de
+                        lo que se atendió.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

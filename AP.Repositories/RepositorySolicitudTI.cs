@@ -26,7 +26,7 @@ namespace AP.Repositories
         public IEnumerable<SolicitudTI> GetPorUsuario(string usuarioId)
         {
             return Context.SolicitudesTI
-                .Where(s => s.UsuarioId == usuarioId)
+                .Where(s => s.UsuarioId == usuarioId && s.Activo)
                 .OrderByDescending(s => s.FechaCreacion)
                 .ToList();
         }

@@ -26,7 +26,7 @@ namespace AP.Repositories
         public IEnumerable<Queja> GetPorUsuario(string usuarioId)
         {
             return Context.Quejas
-                .Where(q => q.UsuarioId == usuarioId)
+                .Where(q => q.UsuarioId == usuarioId && q.Activo)
                 .OrderByDescending(q => q.FechaCreacion)
                 .ToList();
         }

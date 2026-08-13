@@ -40,19 +40,37 @@
                                 @item.Descripcion
                             </p>
                         </div>
-                        @if (User.IsInRole("Admin") || User.IsInRole("Support"))
+                        @if (User.IsInRole("Admin") || User.IsInRole("Support") || item.PuedeEditar || item.PuedeEliminar)
                         {
-                            <div class="card-footer bg-white border-top-0 d-flex justify-content-end pb-3">
-                                @using (Html.BeginForm("CambiarEstado", "SolicitudTI", FormMethod.Post, new { @class = "d-flex gap-2 align-items-center" }))
+                            <div class="card-footer bg-white border-top-0 d-flex justify-content-end align-items-center gap-2 pb-3">
+                                @if (User.IsInRole("Admin") || User.IsInRole("Support"))
                                 {
-                                    @Html.AntiForgeryToken()
-                                    <input type="hidden" name="id" value="@item.SolicitudTIId" />
-                                    <select name="estado" class="form-select form-select-sm" style="width:auto;">
-                                        <option value="1" selected="@(item.Estado == 1)">Abierta</option>
-                                        <option value="2" selected="@(item.Estado == 2)">En proceso</option>
-                                        <option value="3" selected="@(item.Estado == 3)">Cerrada</option>
-                                    </select>
-                                    <button type="submit" class="btn btn-sm btn-outline-primary">Actualizar estado</button>
+                                    using (Html.BeginForm("CambiarEstado", "SolicitudTI", FormMethod.Post, new { @class = "d-flex gap-2 align-items-center" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@item.SolicitudTIId" />
+                                        <select name="estado" class="form-select form-select-sm" style="width:auto;">
+                                            <option value="1" selected="@(item.Estado == 1)">Abierta</option>
+                                            <option value="2" selected="@(item.Estado == 2)">En proceso</option>
+                                            <option value="3" selected="@(item.Estado == 3)">Cerrada</option>
+                                        </select>
+                                        <button type="submit" class="btn btn-sm btn-outline-primary">Actualizar estado</button>
+                                    }
+                                }
+
+                                @if (item.PuedeEditar)
+                                {
+                                    <a href="@Url.Action("Edit", new { id = item.SolicitudTIId })" class="btn btn-sm btn-outline-secondary">Editar</a>
+                                }
+
+                                @if (item.PuedeEliminar)
+                                {
+                                    using (Html.BeginForm("Delete", "SolicitudTI", FormMethod.Post, new { onsubmit = "return confirm('¿Está seguro que desea eliminar esta solicitud?');" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@item.SolicitudTIId" />
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                                    }
                                 }
                             </div>
                         }

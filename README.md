@@ -59,6 +59,7 @@ Abrir SQL Server Management Studio, conectarse a `localhost` y ejecutar los scri
 1) _db/MathemaX_Init.sql                        → crea la base MathemaX con las tablas base y datos de ejemplo
 2) _db/scripts/2026-07-12_experiencia_y_retos.sql → agrega columnas de experiencia (ExperienciaTotal, Nivel) y siembra retos de los modos de juego
 3) _db/scripts/2026-07-27_desactivar_retos_duplicados.sql → desactiva retos duplicados de un seed viejo (en una base nueva no hace nada)
+4) _db/scripts/2026-08-12_activo_en_quejas_y_solicitudes.sql → agrega la columna Activo a Quejas y SolicitudTIs, para el borrado lógico
 ```
 
 El segundo script valida que el primero ya se haya corrido, así que no se puede ejecutar solo. Las columnas de experiencia se agregan por script porque viven en la tabla de Identity (`AspNetUsers`), que no usa el inicializador de EF.

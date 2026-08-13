@@ -46,6 +46,8 @@ namespace AP.Data.Entities
 
         public DateTime FechaCreacion { get; set; }
 
+        public bool Activo { get; set; }
+
         // Auditoria (mismo patron que Publicacion y SolicitudTI)
         public DateTime CreatedAt { get; set; }
         public string CreatedBy { get; set; }
