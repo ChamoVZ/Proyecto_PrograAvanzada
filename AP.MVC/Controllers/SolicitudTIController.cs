@@ -41,8 +41,10 @@ namespace AP.MVC.Controllers
         // GET: SolicitudTI/Create
         public ActionResult Create()
         {
-            CargarRespuestaAsistente();
-            return View(new SolicitudTIViewModel { Estado = (int)EstadoSolicitud.Abierta });
+            var model = new SolicitudTIViewModel { Estado = (int)EstadoSolicitud.Abierta };
+
+            CargarRespuestaAsistente(model);
+            return View(model);
         }
 
         // POST: SolicitudTI/Create
@@ -52,7 +54,7 @@ namespace AP.MVC.Controllers
         {
             if (!ModelState.IsValid)
             {
-                CargarRespuestaAsistente();
+                CargarRespuestaAsistente(model);
                 return View(model);
             }
 
@@ -69,13 +71,13 @@ namespace AP.MVC.Controllers
             catch (AppException ex)
             {
                 TempData["ErrorMessage"] = ex.Message;
-                CargarRespuestaAsistente();
+                CargarRespuestaAsistente(model);
                 return View(model);
             }
             catch (System.Exception)
             {
                 TempData["ErrorMessage"] = "Ocurrió un error inesperado al crear la solicitud. Intente más tarde.";
-                CargarRespuestaAsistente();
+                CargarRespuestaAsistente(model);
                 return View(model);
             }
         }
@@ -169,9 +171,13 @@ namespace AP.MVC.Controllers
             return RedirectToAction("Index");
         }
 
-        private void CargarRespuestaAsistente()
+        private void CargarRespuestaAsistente(SolicitudTIViewModel model)
         {
-            ViewBag.RespuestaAsistente = _chatbotService.GetRespuesta(string.Empty);
+            // El asistente orienta sobre lo que el usuario ya escribió; en el alta nueva
+            // los dos campos vienen vacíos y responde con la ayuda genérica.
+            var texto = model.Asunto + " " + model.Descripcion;
+
+            ViewBag.RespuestaAsistente = _chatbotService.GetRespuesta(texto);
         }
 
         #region Mapeo Manual
