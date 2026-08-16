@@ -32,11 +32,6 @@ namespace AP.Core.Business
             return new List<Reto> { _repositoryReto.GetById(id) };
         }
 
-        public IEnumerable<Reto> GetRetosPorModo(ModoJuego modo)
-        {
-            return _repositoryReto.GetActivosPorModo(modo);
-        }
-
         public bool SaveOrUpdate(Reto reto)
         {
             // Regla de negocio: vive AQUÍ, no en el controller ni en la vista.

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AP.Data;
 using AP.Data.Entities;
 using AP.Repositories;
 using AP.Core.Exceptions;
@@ -15,6 +16,12 @@ namespace AP.Core.Business
         public ForoBusiness()
         {
             _repository = new RepositoryPublicacion();
+        }
+
+        // Para compartir el contexto con otro Business dentro de la misma transaccion.
+        public ForoBusiness(MathemaXContext context)
+        {
+            _repository = new RepositoryPublicacion(context);
         }
 
         // Inyección de dependencias manual (o por framework en un futuro)

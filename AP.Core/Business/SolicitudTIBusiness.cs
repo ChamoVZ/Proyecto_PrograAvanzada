@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using AP.Core.Exceptions;
+using AP.Data;
 using AP.Data.Entities;
 using AP.Repositories;
 
@@ -18,6 +18,12 @@ namespace AP.Core.Business
             _repository = new RepositorySolicitudTI();
         }
 
+        // Para compartir el contexto con otro Business dentro de la misma transaccion.
+        public SolicitudTIBusiness(MathemaXContext context)
+        {
+            _repository = new RepositorySolicitudTI(context);
+        }
+
         // Inyeccion manual para pruebas o cambios futuros sin tocar el controller
         public SolicitudTIBusiness(IRepositorySolicitudTI repository)
         {
@@ -26,7 +32,7 @@ namespace AP.Core.Business
 
         public IEnumerable<SolicitudTI> GetTodas()
         {
-            return _repository.GetAll().Where(s => s.Activo);
+            return _repository.GetActivas();
         }
 
         public SolicitudTI GetPorId(int id)
@@ -37,11 +43,6 @@ namespace AP.Core.Business
         public IEnumerable<SolicitudTI> GetPorUsuario(string usuarioId)
         {
             return _repository.GetPorUsuario(usuarioId);
-        }
-
-        public IEnumerable<SolicitudTI> GetPorEstado(EstadoSolicitud estado)
-        {
-            return _repository.GetPorEstado(estado);
         }
 
         public void Save(SolicitudTI solicitud)

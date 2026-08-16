@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using AP.Core.Exceptions;
+using AP.Data;
 using AP.Data.Entities;
 using AP.Repositories;
 
@@ -18,6 +18,12 @@ namespace AP.Core.Business
             _repository = new RepositoryQueja();
         }
 
+        // Para compartir el contexto con otro Business dentro de la misma transaccion.
+        public QuejaBusiness(MathemaXContext context)
+        {
+            _repository = new RepositoryQueja(context);
+        }
+
         // Inyeccion manual para pruebas o cambios futuros sin tocar el controller.
         public QuejaBusiness(IRepositoryQueja repository)
         {
@@ -26,7 +32,7 @@ namespace AP.Core.Business
 
         public IEnumerable<Queja> GetTodas()
         {
-            return _repository.GetAll().Where(q => q.Activo);
+            return _repository.GetActivas();
         }
 
         public Queja GetPorId(int id)
@@ -37,11 +43,6 @@ namespace AP.Core.Business
         public IEnumerable<Queja> GetPorUsuario(string usuarioId)
         {
             return _repository.GetPorUsuario(usuarioId);
-        }
-
-        public IEnumerable<Queja> GetPorEstado(EstadoQueja estado)
-        {
-            return _repository.GetPorEstado(estado);
         }
 
         public void Save(Queja queja)

@@ -68,9 +68,6 @@
                         @Html.CheckBoxFor(m => m.RememberMe)
                         @Html.LabelFor(m => m.RememberMe)
                     </label>
-                    @* Habilitar cuando la confirmación de cuenta esté activa para restablecer contraseñas
-                        @Html.ActionLink("¿Olvidó su contraseña?", "ForgotPassword")
-                    *@
                 </div>
 
                 <input type="submit" value="Iniciar sesión" class="auth-btn" />
@@ -79,10 +76,6 @@
                     ¿Todavía no tenés cuenta? @Html.ActionLink("Registrarse como nuevo usuario", "Register")
                 </p>
             }
-        </section>
-
-        <section id="socialLoginForm" style="margin-top:20px;">
-            @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
         </section>
     </div>
 </main>

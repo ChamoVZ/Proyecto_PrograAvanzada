@@ -21,12 +21,15 @@ namespace AP.MVC.Controllers
         private const string UltimoRetoSessionKey = "Contrarreloj_UltimoRetoId";
         private const string ResultadoTempDataKey = "Contrarreloj_Resultado";
 
+        // El contexto es del controller: asi los dos repositorios comparten uno solo y se libera al final del request.
+        private readonly MathemaXContext _context;
         private readonly PartidaBusiness _juegoBusiness;
         private readonly ExperienciaBusiness _experienciaBusiness;
 
         public ContrarrelojController()
         {
-            _juegoBusiness = new PartidaBusiness();
+            _context = new MathemaXContext();
+            _juegoBusiness = new PartidaBusiness(_context);
             _experienciaBusiness = new ExperienciaBusiness();
         }
 
@@ -174,6 +177,16 @@ namespace AP.MVC.Controllers
                 return RedirectToAction("Jugar");
 
             return View(model);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _context.Dispose();
+            }
+
+            base.Dispose(disposing);
         }
 
         private static RetoJuegoViewModel MapToJuegoViewModel(Reto reto)

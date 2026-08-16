@@ -54,20 +54,3 @@ WHERE NOT EXISTS
 
 PRINT 'MathemaX: experiencia y retos verificados correctamente.';
 GO
-
-
-USE MathemaX;
-
-SELECT name
-FROM sys.tables
-WHERE name IN ('AspNetUsers', 'Retoes');
-
-SELECT COLUMN_NAME
-FROM INFORMATION_SCHEMA.COLUMNS
-WHERE TABLE_NAME = 'AspNetUsers'
-  AND COLUMN_NAME IN ('ExperienciaTotal', 'Nivel');
-
-SELECT Titulo
-FROM dbo.Retoes
-WHERE Titulo LIKE 'Operador perdido%'
-   OR Titulo IN ('Contrarreloj: suma', 'Secuencia logica simple');

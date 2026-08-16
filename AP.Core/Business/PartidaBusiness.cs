@@ -35,16 +35,13 @@ namespace AP.Core.Business
         private readonly Dictionary<ModoJuego, IModoJuegoStrategy> _estrategias;
         private static readonly Random _random = new Random();
 
-        public PartidaBusiness()
-            : this(new RepositoryReto(), new RepositoryPartida(), EstrategiasPorDefecto())
-        {
-        }
-
         public PartidaBusiness(IRepositoryReto repositoryReto, IRepositoryPartida repositoryPartida)
             : this(repositoryReto, repositoryPartida, EstrategiasPorDefecto())
         {
         }
 
+        // Un solo contexto para los dos repositorios, y lo libera quien lo abrio: el controller
+        // en su Dispose, o el using de la transaccion compartida.
         public PartidaBusiness(MathemaXContext context)
             : this(new RepositoryReto(context), new RepositoryPartida(context), EstrategiasPorDefecto())
         {
