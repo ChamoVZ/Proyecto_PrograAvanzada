@@ -1,17 +1,4 @@
-﻿/* MathemaX — sistema de diseno para vistas de autenticacion */
-:root {
-    --board: #1B3A34;
-    --board-2: #143028;
-    --paper: #FFF9EC;
-    --ink: #1B3A34;
-    --ink-soft: #4C6560;
-    --xp-gold: #FFB627;
-    --xp-gold-dark: #C98A00;
-    --ok-green: #4CD97D;
-    --ok-green-dark: #1F8A4D;
-    --op-coral: #FF6B4A;
-    --op-coral-dark: #C23F22;
-}
+﻿/* MathemaX — solo las pantallas de acceso. Los tokens viven en Site.css */
 
 .auth-stage * {
     box-sizing: border-box;
@@ -27,7 +14,7 @@
     border-radius: 28px;
     overflow: hidden;
     box-shadow: 0 24px 0 rgba(0,0,0,0.25);
-    font-family: 'Nunito Sans', sans-serif;
+    font-family: var(--font-sans);
     color: var(--ink);
 }
 
@@ -40,7 +27,7 @@
 
 .auth-op {
     position: absolute;
-    font-family: 'Baloo 2', sans-serif;
+    font-family: var(--font-display);
     font-weight: 800;
     color: rgba(255,249,236,0.06);
     line-height: 1;
@@ -66,7 +53,7 @@
     }
 
 .auth-wordmark {
-    font-family: 'Baloo 2', sans-serif;
+    font-family: var(--font-display);
     font-weight: 800;
     font-size: 38px;
     letter-spacing: 0.5px;
@@ -104,7 +91,7 @@
 }
 
 .auth-mode-badge {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-weight: 700;
     font-size: 13px;
     width: 34px;
@@ -123,7 +110,7 @@
 
 .auth-mode.mode-time .auth-mode-badge {
     background: var(--xp-gold);
-    color: #412402;
+    color: var(--on-gold);
 }
 
 .auth-mode.mode-xp .auth-mode-badge {
@@ -150,7 +137,7 @@
 }
 
     .auth-panel h2 {
-        font-family: 'Baloo 2', sans-serif;
+        font-family: var(--font-display);
         font-weight: 700;
         font-size: 24px;
         margin: 0 0 4px;
@@ -178,11 +165,13 @@
 
     .auth-field .form-control {
         width: 100%;
+        /* gana al tope de 280px que Site.css le pone a todos los campos */
+        max-width: 100%;
         padding: 12px 14px;
         border-radius: 12px;
-        border: 2px solid #E4DCC5;
+        border: 2px solid var(--paper-border);
         background: #fff;
-        font-family: 'Nunito Sans', sans-serif;
+        font-family: var(--font-sans);
         font-size: 14px;
         color: var(--ink);
     }
@@ -216,12 +205,13 @@
 
 .auth-btn {
     width: 100%;
+    max-width: 100%;
     padding: 14px;
     border: none;
     border-radius: 14px;
     background: var(--xp-gold);
-    color: #412402;
-    font-family: 'Baloo 2', sans-serif;
+    color: var(--on-gold);
+    font-family: var(--font-display);
     font-weight: 700;
     font-size: 16px;
     letter-spacing: 0.03em;
@@ -230,7 +220,7 @@
 }
 
     .auth-btn:hover {
-        color: #412402;
+        color: var(--on-gold);
     }
 
     .auth-btn:active {

@@ -2,50 +2,53 @@
 
 /* =====================================================================
    MathemaX — Site.css
-   Sistema de diseño: paleta, tipografías, layout sidebar + área principal
-   Referencia: _documentos/DISENO.md
+   Hoja base: tokens del sistema, layout sidebar + área principal
    ===================================================================== */
 
 /* ----- Variables del sistema de diseño -------------------------------- */
 :root {
-    /* Pergamino (fondos) */
-    --color-parchment:        #FAF8F5;
-    --color-parchment-dark:   #F2ECE1;
-    --color-parchment-border: #E4DDD3;
+    /* Pizarra (superficies oscuras: sidebar, hero) */
+    --board:   #1B3A34;
+    --board-2: #143028;
 
-    /* Tinta (texto) */
-    --color-ink:       #2C2925;
-    --color-ink-muted: #645F57;
-    --color-ink-light: #9B9489;
+    /* Crema (fondo de la app, texto sobre pizarra) */
+    --paper: #FFF9EC;
 
-    /* Terracota (acento principal: botones, nav activo) */
-    --color-terracotta:       #A64E3D;
-    --color-terracotta-hover: #8D3E30;
+    /* Tinta (texto sobre claro) */
+    --ink:      #1B3A34;
+    --ink-soft: #4C6560;
 
-    /* Academia (acento secundario: éxito, toggles activos) */
-    --color-academy:       #3F5245;
-    --color-academy-hover: #314035;
+    /* XP (acento principal: botones, nav activo, logros) */
+    --xp-gold:      #FFB627;
+    --xp-gold-dark: #C98A00;
 
-    /* Ocre (detalles, iconos, etiquetas) */
-    --color-ochre:       #B0824B;
-    --color-ochre-hover: #966E3E;
+    /* Acierto y estados resueltos */
+    --ok-green:      #4CD97D;
+    --ok-green-dark: #1F8A4D;
 
-    /* Sidebar oscuro */
-    --color-sidebar-bg:     #1C1A18;
-    --color-sidebar-surface:#242220;
-    --color-sidebar-text:   #EBEAE6;
-    --color-sidebar-muted:  #9B9489;
-    --color-sidebar-border: rgba(255, 255, 255, 0.08);
+    /* Error y acciones destructivas */
+    --op-coral:      #FF6B4A;
+    --op-coral-dark: #C23F22;
+
+    /* Derivados de los anteriores: superficies, bordes y texto tenue */
+    --paper-2:      #F6EBD6;
+    --paper-border: #E4DCC5;
+    --ink-faint:    #7C918C;
+    --board-muted:  #9BB2AC;
+    --board-border: rgba(255, 249, 236, 0.12);
+
+    /* Marrón de contraste sobre el dorado, tomado de auth.css */
+    --on-gold: #412402;
 
     /* Fuentes */
-    --font-sans:    "Plus Jakarta Sans", system-ui, sans-serif;
-    --font-display: "Playfair Display", Georgia, serif;
+    --font-sans:    "Nunito Sans", system-ui, sans-serif;
+    --font-display: "Baloo 2", system-ui, sans-serif;
     --font-mono:    "JetBrains Mono", monospace;
 
     /* Sombras */
-    --shadow-sm: 0 1px 2px 0 rgba(44, 41, 37, 0.05);
-    --shadow-md: 0 4px 10px -1px rgba(44, 41, 37, 0.08);
-    --shadow-lg: 0 12px 24px -3px rgba(44, 41, 37, 0.06);
+    --shadow-sm: 0 1px 2px 0 rgba(20, 48, 40, 0.06);
+    --shadow-md: 0 4px 10px -1px rgba(20, 48, 40, 0.12);
+    --shadow-lg: 0 12px 24px -3px rgba(20, 48, 40, 0.10);
 
     /* Dimensiones del sidebar */
     --sidebar-width:           256px;
@@ -56,11 +59,21 @@
 /* ----- Sobrescritura de variables Bootstrap 5 ------------------------ */
 :root {
     --bs-font-sans-serif: var(--font-sans);
-    --bs-body-bg:         var(--color-parchment);
-    --bs-body-color:      var(--color-ink);
-    --bs-primary:         var(--color-terracotta);
-    --bs-link-color:      var(--color-terracotta);
-    --bs-link-hover-color:var(--color-terracotta-hover);
+    --bs-body-bg:         var(--paper);
+    --bs-body-color:      var(--ink);
+    --bs-border-color:    var(--paper-border);
+    --bs-primary:         var(--xp-gold);
+    --bs-primary-rgb:     255, 182, 39;
+    --bs-secondary:       var(--ink-soft);
+    --bs-secondary-rgb:   76, 101, 96;
+    --bs-success:         var(--ok-green-dark);
+    --bs-success-rgb:     31, 138, 77;
+    --bs-warning:         var(--xp-gold-dark);
+    --bs-warning-rgb:     201, 138, 0;
+    --bs-danger:          var(--op-coral-dark);
+    --bs-danger-rgb:      194, 63, 34;
+    --bs-link-color:      var(--op-coral-dark);
+    --bs-link-hover-color:var(--op-coral);
 }
 
 /* =====================================================================
@@ -72,14 +85,113 @@
 
 body {
     font-family: var(--font-sans);
-    background-color: var(--color-parchment);
-    color: var(--color-ink);
+    background-color: var(--paper);
+    color: var(--ink);
     margin: 0;
     min-height: 100vh;
 }
 
 h1, h2, h3, h4, .display {
     font-family: var(--font-display);
+}
+
+/* =====================================================================
+   COMPONENTES BOOTSTRAP
+   Botones, tablas y campos traen sus colores en variables propias, así
+   que reasignar las de :root no alcanza para teñirlos.
+   ===================================================================== */
+.btn-primary {
+    --bs-btn-color: var(--on-gold);
+    --bs-btn-bg: var(--xp-gold);
+    --bs-btn-border-color: var(--xp-gold);
+    --bs-btn-hover-color: var(--on-gold);
+    --bs-btn-hover-bg: var(--xp-gold-dark);
+    --bs-btn-hover-border-color: var(--xp-gold-dark);
+    --bs-btn-active-color: var(--on-gold);
+    --bs-btn-active-bg: var(--xp-gold-dark);
+    --bs-btn-active-border-color: var(--xp-gold-dark);
+    --bs-btn-disabled-color: var(--on-gold);
+    --bs-btn-disabled-bg: var(--xp-gold);
+    --bs-btn-disabled-border-color: var(--xp-gold);
+    --bs-btn-focus-shadow-rgb: 201, 138, 0;
+}
+
+.btn-secondary {
+    --bs-btn-bg: var(--ink-soft);
+    --bs-btn-border-color: var(--ink-soft);
+    --bs-btn-hover-bg: var(--board);
+    --bs-btn-hover-border-color: var(--board);
+    --bs-btn-active-bg: var(--board-2);
+    --bs-btn-active-border-color: var(--board-2);
+    --bs-btn-disabled-bg: var(--ink-soft);
+    --bs-btn-disabled-border-color: var(--ink-soft);
+    --bs-btn-focus-shadow-rgb: 76, 101, 96;
+}
+
+.btn-outline-primary {
+    --bs-btn-color: var(--xp-gold-dark);
+    --bs-btn-border-color: var(--xp-gold-dark);
+    --bs-btn-hover-color: var(--on-gold);
+    --bs-btn-hover-bg: var(--xp-gold);
+    --bs-btn-hover-border-color: var(--xp-gold);
+    --bs-btn-active-color: var(--on-gold);
+    --bs-btn-active-bg: var(--xp-gold);
+    --bs-btn-active-border-color: var(--xp-gold);
+    --bs-btn-disabled-color: var(--xp-gold-dark);
+    --bs-btn-disabled-border-color: var(--xp-gold-dark);
+    --bs-btn-focus-shadow-rgb: 201, 138, 0;
+}
+
+.btn-outline-secondary {
+    --bs-btn-color: var(--ink-soft);
+    --bs-btn-border-color: var(--ink-soft);
+    --bs-btn-hover-bg: var(--ink-soft);
+    --bs-btn-hover-border-color: var(--ink-soft);
+    --bs-btn-active-bg: var(--ink-soft);
+    --bs-btn-active-border-color: var(--ink-soft);
+    --bs-btn-disabled-color: var(--ink-soft);
+    --bs-btn-disabled-border-color: var(--ink-soft);
+    --bs-btn-focus-shadow-rgb: 76, 101, 96;
+}
+
+.btn-outline-danger {
+    --bs-btn-color: var(--op-coral-dark);
+    --bs-btn-border-color: var(--op-coral-dark);
+    --bs-btn-hover-bg: var(--op-coral-dark);
+    --bs-btn-hover-border-color: var(--op-coral-dark);
+    --bs-btn-active-bg: var(--op-coral-dark);
+    --bs-btn-active-border-color: var(--op-coral-dark);
+    --bs-btn-disabled-color: var(--op-coral-dark);
+    --bs-btn-disabled-border-color: var(--op-coral-dark);
+    --bs-btn-focus-shadow-rgb: 194, 63, 34;
+}
+
+.btn-outline-dark {
+    --bs-btn-color: var(--board);
+    --bs-btn-border-color: var(--board);
+    --bs-btn-hover-bg: var(--board);
+    --bs-btn-hover-border-color: var(--board);
+    --bs-btn-active-bg: var(--board);
+    --bs-btn-active-border-color: var(--board);
+    --bs-btn-disabled-color: var(--board);
+    --bs-btn-disabled-border-color: var(--board);
+    --bs-btn-focus-shadow-rgb: 27, 58, 52;
+}
+
+.table-dark {
+    --bs-table-color: var(--paper);
+    --bs-table-bg: var(--board);
+    --bs-table-border-color: var(--board-2);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--xp-gold-dark);
+    box-shadow: 0 0 0 0.2rem rgba(255, 182, 39, 0.3);
+}
+
+.text-muted {
+    color: var(--ink-soft) !important;
 }
 
 /* =====================================================================
@@ -96,8 +208,8 @@ h1, h2, h3, h4, .display {
 .mx-sidebar {
     width: var(--sidebar-width);
     min-height: 100vh;
-    background-color: var(--color-sidebar-bg);
-    color: var(--color-sidebar-text);
+    background-color: var(--board-2);
+    color: var(--paper);
     display: flex;
     flex-direction: column;
     position: fixed;
@@ -107,7 +219,7 @@ h1, h2, h3, h4, .display {
     z-index: 1000;
     overflow: hidden;
     transition: width 0.25s ease, transform 0.25s ease;
-    border-right: 1px solid var(--color-sidebar-border);
+    border-right: 1px solid var(--board-border);
 }
 
 /* Encabezado: logo + brand */
@@ -116,7 +228,7 @@ h1, h2, h3, h4, .display {
     align-items: center;
     justify-content: space-between;
     padding: 1.25rem 1rem;
-    border-bottom: 1px solid var(--color-sidebar-border);
+    border-bottom: 1px solid var(--board-border);
     min-height: 72px;
     flex-shrink: 0;
 }
@@ -138,8 +250,8 @@ h1, h2, h3, h4, .display {
 .mx-brand-icon {
     width: 36px;
     height: 36px;
-    background-color: var(--color-terracotta);
-    color: #fff;
+    background-color: var(--xp-gold);
+    color: var(--on-gold);
     border-radius: 6px;
     display: flex;
     align-items: center;
@@ -163,7 +275,7 @@ h1, h2, h3, h4, .display {
     font-family: var(--font-mono);
     font-size: 0.875rem;
     font-weight: 700;
-    color: #fff;
+    color: var(--paper);
     letter-spacing: 0.05em;
     white-space: nowrap;
 }
@@ -171,7 +283,7 @@ h1, h2, h3, h4, .display {
 .mx-brand-tagline {
     font-family: var(--font-mono);
     font-size: 0.5rem;
-    color: var(--color-sidebar-muted);
+    color: var(--board-muted);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     white-space: nowrap;
@@ -180,7 +292,7 @@ h1, h2, h3, h4, .display {
 .mx-sidebar-collapse-btn {
     background: none;
     border: none;
-    color: var(--color-sidebar-muted);
+    color: var(--board-muted);
     cursor: pointer;
     padding: 0.25rem 0.375rem;
     border-radius: 4px;
@@ -191,8 +303,8 @@ h1, h2, h3, h4, .display {
 }
 
 .mx-sidebar-collapse-btn:hover {
-    color: #fff;
-    background: var(--color-sidebar-surface);
+    color: var(--paper);
+    background: var(--board);
 }
 
 /* Navegación */
@@ -219,7 +331,7 @@ h1, h2, h3, h4, .display {
     gap: 0.75rem;
     padding: 0.625rem 0.75rem;
     border-radius: 6px;
-    color: var(--color-sidebar-muted);
+    color: var(--board-muted);
     text-decoration: none;
     font-size: 0.875rem;
     font-weight: 500;
@@ -229,20 +341,20 @@ h1, h2, h3, h4, .display {
 }
 
 .mx-nav-link:hover:not(.disabled) {
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--color-sidebar-text);
+    background: rgba(255, 249, 236, 0.06);
+    color: var(--paper);
     text-decoration: none;
 }
 
 .mx-nav-link.active {
-    background: var(--color-terracotta);
-    color: #fff;
+    background: var(--xp-gold);
+    color: var(--on-gold);
     text-decoration: none;
 }
 
 .mx-nav-link.active:hover {
-    background: var(--color-terracotta-hover);
-    color: #fff;
+    background: var(--xp-gold-dark);
+    color: var(--on-gold);
 }
 
 .mx-nav-link.disabled {
@@ -254,7 +366,7 @@ h1, h2, h3, h4, .display {
 .mx-nav-icon {
     font-size: 1rem;
     flex-shrink: 0;
-    color: var(--color-ochre);
+    color: var(--xp-gold);
     transition: color 0.15s;
     width: 18px;
     text-align: center;
@@ -276,7 +388,7 @@ h1, h2, h3, h4, .display {
 /* Pie de sidebar */
 .mx-sidebar-footer {
     padding: 0.5rem;
-    border-top: 1px solid var(--color-sidebar-border);
+    border-top: 1px solid var(--board-border);
     flex-shrink: 0;
 }
 
@@ -297,7 +409,7 @@ h1, h2, h3, h4, .display {
     display: block;
     padding: 0.5rem 0.75rem;
     font-size: 0.8125rem;
-    color: var(--color-sidebar-muted);
+    color: var(--board-muted);
     text-decoration: none;
     border-radius: 4px;
     transition: color 0.15s, background 0.15s;
@@ -308,7 +420,7 @@ h1, h2, h3, h4, .display {
 
 .mx-login-partial .navbar-nav .nav-link:hover,
 .mx-login-partial .navbar-nav a:hover {
-    color: var(--color-sidebar-text);
+    color: var(--paper);
     background: rgba(255, 255, 255, 0.05);
     text-decoration: none;
 }
@@ -354,8 +466,8 @@ h1, h2, h3, h4, .display {
     gap: 0.75rem;
     padding: 0 1rem;
     height: var(--topbar-height);
-    background-color: var(--color-parchment);
-    border-bottom: 1px solid var(--color-parchment-border);
+    background-color: var(--paper);
+    border-bottom: 1px solid var(--paper-border);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -364,10 +476,10 @@ h1, h2, h3, h4, .display {
 
 .mx-hamburger {
     background: none;
-    border: 1px solid var(--color-parchment-border);
+    border: 1px solid var(--paper-border);
     border-radius: 4px;
     padding: 0.25rem 0.5rem;
-    color: var(--color-ink);
+    color: var(--ink);
     font-size: 1.25rem;
     cursor: pointer;
     display: flex;
@@ -376,20 +488,20 @@ h1, h2, h3, h4, .display {
 }
 
 .mx-hamburger:hover {
-    background: var(--color-parchment-dark);
+    background: var(--paper-2);
 }
 
 .mx-topbar-brand {
     font-family: var(--font-mono);
     font-size: 0.9375rem;
     font-weight: 700;
-    color: var(--color-ink);
+    color: var(--ink);
     text-decoration: none;
     letter-spacing: 0.04em;
 }
 
 .mx-topbar-brand:hover {
-    color: var(--color-terracotta);
+    color: var(--op-coral-dark);
     text-decoration: none;
 }
 
@@ -402,15 +514,20 @@ h1, h2, h3, h4, .display {
 /* Pie de página */
 .mx-footer {
     padding: 1rem 2rem;
-    border-top: 1px solid var(--color-parchment-border);
+    border-top: 1px solid var(--paper-border);
 }
 
 .mx-footer p {
     margin: 0;
     font-family: var(--font-mono);
     font-size: 0.6875rem;
-    color: var(--color-ink-light);
+    color: var(--ink-faint);
     letter-spacing: 0.03em;
+}
+
+.mx-footer a {
+    color: var(--op-coral-dark);
+    text-decoration: none;
 }
 
 /* =====================================================================
@@ -473,11 +590,11 @@ h1, h2, h3, h4, .display {
 }
 
 .mx-app-anonymous .mx-topbar .mx-login-partial .navbar-nav .nav-link {
-    color: var(--color-ink);
+    color: var(--ink);
 }
 
 .mx-app-anonymous .mx-topbar .mx-login-partial .navbar-nav .nav-link:hover {
-    color: var(--color-terracotta);
+    color: var(--op-coral-dark);
     background: transparent;
 }
 
@@ -520,29 +637,37 @@ h1, h2, h3, h4, .display {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    color: var(--color-ochre);
+    color: var(--xp-gold-dark);
 }
 
 .btn-mx-primary {
     display: inline-block;
-    background-color: var(--color-terracotta);
-    color: #fff;
+    background-color: var(--xp-gold);
+    color: var(--on-gold);
     border: none;
-    border-radius: 2px;
+    border-radius: 12px;
     padding: 0.5rem 1.25rem;
-    font-family: var(--font-sans);
-    font-weight: 600;
-    font-size: 0.875rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.9375rem;
+    letter-spacing: 0.03em;
     cursor: pointer;
     transition: background 0.15s;
     text-decoration: none;
+    box-shadow: 0 4px 0 var(--xp-gold-dark);
 }
 
 .btn-mx-primary:hover,
 .btn-mx-primary:focus {
-    background-color: var(--color-terracotta-hover);
-    color: #fff;
+    background-color: var(--xp-gold);
+    color: var(--on-gold);
     text-decoration: none;
+}
+
+/* Hunde el botón al presionarlo, como el de las pantallas de acceso */
+.btn-mx-primary:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 var(--xp-gold-dark);
 }
 
 /* =====================================================================
@@ -566,9 +691,18 @@ textarea {
    LANDING PAGE (Home)
    ===================================================================== */
 .mx-hero {
-    background-color: var(--color-parchment-dark);
+    background-color: var(--board);
+    color: var(--paper);
     border-radius: 8px;
     margin-top: 1rem;
+}
+
+.mx-hero-title {
+    color: var(--xp-gold);
+}
+
+.mx-hero-lead {
+    color: rgba(255, 249, 236, 0.78);
 }
 
 .mx-mode-card {
@@ -581,6 +715,47 @@ textarea {
     box-shadow: var(--shadow-md) !important;
 }
 
+.mx-mode-card .card-title a {
+    color: var(--ink);
+    text-decoration: none;
+}
+
+.mx-mode-icon {
+    font-size: 3rem;
+    color: var(--xp-gold-dark);
+}
+
 .mx-xp-card {
     border-radius: 12px;
+    background-color: var(--paper-2);
+}
+
+.mx-xp-title {
+    color: var(--ok-green-dark);
+}
+
+.mx-xp-text {
+    color: var(--ink-soft);
+}
+
+.mx-xp-icon {
+    font-size: 5rem;
+    color: var(--xp-gold-dark);
+}
+
+/* =====================================================================
+   UTILIDADES DE COLOR PARA LAS VISTAS
+   Existen para que ninguna vista escriba un color en style="..."
+   ===================================================================== */
+.mx-section-title,
+.mx-card-title {
+    color: var(--ink);
+}
+
+.mx-badge-estado {
+    background-color: var(--ok-green-dark);
+}
+
+.mx-badge-muted {
+    background-color: var(--ink-soft);
 }

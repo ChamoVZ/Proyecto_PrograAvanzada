@@ -7,7 +7,7 @@
 <div class="container mt-4">
     <div class="text-center mb-5">
         <span class="text-mono-label">Elige tu reto</span>
-        <h2 class="mt-2" style="color: var(--color-ink);">Modos de Juego</h2>
+        <h2 class="mt-2 mx-section-title">Modos de Juego</h2>
     </div>
 
     <div class="row g-4">
@@ -18,12 +18,12 @@
                      style="@(modo.Disponible ? "" : "opacity: .6;")">
                     <div class="card-body text-center p-4">
                         <div class="mb-3">
-                            <i class="bi @modo.Icono" style="font-size: 3rem; color: var(--color-terracotta);"></i>
+                            <i class="bi @modo.Icono mx-mode-icon"></i>
                         </div>
                         <h4 class="card-title fw-bold">
                             @if (modo.Disponible)
                             {
-                                <a href="@Url.Action("Jugar", modo.Controlador)" class="stretched-link text-decoration-none" style="color: inherit;">
+                                <a href="@Url.Action("Jugar", modo.Controlador)" class="stretched-link">
                                     @modo.Nombre
                                 </a>
                             }
@@ -35,7 +35,7 @@
                         <p class="card-text text-muted">@modo.Descripcion</p>
                         @if (!modo.Disponible)
                         {
-                            <span class="badge" style="background-color: var(--color-ink-light);">Próximamente</span>
+                            <span class="badge mx-badge-muted">Próximamente</span>
                         }
                     </div>
                 </div>

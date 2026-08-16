@@ -28,14 +28,14 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-start gap-3">
                                 <div>
-                                    <h4 class="card-title fw-bold" style="color: var(--color-ink);">@item.Asunto</h4>
+                                    <h4 class="card-title fw-bold mx-card-title">@item.Asunto</h4>
                                     <h6 class="card-subtitle mb-3 text-muted">
                                         <i class="bi bi-person-circle me-1"></i> @item.NombreAutor &bull;
                                         <i class="bi bi-tag me-1"></i> @item.NombreCategoria &bull;
                                         <i class="bi bi-calendar-event me-1"></i> @item.FechaCreacion.ToString("dd/MM/yyyy HH:mm")
                                     </h6>
                                 </div>
-                                <span class="badge rounded-pill" style="background-color: var(--color-academy);">@item.NombreEstado</span>
+                                <span class="badge rounded-pill mx-badge-estado">@item.NombreEstado</span>
                             </div>
                             <p class="card-text">
                                 @item.Descripcion
