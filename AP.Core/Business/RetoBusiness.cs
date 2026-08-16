@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using AP.Core.Exceptions;
+using AP.Data;
 using AP.Data.Entities;
 using AP.Repositories;
 
@@ -16,6 +17,12 @@ namespace AP.Core.Business
         public RetoBusiness()
         {
             _repositoryReto = new RepositoryReto();
+        }
+
+        // El contexto lo abre y lo libera el controller, para que no quede colgado tras el request.
+        public RetoBusiness(MathemaXContext context)
+        {
+            _repositoryReto = new RepositoryReto(context);
         }
 
         // Constructor para unit tests: permite inyectar un mock del repositorio

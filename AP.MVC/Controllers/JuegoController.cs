@@ -23,8 +23,8 @@ namespace AP.MVC.Controllers
                 new ModoJuegoViewModel
                 {
                     Nombre = "Operador Perdido",
-                    Descripcion = "Descubre cuál es el operador matemático (+, -, *, /) " +
-                                  "que falta para que la ecuación tenga sentido. ¡Piensa rápido!",
+                    Descripcion = "Descubra cuál es el operador matemático (+, -, *, /) " +
+                                  "que falta para que la ecuación tenga sentido. ¡Piense rápido!",
                     Icono = "bi-patch-question",
                     Controlador = "OperadorPerdido",
                     Disponible = true
@@ -32,7 +32,7 @@ namespace AP.MVC.Controllers
                 new ModoJuegoViewModel
                 {
                     Nombre = "Contrarreloj",
-                    Descripcion = "Resuelve la mayor cantidad de retos matemáticos antes de que " +
+                    Descripcion = "Resuelva la mayor cantidad de retos matemáticos antes de que " +
                                   "se acabe el tiempo. La presión está al máximo.",
                     Icono = "bi-stopwatch",
                     Controlador = "Contrarreloj",
@@ -41,7 +41,7 @@ namespace AP.MVC.Controllers
                 new ModoJuegoViewModel
                 {
                     Nombre = "Secuencias Lógicas",
-                    Descripcion = "Encuentra el patrón oculto en una serie de números y descubre " +
+                    Descripcion = "Encuentre el patrón oculto en una serie de números y descubra " +
                                   "cuál es el siguiente paso lógico.",
                     Icono = "bi-sort-numeric-down",
                     Controlador = "SecuenciasLogicas",

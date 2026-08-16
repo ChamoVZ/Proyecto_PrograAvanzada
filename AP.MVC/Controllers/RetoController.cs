@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using AP.Core.Business;
+using AP.Data;
 using AP.Data.Entities;
 using AP.Models.Juegos;
 
@@ -11,11 +12,14 @@ namespace AP.MVC.Controllers
     [Authorize(Roles = "Admin")]
     public class RetoController : BaseController
     {
+        // El contexto es del controller: se abre uno solo por request y se libera al final.
+        private readonly MathemaXContext _context;
         private readonly RetoBusiness _retoBusiness;
 
         public RetoController()
         {
-            _retoBusiness = new RetoBusiness();
+            _context = new MathemaXContext();
+            _retoBusiness = new RetoBusiness(_context);
         }
 
         // GET: Reto
@@ -113,6 +117,16 @@ namespace AP.MVC.Controllers
         {
             _retoBusiness.Desactivar(id);
             return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _context.Dispose();
+            }
+
+            base.Dispose(disposing);
         }
 
         #region Mapeo Manual

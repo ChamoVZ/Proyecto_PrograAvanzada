@@ -4,6 +4,9 @@ namespace AP.Models.Comunidad
 {
     public class PublicacionViewModel
     {
+        // La resuelve ForoBusiness y la consulta la vista, para no repetir la regla en el Razor.
+        public bool PuedeModificar { get; set; }
+
         public int PublicacionId { get; set; }
 
         public string UsuarioId { get; set; }

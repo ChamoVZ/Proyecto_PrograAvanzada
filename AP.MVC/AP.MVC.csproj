@@ -227,8 +227,10 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Foro\Details.cshtml" />
+    <Content Include="Views\Foro\Edit.cshtml" />
+    <Content Include="Views\Home\Equipo.cshtml" />
+    <Content Include="Views\Marcador\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Juego\Index.cshtml" />
     <Content Include="Views\Foro\Index.cshtml" />
@@ -291,6 +293,10 @@
     <ProjectReference Include="..\AP.Core\AP.Core.csproj">
       <Project>{c3692650-3f4e-4dd3-9edc-35360af1cea6}</Project>
       <Name>AP.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AP.Repositories\AP.Repositories.csproj">
+      <Project>{1e5544eb-a980-42d3-8665-23a11332e218}</Project>
+      <Name>AP.Repositories</Name>
     </ProjectReference>
     <ProjectReference Include="..\AP.Data\AP.Data.csproj">
       <Project>{af07fa5d-3f04-477b-ba72-5a02422b0ba9}</Project>

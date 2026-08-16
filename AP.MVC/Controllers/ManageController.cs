@@ -68,7 +68,7 @@ namespace AP.MVC.Controllers
         // GET: /Manage/ChangePassword
         public ActionResult ChangePassword()
         {
-            return View();
+            return View(new ChangePasswordViewModel());
         }
 
         //
@@ -99,7 +99,7 @@ namespace AP.MVC.Controllers
         // GET: /Manage/SetPassword
         public ActionResult SetPassword()
         {
-            return View();
+            return View(new SetPasswordViewModel());
         }
 
         //

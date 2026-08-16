@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using AP.Core.Business;
 using AP.Core.Business.Estrategias;
 using AP.Core.Exceptions;

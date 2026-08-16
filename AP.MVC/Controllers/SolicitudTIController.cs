@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using AP.Core.Business;
 using AP.Core.Exceptions;
+using AP.Data;
 using AP.Data.Entities;
 using AP.Models.Soporte;
 using AP.Services;
@@ -12,12 +13,15 @@ namespace AP.MVC.Controllers
     [Authorize]
     public class SolicitudTIController : BaseController
     {
+        // El contexto es del controller: se abre uno solo por request y se libera al final.
+        private readonly MathemaXContext _context;
         private readonly SolicitudTIBusiness _solicitudTIBusiness;
         private readonly ChatbotService _chatbotService;
 
         public SolicitudTIController()
         {
-            _solicitudTIBusiness = new SolicitudTIBusiness();
+            _context = new MathemaXContext();
+            _solicitudTIBusiness = new SolicitudTIBusiness(_context);
             _chatbotService = new ChatbotService();
         }
 
@@ -178,6 +182,16 @@ namespace AP.MVC.Controllers
             var texto = model.Asunto + " " + model.Descripcion;
 
             ViewBag.RespuestaAsistente = _chatbotService.GetRespuesta(texto);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _context.Dispose();
+            }
+
+            base.Dispose(disposing);
         }
 
         #region Mapeo Manual

@@ -40,10 +40,20 @@ namespace AP.Core.Business
             return _repository.GetById(id);
         }
 
-        public void Actualizar(Publicacion publicacion)
+        // Quien puede editar o borrar se decide aca; el controller y la vista solo consultan
+        // el resultado. El autor gestiona lo suyo y el Admin modera cualquier publicación.
+        public bool PuedeModificar(Publicacion publicacion, string usuarioId, bool esAdmin)
+        {
+            return publicacion != null && (esAdmin || publicacion.UsuarioId == usuarioId);
+        }
+
+        public void Actualizar(Publicacion publicacion, string usuarioId, bool esAdmin)
         {
             if (publicacion == null)
                 throw new AppException("La publicación no puede ser nula.");
+
+            if (!PuedeModificar(publicacion, usuarioId, esAdmin))
+                throw new AppException("Solo el autor o un administrador pueden modificar esta publicación.");
 
             if (string.IsNullOrWhiteSpace(publicacion.Titulo))
                 throw new AppException("El título de la publicación es obligatorio.");
@@ -55,11 +65,14 @@ namespace AP.Core.Business
             _repository.Update(publicacion);
         }
 
-        public void Desactivar(int id)
+        public void Desactivar(int id, string usuarioId, bool esAdmin)
         {
             var publicacion = _repository.GetById(id);
             if (publicacion == null)
                 throw new AppException("La publicación que intenta eliminar no existe.");
+
+            if (!PuedeModificar(publicacion, usuarioId, esAdmin))
+                throw new AppException("Solo el autor o un administrador pueden eliminar esta publicación.");
 
             // Borrado lógico: el registro se conserva pero deja de listarse en el foro.
             publicacion.Activo = false;

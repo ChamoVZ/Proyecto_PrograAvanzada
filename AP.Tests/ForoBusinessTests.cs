@@ -93,23 +93,99 @@ namespace AP.Tests
             var repositorio = new FakeRepositoryPublicacion();
             var business = new ForoBusiness(repositorio);
 
-            Assert.ThrowsExactly<AppException>(() => business.Desactivar(99));
+            Assert.ThrowsExactly<AppException>(() => business.Desactivar(99, "usuario-1", false));
             Assert.IsNull(repositorio.Actualizada);
         }
 
         [TestMethod]
-        public void Desactivar_PublicacionExistente_HaceBorradoLogico()
+        public void Desactivar_AutorSobreLoSuyo_HaceBorradoLogico()
         {
             var repositorio = new FakeRepositoryPublicacion
             {
-                Existente = new Publicacion { PublicacionId = 7, Activo = true }
+                Existente = new Publicacion { PublicacionId = 7, UsuarioId = "usuario-1", Activo = true }
             };
             var business = new ForoBusiness(repositorio);
 
-            business.Desactivar(7);
+            business.Desactivar(7, "usuario-1", false);
 
             Assert.IsNotNull(repositorio.Actualizada);
             Assert.IsFalse(repositorio.Actualizada.Activo);
+        }
+
+        [TestMethod]
+        public void PuedeModificar_Autor_DevuelveTrue()
+        {
+            var business = new ForoBusiness(new FakeRepositoryPublicacion());
+            var publicacion = new Publicacion { UsuarioId = "usuario-1" };
+
+            Assert.IsTrue(business.PuedeModificar(publicacion, "usuario-1", false));
+        }
+
+        [TestMethod]
+        public void PuedeModificar_AdminSobrePublicacionAjena_DevuelveTrue()
+        {
+            var business = new ForoBusiness(new FakeRepositoryPublicacion());
+            var publicacion = new Publicacion { UsuarioId = "usuario-1" };
+
+            Assert.IsTrue(business.PuedeModificar(publicacion, "admin-1", true));
+        }
+
+        [TestMethod]
+        public void PuedeModificar_OtroUsuarioSinSerAdmin_DevuelveFalse()
+        {
+            var business = new ForoBusiness(new FakeRepositoryPublicacion());
+            var publicacion = new Publicacion { UsuarioId = "usuario-1" };
+
+            Assert.IsFalse(business.PuedeModificar(publicacion, "usuario-2", false));
+        }
+
+        [TestMethod]
+        public void Actualizar_PublicacionDeOtroUsuario_LanzaExcepcion()
+        {
+            var repositorio = new FakeRepositoryPublicacion();
+            var business = new ForoBusiness(repositorio);
+            var publicacion = new Publicacion
+            {
+                PublicacionId = 7,
+                UsuarioId = "usuario-1",
+                Titulo = "Título de prueba",
+                Contenido = "Contenido de prueba"
+            };
+
+            Assert.ThrowsExactly<AppException>(() => business.Actualizar(publicacion, "usuario-2", false));
+            Assert.IsNull(repositorio.Actualizada);
+        }
+
+        [TestMethod]
+        public void Actualizar_AdminSobrePublicacionAjena_LaGuarda()
+        {
+            var repositorio = new FakeRepositoryPublicacion();
+            var business = new ForoBusiness(repositorio);
+            var publicacion = new Publicacion
+            {
+                PublicacionId = 7,
+                UsuarioId = "usuario-1",
+                Titulo = "Título moderado",
+                Contenido = "Contenido moderado"
+            };
+
+            business.Actualizar(publicacion, "admin-1", true);
+
+            Assert.IsNotNull(repositorio.Actualizada);
+            Assert.AreEqual("Título moderado", repositorio.Actualizada.Titulo);
+        }
+
+        [TestMethod]
+        public void Desactivar_OtroUsuarioSinSerAdmin_LanzaExcepcion()
+        {
+            var repositorio = new FakeRepositoryPublicacion
+            {
+                Existente = new Publicacion { PublicacionId = 7, UsuarioId = "usuario-1", Activo = true }
+            };
+            var business = new ForoBusiness(repositorio);
+
+            Assert.ThrowsExactly<AppException>(() => business.Desactivar(7, "usuario-2", false));
+            Assert.IsNull(repositorio.Actualizada);
         }
     }
 }

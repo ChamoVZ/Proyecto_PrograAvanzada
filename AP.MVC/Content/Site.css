@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 
 /* =====================================================================
    MathemaX — Site.css
@@ -679,12 +679,6 @@ h1, h2, h3, h4, .display {
 
 .dl-horizontal dt {
     white-space: normal;
-}
-
-input,
-select,
-textarea {
-    max-width: 280px;
 }
 
 /* =====================================================================

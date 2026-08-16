@@ -32,7 +32,7 @@
 
                         <div class="mb-4">
                             @Html.LabelFor(model => model.Descripcion, new { @class = "form-label fw-bold" })
-                            @Html.TextAreaFor(model => model.Descripcion, new { @class = "form-control", rows = 6, placeholder = "Describe el problema con el mayor detalle posible." })
+                            @Html.TextAreaFor(model => model.Descripcion, new { @class = "form-control", rows = 6, placeholder = "Describa el problema con el mayor detalle posible." })
                             @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
                         </div>
 

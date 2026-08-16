@@ -1,4 +1,4 @@
-namespace AP.Models.Juegos
+﻿namespace AP.Models.Juegos
 {
     /// <summary>Datos de un modo de juego mostrados en la pantalla de seleccion.</summary>
     public class ModoJuegoViewModel

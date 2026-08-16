@@ -1,4 +1,4 @@
-using System.Configuration;
+﻿using System.Configuration;
 using AP.MVC.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -59,11 +59,14 @@ namespace AP.MVC
             if (userManager.FindByName(email) != null)
                 return;
 
+            // CreateUsers arma el UserManager a mano, sin pasar por ApplicationUserManager.Create,
+            // asi que la politica de bloqueo de IdentityConfig no se aplica sola.
             var user = new ApplicationUser
             {
                 UserName = email,
                 Email = email,
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                LockoutEnabled = true
             };
 
             var resultado = userManager.Create(user, password);

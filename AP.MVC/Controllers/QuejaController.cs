@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using AP.Core.Business;
 using AP.Core.Exceptions;
+using AP.Data;
 using AP.Data.Entities;
 using AP.Models.Buzon;
 using Microsoft.AspNet.Identity;
@@ -11,11 +12,14 @@ namespace AP.MVC.Controllers
     [Authorize]
     public class QuejaController : BaseController
     {
+        // El contexto es del controller: se abre uno solo por request y se libera al final.
+        private readonly MathemaXContext _context;
         private readonly QuejaBusiness _quejaBusiness;
 
         public QuejaController()
         {
-            _quejaBusiness = new QuejaBusiness();
+            _context = new MathemaXContext();
+            _quejaBusiness = new QuejaBusiness(_context);
         }
 
         // GET: Queja
@@ -167,6 +171,16 @@ namespace AP.MVC.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _context.Dispose();
+            }
+
+            base.Dispose(disposing);
         }
 
         #region Mapeo Manual

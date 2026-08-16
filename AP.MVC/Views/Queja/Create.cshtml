@@ -47,7 +47,7 @@
 
                         <div class="mb-4">
                             @Html.LabelFor(model => model.Descripcion, new { @class = "form-label fw-bold" })
-                            @Html.TextAreaFor(model => model.Descripcion, new { @class = "form-control", rows = 6, placeholder = "Describe tu queja o sugerencia con el mayor detalle posible." })
+                            @Html.TextAreaFor(model => model.Descripcion, new { @class = "form-control", rows = 6, placeholder = "Describa su queja o sugerencia con el mayor detalle posible." })
                             @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
                         </div>
 
@@ -69,8 +69,8 @@
                 </div>
                 <div class="card-body">
                     <p class="mb-0">
-                        Cuéntanos qué salió mal o qué te gustaría mejorar. El equipo de soporte revisará
-                        tu queja y le dará seguimiento. Toda queja nueva queda en estado
+                        Cuéntenos qué salió mal o qué le gustaría mejorar. El equipo de soporte revisará
+                        su queja y le dará seguimiento. Toda queja nueva queda en estado
                         <strong>Pendiente</strong> hasta que sea atendida.
                     </p>
                 </div>
