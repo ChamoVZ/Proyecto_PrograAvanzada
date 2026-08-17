@@ -3,6 +3,9 @@
 }
 
 <div class="mx-hero text-center py-5 mb-5">
+    <span class="mx-hero-op" style="font-size:200px; top:-50px; left:-30px;">&#247;</span>
+    <span class="mx-hero-op" style="font-size:150px; bottom:-40px; right:0;">&times;</span>
+    <span class="mx-hero-op" style="font-size:120px; top:20px; right:60px;">+</span>
     <div class="container py-5">
         <h1 class="display-3 fw-bold mb-3 mx-hero-title">MathemaX</h1>
         <p class="lead mb-4 mx-hero-lead">
@@ -29,12 +32,15 @@
 <div class="container mb-5">
     <h2 class="text-center mb-5 mx-section-title">Modos de Juego</h2>
     <div class="row g-4">
-        
+
+        <!-- Operador Perdido -->
         <div class="col-md-4">
             <div class="card h-100 shadow-sm border-0 mx-mode-card position-relative">
                 <div class="card-body text-center p-4">
                     <div class="mb-3">
-                        <i class="bi bi-patch-question mx-mode-icon"></i>
+                        <div class="mx-mode-icon-badge badge-op">
+                            <i class="bi bi-patch-question"></i>
+                        </div>
                     </div>
                     <h4 class="card-title fw-bold">
                         <a href="@Url.Action("Jugar", "OperadorPerdido")" class="stretched-link">
@@ -52,7 +58,9 @@
             <div class="card h-100 shadow-sm border-0 mx-mode-card">
                 <div class="card-body text-center p-4">
                     <div class="mb-3">
-                        <i class="bi bi-stopwatch mx-mode-icon"></i>
+                        <div class="mx-mode-icon-badge badge-time">
+                            <i class="bi bi-stopwatch"></i>
+                        </div>
                     </div>
                     <h4 class="card-title fw-bold">
                         <a href="@Url.Action("Jugar", "Contrarreloj")" class="stretched-link">
@@ -70,7 +78,9 @@
             <div class="card h-100 shadow-sm border-0 mx-mode-card">
                 <div class="card-body text-center p-4">
                     <div class="mb-3">
-                        <i class="bi bi-sort-numeric-down mx-mode-icon"></i>
+                        <div class="mx-mode-icon-badge badge-xp">
+                            <i class="bi bi-sort-numeric-down"></i>
+                        </div>
                     </div>
                     <h4 class="card-title fw-bold">
                         <a href="@Url.Action("Jugar", "SecuenciasLogicas")" class="stretched-link">
@@ -92,11 +102,11 @@
         <div class="card-body p-5">
             <div class="row align-items-center">
                 <div class="col-md-8 text-md-start text-center mb-4 mb-md-0">
-                    <h3 class="fw-bold mb-3 mx-xp-title">Progreso y Competencia</h3>
-                    <p class="mb-0 mx-xp-text">
-                        Cada vez que resuelve un reto correctamente, obtiene Puntos de Experiencia (XP) basados en la 
-                        <strong>dificultad</strong> del problema. Entre más rápido resuelva y más difíciles sean los retos, 
-                        más alto escalará en nuestros <strong>Marcadores Globales</strong>. ¿Tiene lo necesario para ser el número uno?
+                    <h3 class="fw-bold mb-3" style="color: var(--color-academy);">Progreso y Competencia</h3>
+                    <p class="mb-0" style="color: var(--color-ink-muted);">
+                        Cada vez que resuelves un reto correctamente, obtienes Puntos de Experiencia (XP) basados en la
+                        <strong>dificultad</strong> del problema. Entre más rápido resuelvas y más difíciles sean los retos,
+                        más alto escalarás en nuestros <strong>Marcadores Globales</strong>. ¿Tienes lo necesario para ser el número uno?
                     </p>
                 </div>
                 <div class="col-md-4 text-center">
