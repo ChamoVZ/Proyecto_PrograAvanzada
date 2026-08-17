@@ -20,11 +20,9 @@ namespace AP.Tests
             public int ContarActivas() => 0;
             public IEnumerable<SolicitudTI> GetPorUsuario(string usuarioId, int pagina, int tamanoPagina) => new List<SolicitudTI>();
             public int ContarPorUsuario(string usuarioId) => 0;
-            public IEnumerable<SolicitudTI> GetAll() => new List<SolicitudTI>();
             public SolicitudTI GetById(int id) => Existente != null && Existente.SolicitudTIId == id ? Existente : null;
             public void Add(SolicitudTI entity) => Agregada = entity;
             public void Update(SolicitudTI entity) => Actualizada = entity;
-            public void Save() { }
         }
 
         private static SolicitudTI NuevaSolicitud(string asunto, string descripcion)

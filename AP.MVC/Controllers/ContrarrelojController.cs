@@ -21,7 +21,6 @@ namespace AP.MVC.Controllers
         private const string UltimoRetoSessionKey = "Contrarreloj_UltimoRetoId";
         private const string ResultadoTempDataKey = "Contrarreloj_Resultado";
 
-        // El contexto es del controller: asi los dos repositorios comparten uno solo y se libera al final del request.
         private readonly MathemaXContext _context;
         private readonly PartidaBusiness _juegoBusiness;
         private readonly ExperienciaBusiness _experienciaBusiness;

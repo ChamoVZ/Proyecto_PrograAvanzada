@@ -2,25 +2,6 @@
 
 namespace AP.MVC.Models
 {
-    public class IndexViewModel
-    {
-        public bool HasPassword { get; set; }
-    }
-
-    public class SetPasswordViewModel
-    {
-        [Required(ErrorMessage = "La contraseña es obligatoria.")]
-        [StringLength(100, ErrorMessage = "La contraseña debe tener al menos {2} caracteres.", MinimumLength = 6)]
-        [DataType(DataType.Password)]
-        [Display(Name = "Contraseña nueva")]
-        public string NewPassword { get; set; }
-
-        [DataType(DataType.Password)]
-        [Display(Name = "Confirmar contraseña nueva")]
-        [Compare("NewPassword", ErrorMessage = "La contraseña nueva y su confirmación no coinciden.")]
-        public string ConfirmPassword { get; set; }
-    }
-
     public class ChangePasswordViewModel
     {
         [Required(ErrorMessage = "La contraseña actual es obligatoria.")]

@@ -19,11 +19,9 @@ namespace AP.Tests
             public IEnumerable<Reto> GetActivosPorModo(ModoJuego modo) => new List<Reto>();
             public IEnumerable<Reto> GetPagina(int pagina, int tamanoPagina) => new List<Reto>();
             public int Contar() => 0;
-            public IEnumerable<Reto> GetAll() => new List<Reto>();
             public Reto GetById(int id) => null;
             public void Add(Reto entity) => Agregado = entity;
             public void Update(Reto entity) => Actualizado = entity;
-            public void Save() { }
         }
 
         private static Reto NuevoReto(int id, int dificultad, int tiempoLimite)

@@ -20,11 +20,9 @@ namespace AP.Tests
             public int ContarActivas() => 0;
             public IEnumerable<Queja> GetPorUsuario(string usuarioId, int pagina, int tamanoPagina) => new List<Queja>();
             public int ContarPorUsuario(string usuarioId) => 0;
-            public IEnumerable<Queja> GetAll() => new List<Queja>();
             public Queja GetById(int id) => Existente != null && Existente.QuejaId == id ? Existente : null;
             public void Add(Queja entity) => Agregada = entity;
             public void Update(Queja entity) => Actualizada = entity;
-            public void Save() { }
         }
 
         private static Queja NuevaQueja(string asunto, string descripcion)

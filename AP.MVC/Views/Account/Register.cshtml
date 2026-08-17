@@ -42,7 +42,7 @@
             <h2 id="title">@ViewBag.Title</h2>
             <p class="auth-sub">Cree una cuenta nueva para empezar a jugar y guardar su progreso.</p>
 
-            @Html.ValidationSummary("", new { @class = "auth-error" })
+            @Html.ValidationSummary(true, "", new { @class = "auth-error" })
 
             <div class="auth-field">
                 @Html.LabelFor(m => m.Email)
@@ -52,13 +52,45 @@
 
             <div class="auth-field">
                 @Html.LabelFor(m => m.Password)
-                @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "••••••••" })
+                <div class="auth-password-control">
+                    @Html.PasswordFor(m => m.Password, new
+                    {
+                        @class = "form-control",
+                        placeholder = "••••••••",
+                        autocomplete = "new-password",
+                        aria_describedby = "password-requisitos"
+                    })
+                    <button type="button"
+                            class="auth-password-toggle"
+                            data-password-target="Password"
+                            aria-controls="Password"
+                            aria-pressed="false">
+                        Mostrar
+                    </button>
+                </div>
+                <small id="password-requisitos" class="auth-password-help">
+                    Mínimo 6 caracteres, con mayúscula, minúscula, número y símbolo.
+                </small>
                 @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
             </div>
 
             <div class="auth-field">
                 @Html.LabelFor(m => m.ConfirmPassword)
-                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "••••••••" })
+                <div class="auth-password-control">
+                    @Html.PasswordFor(m => m.ConfirmPassword, new
+                    {
+                        @class = "form-control",
+                        placeholder = "••••••••",
+                        autocomplete = "new-password"
+                    })
+                    <button type="button"
+                            class="auth-password-toggle"
+                            data-password-target="ConfirmPassword"
+                            aria-controls="ConfirmPassword"
+                            aria-pressed="false">
+                        Mostrar
+                    </button>
+                </div>
                 @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
             </div>
 
@@ -73,4 +105,17 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        (function () {
+            document.querySelectorAll("[data-password-target]").forEach(function (boton) {
+                boton.addEventListener("click", function () {
+                    var campo = document.getElementById(boton.dataset.passwordTarget);
+                    var mostrar = campo.type === "password";
+                    campo.type = mostrar ? "text" : "password";
+                    boton.textContent = mostrar ? "Ocultar" : "Mostrar";
+                    boton.setAttribute("aria-pressed", mostrar ? "true" : "false");
+                });
+            });
+        })();
+    </script>
 }

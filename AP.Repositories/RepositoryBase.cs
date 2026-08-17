@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
 using AP.Data;
 
 namespace AP.Repositories
@@ -9,11 +7,9 @@ namespace AP.Repositories
     /// <summary>Contrato genérico de acceso a datos.</summary>
     public interface IRepositoryBase<T> where T : class
     {
-        IEnumerable<T> GetAll();
         T GetById(int id);
         void Add(T entity);
         void Update(T entity);
-        void Save();
     }
 
     // DP: Repository - centraliza el acceso a datos y aisla a la capa de negocio de EF.
@@ -21,19 +17,9 @@ namespace AP.Repositories
     {
         protected readonly MathemaXContext Context;
 
-        public RepositoryBase()
-            : this(new MathemaXContext())
-        {
-        }
-
         public RepositoryBase(MathemaXContext context)
         {
             Context = context ?? throw new ArgumentNullException(nameof(context));
-        }
-
-        public virtual IEnumerable<T> GetAll()
-        {
-            return Context.Set<T>().ToList();
         }
 
         public virtual T GetById(int id)
@@ -53,7 +39,7 @@ namespace AP.Repositories
             Save();
         }
 
-        public void Save()
+        private void Save()
         {
             Context.SaveChanges();
         }

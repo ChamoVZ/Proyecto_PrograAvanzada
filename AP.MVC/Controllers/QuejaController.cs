@@ -12,7 +12,6 @@ namespace AP.MVC.Controllers
     [Authorize]
     public class QuejaController : BaseController
     {
-        // El contexto es del controller: se abre uno solo por request y se libera al final.
         private readonly MathemaXContext _context;
         private readonly QuejaBusiness _quejaBusiness;
 
@@ -22,12 +21,10 @@ namespace AP.MVC.Controllers
             _quejaBusiness = new QuejaBusiness(_context);
         }
 
-        // GET: Queja
         public ActionResult Index(int pagina = 1, int tamanoPagina = 10)
         {
             var usuarioId = User.Identity.GetUserId();
 
-            // Admin y Support ven todas las quejas; el jugador solo ve las suyas.
             var quejas = User.IsInRole("Admin") || User.IsInRole("Support")
                 ? _quejaBusiness.GetTodas(pagina, tamanoPagina)
                 : _quejaBusiness.GetPorUsuario(usuarioId, pagina, tamanoPagina);
@@ -47,7 +44,6 @@ namespace AP.MVC.Controllers
             return View(viewModels);
         }
 
-        // GET: Queja/Create
         public ActionResult Create()
         {
             return View(new QuejaViewModel
@@ -57,7 +53,6 @@ namespace AP.MVC.Controllers
             });
         }
 
-        // POST: Queja/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(QuejaViewModel model)
@@ -89,7 +84,6 @@ namespace AP.MVC.Controllers
             }
         }
 
-        // GET: Queja/Edit/5
         public ActionResult Edit(int id)
         {
             var queja = _quejaBusiness.GetPorId(id);
@@ -108,7 +102,6 @@ namespace AP.MVC.Controllers
             return View(MapToViewModel(queja, usuarioId, User.IsInRole("Admin")));
         }
 
-        // POST: Queja/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(QuejaViewModel model)
@@ -144,7 +137,6 @@ namespace AP.MVC.Controllers
             }
         }
 
-        // POST: Queja/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(
@@ -162,7 +154,6 @@ namespace AP.MVC.Controllers
             return RedirectToAction("Index");
         }
 
-        // POST: Queja/CambiarEstado
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Support")]

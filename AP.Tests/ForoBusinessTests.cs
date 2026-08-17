@@ -27,11 +27,9 @@ namespace AP.Tests
                 return new List<Publicacion>();
             }
             public int ContarActivas() => TotalActivas;
-            public IEnumerable<Publicacion> GetAll() => new List<Publicacion>();
             public Publicacion GetById(int id) => Existente != null && Existente.PublicacionId == id ? Existente : null;
             public void Add(Publicacion entity) => Agregada = entity;
             public void Update(Publicacion entity) => Actualizada = entity;
-            public void Save() { }
         }
 
         private static Publicacion NuevaPublicacion(string titulo, string contenido)

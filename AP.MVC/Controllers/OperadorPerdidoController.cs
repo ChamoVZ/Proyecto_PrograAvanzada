@@ -15,14 +15,12 @@ using System.Web.Mvc;
 
 namespace AP.MVC.Controllers
 {
-    // Cualquier usuario autenticado puede jugar (no hace falta rol Admin).
     [Authorize]
     public class OperadorPerdidoController : BaseController
     {
         private const string UltimoRetoSessionKey = "OperadorPerdido_UltimoRetoId";
         private const string ResultadoTempDataKey = "OperadorPerdido_Resultado";
 
-        // El contexto es del controller: asi los dos repositorios comparten uno solo y se libera al final del request.
         private readonly MathemaXContext _context;
         private readonly PartidaBusiness _juegoBusiness;
         private readonly ExperienciaBusiness _experienciaBusiness;
@@ -34,7 +32,6 @@ namespace AP.MVC.Controllers
             _experienciaBusiness = new ExperienciaBusiness();
         }
 
-        // GET: OperadorPerdido/Jugar
         public ActionResult Jugar()
         {
             TempData.Remove(ResultadoTempDataKey);
@@ -59,7 +56,6 @@ namespace AP.MVC.Controllers
             }
         }
 
-        // POST: OperadorPerdido/Responder
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Responder(ResponderRetoViewModel model)
@@ -180,10 +176,8 @@ namespace AP.MVC.Controllers
             }
         }
 
-        // GET: OperadorPerdido/Resultado
         public ActionResult Resultado()
         {
-            // Mantiene el resultado al refrescar.
             var model = TempData.Peek(ResultadoTempDataKey) as ResultadoJuegoViewModel;
             if (model == null)
                 return RedirectToAction("Jugar");

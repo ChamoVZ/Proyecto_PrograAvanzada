@@ -22,7 +22,6 @@ namespace AP.MVC.Controllers
             _foroBusiness = new ForoBusiness(_context);
         }
 
-        // GET: Foro
         public ActionResult Index(int pagina = 1, int tamanoPagina = 10)
         {
             var publicaciones = _foroBusiness.GetActivasRecientes(pagina, tamanoPagina);
@@ -42,13 +41,11 @@ namespace AP.MVC.Controllers
             return View(viewModels);
         }
 
-        // GET: Foro/Create
         public ActionResult Create()
         {
             return View(new PublicacionViewModel { Activo = true });
         }
 
-        // POST: Foro/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(PublicacionViewModel model)
@@ -66,7 +63,6 @@ namespace AP.MVC.Controllers
                 publicacion.UsuarioId = User.Identity.GetUserId();
                 publicacion.CreatedBy = User.Identity.Name;
 
-                // Save aplica reglas de negocio y arroja AppException si hay error
                 _foroBusiness.Save(publicacion);
                 
                 return RedirectToAction("Index");
@@ -83,7 +79,6 @@ namespace AP.MVC.Controllers
             }
         }
 
-        // GET: Foro/Details/5
         public ActionResult Details(int id)
         {
             var publicacion = _foroBusiness.GetPorId(id);
@@ -101,7 +96,6 @@ namespace AP.MVC.Controllers
             return View(MapToViewModel(publicacion, User.Identity.GetUserId(), User.IsInRole("Admin")));
         }
 
-        // GET: Foro/Edit/5
         public ActionResult Edit(int id)
         {
             var publicacion = _foroBusiness.GetPorId(id);
@@ -121,7 +115,6 @@ namespace AP.MVC.Controllers
             return View(MapToViewModel(publicacion, usuarioId, esAdmin));
         }
 
-        // POST: Foro/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(PublicacionViewModel model)
@@ -154,7 +147,6 @@ namespace AP.MVC.Controllers
             }
         }
 
-        // POST: Foro/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(

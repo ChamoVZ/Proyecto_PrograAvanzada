@@ -17,10 +17,6 @@ namespace AP.Repositories
     // SOLID: LSP - hereda el CRUD generico de RepositoryBase sin alterar su comportamiento.
     public class RepositorySolicitudTI : RepositoryBase<SolicitudTI>, IRepositorySolicitudTI
     {
-        public RepositorySolicitudTI()
-        {
-        }
-
         public RepositorySolicitudTI(MathemaXContext context) : base(context)
         {
         }

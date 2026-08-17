@@ -49,108 +49,129 @@
                     <p class="text-muted">Sea el primero en resolver un reto y aparecer en el marcador.</p>
                 </div>
             }
-            @Html.Partial("_Paginacion", Model.Ranking, new ViewDataDictionary
-            {
-                { "ParametroPagina", "paginaRanking" },
-                { "ParametroTamano", "tamanoRanking" }
-            })
+            <div id="ranking-paginacion">
+                @Html.Partial("_Paginacion", Model.Ranking, new ViewDataDictionary
+                {
+                    { "ParametroPagina", "paginaRanking" },
+                    { "ParametroTamano", "tamanoRanking" }
+                })
+            </div>
         </div>
     </div>
 
     <h3 class="mb-3">Su historial</h3>
-    <div class="card shadow-sm border-0 mb-4">
-        <div class="card-body">
-            @using (Html.BeginForm("Index", "Marcador", FormMethod.Get, new { @class = "row g-3 align-items-end" }))
+    <div class="mx-history-filter mb-4">
+        <div class="mx-history-filter-intro">
+            <span class="mx-history-filter-kicker">Búsqueda de partidas</span>
+            <h4>Ajuste su historial</h4>
+            <p>Combine resultado, modo y fechas para encontrar una partida.</p>
+        </div>
+        <div class="mx-history-filter-body">
+            @using (Html.BeginForm("Index", "Marcador", FormMethod.Get, new
+            {
+                id = "historial-filtros",
+                @class = "mx-history-filter-form",
+                data_url = Url.Action("Historial", "Marcador")
+            }))
             {
                 <input type="hidden" name="paginaRanking" value="@Model.Ranking.PaginaActual" />
                 <input type="hidden" name="tamanoRanking" value="@Model.Ranking.TamanoPagina" />
                 <input type="hidden" name="tamanoHistorial" value="@Model.Historial.TamanoPagina" />
 
-                <div class="col-md-3">
-                    @Html.LabelFor(m => m.Filtros.Resultado, new { @class = "form-label" })
+                <div class="mx-history-filter-field">
+                    @Html.LabelFor(m => m.Filtros.Resultado)
                     @Html.DropDownListFor(m => m.Filtros.Resultado, new[]
                     {
-                        new SelectListItem { Text = "Todos", Value = "" },
+                        new SelectListItem { Text = "Todos los resultados", Value = "" },
                         new SelectListItem { Text = "Solo acertados", Value = "true" },
                         new SelectListItem { Text = "Solo fallados", Value = "false" }
                     }, new { @class = "form-select" })
                 </div>
-                <div class="col-md-3">
-                    @Html.LabelFor(m => m.Filtros.Modo, new { @class = "form-label" })
+                <div class="mx-history-filter-field">
+                    @Html.LabelFor(m => m.Filtros.Modo)
                     @Html.DropDownListFor(m => m.Filtros.Modo, new[]
                     {
-                        new SelectListItem { Text = "Todos", Value = "" },
+                        new SelectListItem { Text = "Todos los modos", Value = "" },
                         new SelectListItem { Text = "Operador Perdido", Value = "1" },
                         new SelectListItem { Text = "Contrarreloj", Value = "2" },
                         new SelectListItem { Text = "Secuencias Lógicas", Value = "3" }
                     }, new { @class = "form-select" })
                 </div>
-                <div class="col-md-2">
-                    @Html.LabelFor(m => m.Filtros.Desde, new { @class = "form-label" })
+                <div class="mx-history-filter-field">
+                    @Html.LabelFor(m => m.Filtros.Desde)
                     @Html.TextBoxFor(m => m.Filtros.Desde, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
                 </div>
-                <div class="col-md-2">
-                    @Html.LabelFor(m => m.Filtros.Hasta, new { @class = "form-label" })
+                <div class="mx-history-filter-field">
+                    @Html.LabelFor(m => m.Filtros.Hasta)
                     @Html.TextBoxFor(m => m.Filtros.Hasta, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
                 </div>
-                <div class="col-md-2 d-flex gap-2">
-                    <button type="submit" class="btn btn-primary">Filtrar</button>
-                    <a href="@Url.Action("Index", new { tamanoRanking = Model.Ranking.TamanoPagina, tamanoHistorial = Model.Historial.TamanoPagina })" class="btn btn-outline-secondary">Limpiar</a>
+                <div class="mx-history-filter-actions">
+                    <button type="submit" class="mx-filter-submit">Aplicar filtros</button>
+                    <a id="historial-limpiar" href="@Url.Action("Index", new { tamanoRanking = Model.Ranking.TamanoPagina, tamanoHistorial = Model.Historial.TamanoPagina })" class="mx-filter-clear">Limpiar</a>
                 </div>
             }
         </div>
     </div>
 
     <div class="card shadow-sm border-0">
-        <div class="card-body">
-            @if (Model.Historial.Elementos.Any())
-            {
-                <div class="table-responsive">
-                    <table class="table align-middle mb-0">
-                        <thead>
-                            <tr>
-                                <th scope="col">Fecha</th>
-                                <th scope="col">Reto</th>
-                                <th scope="col">Modo</th>
-                                <th scope="col">Resultado</th>
-                                <th scope="col" class="text-end">Tiempo (s)</th>
-                                <th scope="col" class="text-end">XP</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var partida in Model.Historial.Elementos)
-                            {
+        <div id="historial-contenido" class="card-body" aria-live="polite">
+            <div id="historial-mensaje" class="alert alert-danger d-none" role="alert"></div>
+            <div id="historial-tabla">
+                @if (Model.Historial.Elementos.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table align-middle mb-0">
+                            <thead>
                                 <tr>
-                                    <td>@partida.FechaJuego.ToString("dd/MM/yyyy HH:mm")</td>
-                                    <td>@partida.TituloReto</td>
-                                    <td>@partida.Modo</td>
-                                    <td>
-                                        @if (partida.Acertado)
-                                        {
-                                            <span class="badge rounded-pill bg-success">Acertado</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="badge rounded-pill bg-secondary">Fallado</span>
-                                        }
-                                    </td>
-                                    <td class="text-end">@partida.TiempoEmpleadoSegundos</td>
-                                    <td class="text-end">@partida.XpGanado</td>
+                                    <th scope="col">Fecha</th>
+                                    <th scope="col">Reto</th>
+                                    <th scope="col">Modo</th>
+                                    <th scope="col">Resultado</th>
+                                    <th scope="col" class="text-end">Tiempo (s)</th>
+                                    <th scope="col" class="text-end">XP</th>
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            }
-            else
-            {
-                <p class="text-muted mb-0 text-center py-4">No hay partidas que coincidan con los filtros.</p>
-            }
-            @Html.Partial("_Paginacion", Model.Historial, new ViewDataDictionary
-            {
-                { "ParametroPagina", "paginaHistorial" },
-                { "ParametroTamano", "tamanoHistorial" }
-            })
+                            </thead>
+                            <tbody>
+                                @foreach (var partida in Model.Historial.Elementos)
+                                {
+                                    <tr>
+                                        <td>@partida.FechaJuego.ToString("dd/MM/yyyy HH:mm")</td>
+                                        <td>@partida.TituloReto</td>
+                                        <td>@partida.Modo</td>
+                                        <td>
+                                            @if (partida.Acertado)
+                                            {
+                                                <span class="badge rounded-pill bg-success">Acertado</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge rounded-pill bg-secondary">Fallado</span>
+                                            }
+                                        </td>
+                                        <td class="text-end">@partida.TiempoEmpleadoSegundos</td>
+                                        <td class="text-end">@partida.XpGanado</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted mb-0 text-center py-4">No hay partidas que coincidan con los filtros.</p>
+                }
+            </div>
+            <div id="historial-paginacion">
+                @Html.Partial("_Paginacion", Model.Historial, new ViewDataDictionary
+                {
+                    { "ParametroPagina", "paginaHistorial" },
+                    { "ParametroTamano", "tamanoHistorial" }
+                })
+            </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/marcadores")
+}

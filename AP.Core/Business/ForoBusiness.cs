@@ -13,11 +13,6 @@ namespace AP.Core.Business
         // SOLID: DIP - depende de la abstraccion IRepositoryPublicacion, no de la implementacion concreta.
         private readonly IRepositoryPublicacion _repository;
 
-        public ForoBusiness()
-        {
-            _repository = new RepositoryPublicacion();
-        }
-
         // Para compartir el contexto con otro Business dentro de la misma transaccion.
         public ForoBusiness(MathemaXContext context)
         {

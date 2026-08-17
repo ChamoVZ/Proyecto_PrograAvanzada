@@ -25,11 +25,9 @@ namespace AP.Tests
             public IEnumerable<Reto> GetActivosPorModo(ModoJuego modo) => new List<Reto>();
             public IEnumerable<Reto> GetPagina(int pagina, int tamanoPagina) => new List<Reto>();
             public int Contar() => 0;
-            public IEnumerable<Reto> GetAll() => new List<Reto>();
             public Reto GetById(int id) => Reto != null && Reto.RetoId == id ? Reto : null;
             public void Add(Reto entity) { }
             public void Update(Reto entity) { }
-            public void Save() { }
         }
 
         private class FakeRepositoryPartida : IRepositoryPartida
@@ -63,11 +61,9 @@ namespace AP.Tests
             }
             public IEnumerable<RankingUsuario> GetRankingGlobal(int pagina, int tamanoPagina) => new List<RankingUsuario>();
             public int ContarRankingGlobal() => 0;
-            public IEnumerable<Partida> GetAll() => new List<Partida>();
             public Partida GetById(int id) => null;
             public void Add(Partida entity) => Agregada = entity;
             public void Update(Partida entity) { }
-            public void Save() { }
 
             private IEnumerable<HistorialUsuario> FiltrarHistorial(
                 string usuarioId,

@@ -13,11 +13,6 @@ namespace AP.Core.Business
         // SOLID: DIP - depende de la abstraccion IRepositoryQueja, no de la implementacion concreta.
         private readonly IRepositoryQueja _repository;
 
-        public QuejaBusiness()
-        {
-            _repository = new RepositoryQueja();
-        }
-
         // Para compartir el contexto con otro Business dentro de la misma transaccion.
         public QuejaBusiness(MathemaXContext context)
         {

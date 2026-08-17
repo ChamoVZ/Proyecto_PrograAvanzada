@@ -1,4 +1,3 @@
-﻿@model AP.MVC.Models.IndexViewModel
 @{
     ViewBag.Title = "Mi cuenta";
 }
@@ -13,14 +12,7 @@
         <dl class="dl-horizontal">
             <dt>Contraseña:</dt>
             <dd>
-                @if (Model.HasPassword)
-                {
-                    @Html.ActionLink("Cambiar su contraseña", "ChangePassword")
-                }
-                else
-                {
-                    @Html.ActionLink("Crear una contraseña", "SetPassword")
-                }
+                @Html.ActionLink("Cambiar su contraseña", "ChangePassword")
             </dd>
         </dl>
     </div>

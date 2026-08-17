@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using AP.Core.Business;
+using AP.Core.Exceptions;
 using AP.Data;
 using AP.Data.Entities;
 using AP.Models.Juegos;
@@ -12,11 +13,9 @@ using Microsoft.AspNet.Identity.Owin;
 
 namespace AP.MVC.Controllers
 {
-    // Cualquier usuario autenticado puede ver los marcadores.
     [Authorize]
     public class MarcadorController : BaseController
     {
-        // El contexto es del controller: asi los dos repositorios comparten uno solo y se libera al final del request.
         private readonly MathemaXContext _context;
         private readonly PartidaBusiness _partidaBusiness;
 
@@ -33,7 +32,6 @@ namespace AP.MVC.Controllers
             _partidaBusiness = new PartidaBusiness(_context);
         }
 
-        // GET: Marcador
         public ActionResult Index(
             FiltroHistorialViewModel filtros,
             int paginaRanking = 1,
@@ -68,14 +66,7 @@ namespace AP.MVC.Controllers
                 posicion++;
             }
 
-            var historial = _partidaBusiness.GetHistorial(
-                User.Identity.GetUserId(),
-                filtros.Resultado,
-                filtros.Modo,
-                filtros.Desde,
-                filtros.Hasta,
-                paginaHistorial,
-                tamanoHistorial);
+            var historial = ObtenerHistorial(filtros, paginaHistorial, tamanoHistorial);
 
             var model = new MarcadoresPaginaViewModel
             {
@@ -87,18 +78,49 @@ namespace AP.MVC.Controllers
                     TotalRegistros = ranking.TotalRegistros,
                     TotalPaginas = ranking.TotalPaginas
                 },
-                Historial = new AP.Models.ResultadoPaginado<HistorialPartidaViewModel>
-                {
-                    Elementos = historial.Elementos.Select(MapToHistorialViewModel).ToList(),
-                    PaginaActual = historial.PaginaActual,
-                    TamanoPagina = historial.TamanoPagina,
-                    TotalRegistros = historial.TotalRegistros,
-                    TotalPaginas = historial.TotalPaginas
-                },
+                Historial = historial,
                 Filtros = filtros
             };
 
             return View(model);
+        }
+
+        [HttpGet]
+        public JsonResult Historial(
+            FiltroHistorialViewModel filtros,
+            int paginaHistorial = 1,
+            int tamanoHistorial = 10)
+        {
+            try
+            {
+                filtros = filtros ?? new FiltroHistorialViewModel();
+                var historial = ObtenerHistorial(filtros, paginaHistorial, tamanoHistorial);
+                Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                Response.Cache.SetNoStore();
+
+                return Json(new
+                {
+                    correcto = true,
+                    elementos = historial.Elementos.Select(partida => new
+                    {
+                        fechaJuego = partida.FechaJuego.ToString("dd/MM/yyyy HH:mm"),
+                        partida.TituloReto,
+                        partida.Modo,
+                        partida.Acertado,
+                        partida.TiempoEmpleadoSegundos,
+                        partida.XpGanado
+                    }),
+                    paginaActual = historial.PaginaActual,
+                    tamanoPagina = historial.TamanoPagina,
+                    totalRegistros = historial.TotalRegistros,
+                    totalPaginas = historial.TotalPaginas
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (AppException ex)
+            {
+                Response.StatusCode = 400;
+                return Json(new { correcto = false, mensaje = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         protected override void Dispose(bool disposing)
@@ -112,6 +134,30 @@ namespace AP.MVC.Controllers
         }
 
         #region Mapeo Manual
+
+        private AP.Models.ResultadoPaginado<HistorialPartidaViewModel> ObtenerHistorial(
+            FiltroHistorialViewModel filtros,
+            int pagina,
+            int tamanoPagina)
+        {
+            var historial = _partidaBusiness.GetHistorial(
+                User.Identity.GetUserId(),
+                filtros.Resultado,
+                filtros.Modo,
+                filtros.Desde,
+                filtros.Hasta,
+                pagina,
+                tamanoPagina);
+
+            return new AP.Models.ResultadoPaginado<HistorialPartidaViewModel>
+            {
+                Elementos = historial.Elementos.Select(MapToHistorialViewModel).ToList(),
+                PaginaActual = historial.PaginaActual,
+                TamanoPagina = historial.TamanoPagina,
+                TotalRegistros = historial.TotalRegistros,
+                TotalPaginas = historial.TotalPaginas
+            };
+        }
 
         private HistorialPartidaViewModel MapToHistorialViewModel(HistorialPartida entity)
         {

@@ -1,7 +1,7 @@
 ﻿-- MathemaX — Script de inicialización de base de datos
 -- ASP.NET MVC 5 + Entity Framework 6 + ASP.NET Identity 2
 -- Ejecutar en SQL Server Management Studio conectado a localhost
--- Los scripts de _db/ son la unica fuente del esquema; no correr Update-Database.
+-- Los scripts de _db/ son la única fuente del esquema; no correr Update-Database.
 -- Fecha: 2026-06-21
 
 USE master;
@@ -13,12 +13,13 @@ BEGIN
 END
 GO
 
+ALTER DATABASE [MathemaX] SET AUTO_CLOSE OFF;
+GO
+
 USE [MathemaX];
 GO
 
--- ============================================================
 -- TABLAS DE ASP.NET IDENTITY 2
--- ============================================================
 
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[AspNetRoles]') AND type = 'U')
 BEGIN
@@ -106,9 +107,7 @@ BEGIN
 END
 GO
 
--- ============================================================
--- TABLAS DE APLICACION
--- ============================================================
+-- TABLAS DE APLICACIÓN
 
 -- Retos: ejercicios matemáticos que el jugador resuelve
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Retoes]') AND type = 'U')
@@ -223,9 +222,7 @@ BEGIN
 END
 GO
 
--- ============================================================
 -- DATOS INICIALES
--- ============================================================
 
 -- Roles del sistema
 IF NOT EXISTS (SELECT 1 FROM [dbo].[AspNetRoles] WHERE [Name] = 'Admin')
@@ -238,9 +235,7 @@ BEGIN
 END
 GO
 
--- ============================================================
 -- USUARIO ADMIN DE EJEMPLO (Instrucciones)
--- ============================================================
 -- Para crear un usuario administrador de prueba sin quemar contraseñas en código:
 -- 1. Regístrese normalmente en la aplicación desde el navegador.
 -- 2. Busque el Id generado para su usuario en la tabla AspNetUsers.

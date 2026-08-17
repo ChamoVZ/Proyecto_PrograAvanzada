@@ -10,69 +10,33 @@ namespace AP.MVC.Controllers
     [Authorize]
     public class ManageController : Controller
     {
-        private ApplicationSignInManager _signInManager;
-        private ApplicationUserManager _userManager;
-
-        public ManageController()
-        {
-        }
-
-        public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
-        {
-            UserManager = userManager;
-            SignInManager = signInManager;
-        }
-
-        public ApplicationSignInManager SignInManager
+        private ApplicationSignInManager SignInManager
         {
             get
             {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-            }
-            private set
-            {
-                _signInManager = value;
+                return HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
         }
 
-        public ApplicationUserManager UserManager
+        private ApplicationUserManager UserManager
         {
             get
             {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
+                return HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             }
         }
 
-        //
-        // GET: /Manage/Index
-        public ActionResult Index(ManageMessageId? message)
+        public ActionResult Index(bool cambioExitoso = false)
         {
-            ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Se cambió su contraseña."
-                : message == ManageMessageId.SetPasswordSuccess ? "Se estableció su contraseña."
-                : message == ManageMessageId.Error ? "Ocurrió un error."
-                : "";
-
-            var model = new IndexViewModel
-            {
-                HasPassword = HasPassword()
-            };
-            return View(model);
+            ViewBag.StatusMessage = cambioExitoso ? "Se cambió su contraseña." : "";
+            return View();
         }
 
-        //
-        // GET: /Manage/ChangePassword
         public ActionResult ChangePassword()
         {
             return View(new ChangePasswordViewModel());
         }
 
-        //
-        // POST: /Manage/ChangePassword
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
@@ -89,53 +53,10 @@ namespace AP.MVC.Controllers
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 }
-                return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
+                return RedirectToAction("Index", new { cambioExitoso = true });
             }
             AddErrors(result);
             return View(model);
-        }
-
-        //
-        // GET: /Manage/SetPassword
-        public ActionResult SetPassword()
-        {
-            return View(new SetPasswordViewModel());
-        }
-
-        //
-        // POST: /Manage/SetPassword
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> SetPassword(SetPasswordViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var result = await UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
-                if (result.Succeeded)
-                {
-                    var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-                    if (user != null)
-                    {
-                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                    }
-                    return RedirectToAction("Index", new { Message = ManageMessageId.SetPasswordSuccess });
-                }
-                AddErrors(result);
-            }
-
-            // Si llegamos hasta aca algo fallo, se vuelve a mostrar el formulario
-            return View(model);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && _userManager != null)
-            {
-                _userManager.Dispose();
-                _userManager = null;
-            }
-
-            base.Dispose(disposing);
         }
 
 #region Helpers
@@ -146,23 +67,6 @@ namespace AP.MVC.Controllers
             {
                 ModelState.AddModelError("", error);
             }
-        }
-
-        private bool HasPassword()
-        {
-            var user = UserManager.FindById(User.Identity.GetUserId());
-            if (user != null)
-            {
-                return user.PasswordHash != null;
-            }
-            return false;
-        }
-
-        public enum ManageMessageId
-        {
-            ChangePasswordSuccess,
-            SetPasswordSuccess,
-            Error
         }
 
 #endregion

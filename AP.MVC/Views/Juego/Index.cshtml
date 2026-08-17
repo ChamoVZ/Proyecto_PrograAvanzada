@@ -14,29 +14,17 @@
         @foreach (var modo in Model)
         {
             <div class="col-md-4">
-                <div class="card h-100 shadow-sm border-0 mx-mode-card position-relative"
-                     style="@(modo.Disponible ? "" : "opacity: .6;")">
+                <div class="card h-100 shadow-sm border-0 mx-mode-card position-relative">
                     <div class="card-body text-center p-4">
                         <div class="mb-3">
                             <i class="bi @modo.Icono mx-mode-icon"></i>
                         </div>
                         <h4 class="card-title fw-bold">
-                            @if (modo.Disponible)
-                            {
-                                <a href="@Url.Action("Jugar", modo.Controlador)" class="stretched-link">
-                                    @modo.Nombre
-                                </a>
-                            }
-                            else
-                            {
+                            <a href="@Url.Action("Jugar", modo.Controlador)" class="stretched-link">
                                 @modo.Nombre
-                            }
+                            </a>
                         </h4>
                         <p class="card-text text-muted">@modo.Descripcion</p>
-                        @if (!modo.Disponible)
-                        {
-                            <span class="badge mx-badge-muted">Próximamente</span>
-                        }
                     </div>
                 </div>
             </div>

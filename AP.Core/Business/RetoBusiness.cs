@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using AP.Core.Exceptions;
 using AP.Data;
 using AP.Data.Entities;
@@ -14,11 +13,6 @@ namespace AP.Core.Business
         // SOLID: DIP - depende de la abstraccion IRepositoryReto, no de la implementacion concreta.
         private readonly IRepositoryReto _repositoryReto;
 
-        public RetoBusiness()
-        {
-            _repositoryReto = new RepositoryReto();
-        }
-
         // El contexto lo abre y lo libera el controller, para que no quede colgado tras el request.
         public RetoBusiness(MathemaXContext context)
         {
@@ -31,12 +25,9 @@ namespace AP.Core.Business
             _repositoryReto = repositoryReto;
         }
 
-        public IEnumerable<Reto> GetRetos(int id = 0)
+        public Reto GetRetoPorId(int id)
         {
-            if (id == 0)
-                return _repositoryReto.GetAll();
-
-            return new List<Reto> { _repositoryReto.GetById(id) };
+            return _repositoryReto.GetById(id);
         }
 
         public ResultadoPaginado<Reto> GetRetosPaginados(int pagina, int tamanoPagina)

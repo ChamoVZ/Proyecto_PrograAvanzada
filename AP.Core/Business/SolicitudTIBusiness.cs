@@ -13,11 +13,6 @@ namespace AP.Core.Business
         // SOLID: DIP - depende de la abstraccion IRepositorySolicitudTI, no de la implementacion concreta.
         private readonly IRepositorySolicitudTI _repository;
 
-        public SolicitudTIBusiness()
-        {
-            _repository = new RepositorySolicitudTI();
-        }
-
         // Para compartir el contexto con otro Business dentro de la misma transaccion.
         public SolicitudTIBusiness(MathemaXContext context)
         {

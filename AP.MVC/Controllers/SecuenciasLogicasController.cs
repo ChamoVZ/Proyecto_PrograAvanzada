@@ -21,7 +21,6 @@ namespace AP.MVC.Controllers
         private const string UltimoRetoSessionKey = "SecuenciasLogicas_UltimoRetoId";
         private const string ResultadoTempDataKey = "SecuenciasLogicas_Resultado";
 
-        // El contexto es del controller: asi los dos repositorios comparten uno solo y se libera al final del request.
         private readonly MathemaXContext _context;
         private readonly PartidaBusiness _juegoBusiness;
         private readonly ExperienciaBusiness _experienciaBusiness;
@@ -33,7 +32,6 @@ namespace AP.MVC.Controllers
             _experienciaBusiness = new ExperienciaBusiness();
         }
 
-        // GET: SecuenciasLogicas/Jugar
         public ActionResult Jugar()
         {
             TempData.Remove(ResultadoTempDataKey);
@@ -54,7 +52,6 @@ namespace AP.MVC.Controllers
             }
         }
 
-        // POST: SecuenciasLogicas/Responder
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Responder(ResponderSecuenciasLogicasViewModel model)
@@ -175,10 +172,8 @@ namespace AP.MVC.Controllers
             }
         }
 
-        // GET: SecuenciasLogicas/Resultado
         public ActionResult Resultado()
         {
-            // Mantiene el resultado al refrescar.
             var model = TempData.Peek(ResultadoTempDataKey) as ResultadoJuegoViewModel;
             if (model == null)
                 return RedirectToAction("Jugar");

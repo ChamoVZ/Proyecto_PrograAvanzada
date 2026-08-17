@@ -16,10 +16,6 @@ namespace AP.Repositories
     // SOLID: LSP - hereda el CRUD generico de RepositoryBase sin alterar su comportamiento.
     public class RepositoryReto : RepositoryBase<Reto>, IRepositoryReto
     {
-        public RepositoryReto()
-        {
-        }
-
         public RepositoryReto(MathemaXContext context) : base(context)
         {
         }

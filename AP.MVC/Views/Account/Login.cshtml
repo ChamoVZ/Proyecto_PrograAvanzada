@@ -54,7 +54,21 @@
 
                 <div class="auth-field">
                     @Html.LabelFor(m => m.Password)
-                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "••••••••" })
+                    <div class="auth-password-control">
+                        @Html.PasswordFor(m => m.Password, new
+                        {
+                            @class = "form-control",
+                            placeholder = "••••••••",
+                            autocomplete = "current-password"
+                        })
+                        <button type="button"
+                                class="auth-password-toggle"
+                                data-password-target="Password"
+                                aria-controls="Password"
+                                aria-pressed="false">
+                            Mostrar
+                        </button>
+                    </div>
                     @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                 </div>
 
@@ -77,4 +91,17 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        (function () {
+            var boton = document.querySelector("[data-password-target='Password']");
+            var campo = document.getElementById("Password");
+
+            boton.addEventListener("click", function () {
+                var mostrar = campo.type === "password";
+                campo.type = mostrar ? "text" : "password";
+                boton.textContent = mostrar ? "Ocultar" : "Mostrar";
+                boton.setAttribute("aria-pressed", mostrar ? "true" : "false");
+            });
+        })();
+    </script>
 }

@@ -13,7 +13,6 @@ namespace AP.MVC.Controllers
     [Authorize]
     public class SolicitudTIController : BaseController
     {
-        // El contexto es del controller: se abre uno solo por request y se libera al final.
         private readonly MathemaXContext _context;
         private readonly SolicitudTIBusiness _solicitudTIBusiness;
         private readonly ChatbotService _chatbotService;
@@ -25,7 +24,6 @@ namespace AP.MVC.Controllers
             _chatbotService = new ChatbotService();
         }
 
-        // GET: SolicitudTI
         public ActionResult Index(int pagina = 1, int tamanoPagina = 10)
         {
             var usuarioId = User.Identity.GetUserId();
@@ -48,7 +46,6 @@ namespace AP.MVC.Controllers
             return View(viewModels);
         }
 
-        // GET: SolicitudTI/Create
         public ActionResult Create()
         {
             var model = new SolicitudTIViewModel { Estado = (int)EstadoSolicitud.Abierta };
@@ -57,7 +54,6 @@ namespace AP.MVC.Controllers
             return View(model);
         }
 
-        // POST: SolicitudTI/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(SolicitudTIViewModel model)
@@ -92,7 +88,6 @@ namespace AP.MVC.Controllers
             }
         }
 
-        // GET: SolicitudTI/Edit/5
         public ActionResult Edit(int id)
         {
             var solicitud = _solicitudTIBusiness.GetPorId(id);
@@ -111,7 +106,6 @@ namespace AP.MVC.Controllers
             return View(MapToViewModel(solicitud, usuarioId, User.IsInRole("Admin")));
         }
 
-        // POST: SolicitudTI/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(SolicitudTIViewModel model)
@@ -146,7 +140,6 @@ namespace AP.MVC.Controllers
             }
         }
 
-        // POST: SolicitudTI/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(
@@ -164,7 +157,6 @@ namespace AP.MVC.Controllers
             return RedirectToAction("Index");
         }
 
-        // POST: SolicitudTI/CambiarEstado
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Support")]
