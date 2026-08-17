@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AP.Models.Soporte.SolicitudTIViewModel>
+﻿@model AP.Models.ResultadoPaginado<AP.Models.Soporte.SolicitudTIViewModel>
 
 @{
     ViewBag.Title = "Soporte TI";
@@ -19,9 +19,9 @@
     }
 
     <div class="row g-4">
-        @if (Model != null && Model.Any())
+        @if (Model != null && Model.Elementos.Any())
         {
-            foreach (var item in Model)
+            foreach (var item in Model.Elementos)
             {
                 <div class="col-md-12">
                     <div class="card shadow-sm border-0">
@@ -30,7 +30,7 @@
                                 <div>
                                     <h4 class="card-title fw-bold mx-card-title">@item.Asunto</h4>
                                     <h6 class="card-subtitle mb-3 text-muted">
-                                        <i class="bi bi-person-circle me-1"></i> @item.NombreSolicitante &bull;
+                                        <i class="bi bi-person-circle me-1"></i> @item.NombreSolicitante &middot;
                                         <i class="bi bi-calendar-event me-1"></i> @item.FechaCreacion.ToString("dd/MM/yyyy HH:mm")
                                     </h6>
                                 </div>
@@ -87,4 +87,9 @@
             </div>
         }
     </div>
+    @Html.Partial("_Paginacion", Model, new ViewDataDictionary
+    {
+        { "ParametroPagina", "pagina" },
+        { "ParametroTamano", "tamanoPagina" }
+    })
 </div>

@@ -17,11 +17,12 @@ namespace AP.Tests
             public Reto Actualizado;
 
             public IEnumerable<Reto> GetActivosPorModo(ModoJuego modo) => new List<Reto>();
+            public IEnumerable<Reto> GetPagina(int pagina, int tamanoPagina) => new List<Reto>();
+            public int Contar() => 0;
             public IEnumerable<Reto> GetAll() => new List<Reto>();
             public Reto GetById(int id) => null;
             public void Add(Reto entity) => Agregado = entity;
             public void Update(Reto entity) => Actualizado = entity;
-            public void Delete(int id) { }
             public void Save() { }
         }
 

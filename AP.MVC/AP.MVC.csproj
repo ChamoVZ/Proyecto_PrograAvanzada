@@ -252,6 +252,7 @@
     <Content Include="Views\Manage\SetPassword.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\_Paginacion.cshtml" />
     <Content Include="Views\OperadorPerdido\Jugar.cshtml" />
     <Content Include="Views\OperadorPerdido\Resultado.cshtml" />
     <Content Include="Views\Contrarreloj\Jugar.cshtml" />

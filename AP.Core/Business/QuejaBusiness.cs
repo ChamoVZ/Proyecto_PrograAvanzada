@@ -30,9 +30,14 @@ namespace AP.Core.Business
             _repository = repository;
         }
 
-        public IEnumerable<Queja> GetTodas()
+        public ResultadoPaginado<Queja> GetTodas(int pagina, int tamanoPagina)
         {
-            return _repository.GetActivas();
+            var total = _repository.ContarActivas();
+            return ResultadoPaginado<Queja>.Crear(
+                pagina,
+                tamanoPagina,
+                total,
+                _repository.GetActivas);
         }
 
         public Queja GetPorId(int id)
@@ -40,9 +45,15 @@ namespace AP.Core.Business
             return _repository.GetById(id);
         }
 
-        public IEnumerable<Queja> GetPorUsuario(string usuarioId)
+        public ResultadoPaginado<Queja> GetPorUsuario(string usuarioId, int pagina, int tamanoPagina)
         {
-            return _repository.GetPorUsuario(usuarioId);
+            var total = _repository.ContarPorUsuario(usuarioId);
+            return ResultadoPaginado<Queja>.Crear(
+                pagina,
+                tamanoPagina,
+                total,
+                (paginaActual, tamanoActual) =>
+                    _repository.GetPorUsuario(usuarioId, paginaActual, tamanoActual));
         }
 
         public void Save(Queja queja)

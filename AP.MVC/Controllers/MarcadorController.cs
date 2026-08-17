@@ -34,21 +34,27 @@ namespace AP.MVC.Controllers
         }
 
         // GET: Marcador
-        public ActionResult Index()
+        public ActionResult Index(
+            FiltroHistorialViewModel filtros,
+            int paginaRanking = 1,
+            int tamanoRanking = 10,
+            int paginaHistorial = 1,
+            int tamanoHistorial = 10)
         {
-            var ranking = _partidaBusiness.GetRankingGlobal().ToList();
+            filtros = filtros ?? new FiltroHistorialViewModel();
+            var ranking = _partidaBusiness.GetRankingGlobal(paginaRanking, tamanoRanking);
 
             // El ranking sale de Partidas (AP.Core), pero el nombre del jugador vive en
             // AspNetUsers, que solo es visible desde AP.MVC; por eso el cruce se hace aqui.
             // Los nombres se resuelven de una sola vez: uno por fila era una consulta por jugador.
-            var idsDelRanking = ranking.Select(r => r.UsuarioId).ToList();
+            var idsDelRanking = ranking.Elementos.Select(r => r.UsuarioId).ToList();
             var nombresPorId = UserManager.Users
                 .Where(u => idsDelRanking.Contains(u.Id))
                 .ToDictionary(u => u.Id, u => u.UserName);
 
             var marcadores = new List<MarcadorViewModel>();
-            int posicion = 1;
-            foreach (var fila in ranking)
+            var posicion = ((ranking.PaginaActual - 1) * ranking.TamanoPagina) + 1;
+            foreach (var fila in ranking.Elementos)
             {
                 string nombre;
                 marcadores.Add(new MarcadorViewModel
@@ -62,11 +68,37 @@ namespace AP.MVC.Controllers
                 posicion++;
             }
 
-            ViewBag.Historial = _partidaBusiness.GetHistorial(User.Identity.GetUserId())
-                .Select(MapToHistorialViewModel)
-                .ToList();
+            var historial = _partidaBusiness.GetHistorial(
+                User.Identity.GetUserId(),
+                filtros.Resultado,
+                filtros.Modo,
+                filtros.Desde,
+                filtros.Hasta,
+                paginaHistorial,
+                tamanoHistorial);
 
-            return View(marcadores);
+            var model = new MarcadoresPaginaViewModel
+            {
+                Ranking = new AP.Models.ResultadoPaginado<MarcadorViewModel>
+                {
+                    Elementos = marcadores,
+                    PaginaActual = ranking.PaginaActual,
+                    TamanoPagina = ranking.TamanoPagina,
+                    TotalRegistros = ranking.TotalRegistros,
+                    TotalPaginas = ranking.TotalPaginas
+                },
+                Historial = new AP.Models.ResultadoPaginado<HistorialPartidaViewModel>
+                {
+                    Elementos = historial.Elementos.Select(MapToHistorialViewModel).ToList(),
+                    PaginaActual = historial.PaginaActual,
+                    TamanoPagina = historial.TamanoPagina,
+                    TotalRegistros = historial.TotalRegistros,
+                    TotalPaginas = historial.TotalPaginas
+                },
+                Filtros = filtros
+            };
+
+            return View(model);
         }
 
         protected override void Dispose(bool disposing)
@@ -81,15 +113,30 @@ namespace AP.MVC.Controllers
 
         #region Mapeo Manual
 
-        private HistorialPartidaViewModel MapToHistorialViewModel(Partida entity)
+        private HistorialPartidaViewModel MapToHistorialViewModel(HistorialPartida entity)
         {
             return new HistorialPartidaViewModel
             {
                 FechaJuego = entity.FechaJuego,
                 Acertado = entity.Acertado,
                 TiempoEmpleadoSegundos = entity.TiempoEmpleadoSegundos,
-                XpGanado = entity.XpGanado
+                XpGanado = entity.XpGanado,
+                Modo = GetNombreModo(entity.Modo),
+                TituloReto = entity.TituloReto
             };
+        }
+
+        private string GetNombreModo(ModoJuego modo)
+        {
+            switch (modo)
+            {
+                case ModoJuego.OperadorPerdido:
+                    return "Operador Perdido";
+                case ModoJuego.SecuenciasLogicas:
+                    return "Secuencias Lógicas";
+                default:
+                    return "Contrarreloj";
+            }
         }
 
         #endregion

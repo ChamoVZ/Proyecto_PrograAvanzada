@@ -23,10 +23,17 @@ namespace AP.MVC.Controllers
         }
 
         // GET: Reto
-        public ActionResult Index()
+        public ActionResult Index(int pagina = 1, int tamanoPagina = 10)
         {
-            var retos = _retoBusiness.GetRetos();
-            var viewModels = retos.Select(MapToViewModel).ToList();
+            var retos = _retoBusiness.GetRetosPaginados(pagina, tamanoPagina);
+            var viewModels = new AP.Models.ResultadoPaginado<RetoViewModel>
+            {
+                Elementos = retos.Elementos.Select(MapToViewModel).ToList(),
+                PaginaActual = retos.PaginaActual,
+                TamanoPagina = retos.TamanoPagina,
+                TotalRegistros = retos.TotalRegistros,
+                TotalPaginas = retos.TotalPaginas
+            };
             
             return View(viewModels);
         }
@@ -113,7 +120,8 @@ namespace AP.MVC.Controllers
         // POST: Reto/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id)
+        public ActionResult Delete(
+            int id)
         {
             _retoBusiness.Desactivar(id);
             return RedirectToAction("Index");
@@ -138,12 +146,26 @@ namespace AP.MVC.Controllers
                 RetoId = entity.RetoId,
                 Titulo = entity.Titulo,
                 Modo = (int)entity.Modo,
+                NombreModo = GetNombreModo(entity.Modo),
                 Enunciado = entity.Enunciado,
                 RespuestaCorrecta = entity.RespuestaCorrecta,
                 Dificultad = entity.Dificultad,
                 TiempoLimiteSegundos = entity.TiempoLimiteSegundos,
                 Activo = entity.Activo
             };
+        }
+
+        private string GetNombreModo(ModoJuego modo)
+        {
+            switch (modo)
+            {
+                case ModoJuego.OperadorPerdido:
+                    return "Operador Perdido";
+                case ModoJuego.SecuenciasLogicas:
+                    return "Secuencias Lógicas";
+                default:
+                    return "Contrarreloj";
+            }
         }
 
         private Reto MapToEntity(RetoViewModel model)

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AP.Models.Juegos.RetoViewModel>
+﻿@model AP.Models.ResultadoPaginado<AP.Models.Juegos.RetoViewModel>
 
 @{
     ViewBag.Title = "Mantenimiento de Retos";
@@ -31,14 +31,14 @@
                 </tr>
             </thead>
             <tbody>
-                @if (Model != null && Model.Any())
+                @if (Model != null && Model.Elementos.Any())
                 {
-                    foreach (var item in Model)
+                    foreach (var item in Model.Elementos)
                     {
                         <tr>
                             <td>@Html.DisplayFor(modelItem => item.Titulo)</td>
                             <td>
-                                @(((AP.Data.Entities.ModoJuego)item.Modo).ToString())
+                                @item.NombreModo
                             </td>
                             <td>@item.Dificultad</td>
                             <td>@item.TiempoLimiteSegundos seg</td>
@@ -73,4 +73,9 @@
             </tbody>
         </table>
     </div>
+    @Html.Partial("_Paginacion", Model, new ViewDataDictionary
+    {
+        { "ParametroPagina", "pagina" },
+        { "ParametroTamano", "tamanoPagina" }
+    })
 </div>

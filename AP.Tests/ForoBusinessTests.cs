@@ -16,13 +16,21 @@ namespace AP.Tests
             public Publicacion Existente { get; set; }
             public Publicacion Agregada { get; private set; }
             public Publicacion Actualizada { get; private set; }
+            public int TotalActivas { get; set; }
+            public int PaginaSolicitada { get; private set; }
+            public int TamanoSolicitado { get; private set; }
 
-            public IEnumerable<Publicacion> GetActivasRecientes() => new List<Publicacion>();
+            public IEnumerable<Publicacion> GetActivasRecientes(int pagina, int tamanoPagina)
+            {
+                PaginaSolicitada = pagina;
+                TamanoSolicitado = tamanoPagina;
+                return new List<Publicacion>();
+            }
+            public int ContarActivas() => TotalActivas;
             public IEnumerable<Publicacion> GetAll() => new List<Publicacion>();
             public Publicacion GetById(int id) => Existente != null && Existente.PublicacionId == id ? Existente : null;
             public void Add(Publicacion entity) => Agregada = entity;
             public void Update(Publicacion entity) => Actualizada = entity;
-            public void Delete(int id) { }
             public void Save() { }
         }
 
@@ -186,6 +194,55 @@ namespace AP.Tests
 
             Assert.ThrowsExactly<AppException>(() => business.Desactivar(7, "usuario-2", false));
             Assert.IsNull(repositorio.Actualizada);
+        }
+
+        [TestMethod]
+        public void GetActivasRecientes_PaginaFueraDeRango_UsaLaUltima()
+        {
+            var repositorio = new FakeRepositoryPublicacion { TotalActivas = 21 };
+            var business = new ForoBusiness(repositorio);
+
+            var resultado = business.GetActivasRecientes(9, 10);
+
+            Assert.AreEqual(3, resultado.PaginaActual);
+            Assert.AreEqual(3, repositorio.PaginaSolicitada);
+        }
+
+        [TestMethod]
+        public void GetActivasRecientes_TamanoInvalido_UsaDiez()
+        {
+            var repositorio = new FakeRepositoryPublicacion { TotalActivas = 25 };
+            var business = new ForoBusiness(repositorio);
+
+            var resultado = business.GetActivasRecientes(1, 15);
+
+            Assert.AreEqual(10, resultado.TamanoPagina);
+            Assert.AreEqual(10, repositorio.TamanoSolicitado);
+        }
+
+        [TestMethod]
+        public void GetActivasRecientes_TamanoVeinte_UsaVeinte()
+        {
+            var repositorio = new FakeRepositoryPublicacion { TotalActivas = 25 };
+            var business = new ForoBusiness(repositorio);
+
+            var resultado = business.GetActivasRecientes(1, 20);
+
+            Assert.AreEqual(20, resultado.TamanoPagina);
+            Assert.AreEqual(20, repositorio.TamanoSolicitado);
+        }
+
+        [TestMethod]
+        [DataRow(20, 2)]
+        [DataRow(21, 3)]
+        public void GetActivasRecientes_CalculaTotalPaginas(int totalRegistros, int totalPaginas)
+        {
+            var repositorio = new FakeRepositoryPublicacion { TotalActivas = totalRegistros };
+            var business = new ForoBusiness(repositorio);
+
+            var resultado = business.GetActivasRecientes(1, 10);
+
+            Assert.AreEqual(totalPaginas, resultado.TotalPaginas);
         }
     }
 }

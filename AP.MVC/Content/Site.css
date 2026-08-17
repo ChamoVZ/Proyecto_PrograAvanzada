@@ -1,9 +1,6 @@
 ﻿@charset "UTF-8";
 
-/* =====================================================================
-   MathemaX — Site.css
-   Hoja base: tokens del sistema, layout sidebar + área principal
-   ===================================================================== */
+/* MathemaX — Site.css */
 
 /* ----- Variables del sistema de diseño -------------------------------- */
 :root {
@@ -76,9 +73,7 @@
     --bs-link-hover-color:var(--op-coral);
 }
 
-/* =====================================================================
-   RESET / BASE
-   ===================================================================== */
+/* Reset / base */
 *, *::before, *::after {
     box-sizing: border-box;
 }
@@ -95,11 +90,7 @@ h1, h2, h3, h4, .display {
     font-family: var(--font-display);
 }
 
-/* =====================================================================
-   COMPONENTES BOOTSTRAP
-   Botones, tablas y campos traen sus colores en variables propias, así
-   que reasignar las de :root no alcanza para teñirlos.
-   ===================================================================== */
+/* Componentes Bootstrap */
 .btn-primary {
     --bs-btn-color: var(--on-gold);
     --bs-btn-bg: var(--xp-gold);
@@ -194,17 +185,13 @@ h1, h2, h3, h4, .display {
     color: var(--ink-soft) !important;
 }
 
-/* =====================================================================
-   LAYOUT PRINCIPAL: sidebar + área principal
-   ===================================================================== */
+/* Layout principal: sidebar + área principal */
 .mx-app {
     display: flex;
     min-height: 100vh;
 }
 
-/* =====================================================================
-   SIDEBAR
-   ===================================================================== */
+/* Sidebar */
 .mx-sidebar {
     width: var(--sidebar-width);
     min-height: 100vh;
@@ -432,9 +419,7 @@ h1, h2, h3, h4, .display {
     padding: 0;
 }
 
-/* =====================================================================
-   OVERLAY (mobile — fondo oscuro al abrir sidebar)
-   ===================================================================== */
+/* Overlay móvil */
 .mx-sidebar-overlay {
     display: none;
     position: fixed;
@@ -447,9 +432,7 @@ h1, h2, h3, h4, .display {
     display: block;
 }
 
-/* =====================================================================
-   ÁREA PRINCIPAL (main wrapper)
-   ===================================================================== */
+/* Área principal */
 .mx-main-wrapper {
     margin-left: var(--sidebar-width);
     flex: 1;
@@ -530,9 +513,7 @@ h1, h2, h3, h4, .display {
     text-decoration: none;
 }
 
-/* =====================================================================
-   SIDEBAR COLAPSADO (desktop) — clase toggle en .mx-app
-   ===================================================================== */
+/* Sidebar colapsado */
 .sidebar-collapsed .mx-sidebar {
     width: var(--sidebar-collapsed-width);
 }
@@ -573,9 +554,7 @@ h1, h2, h3, h4, .display {
     display: none;
 }
 
-/* =====================================================================
-   ANÓNIMO — Sin sidebar
-   ===================================================================== */
+/* Anónimo sin sidebar */
 .mx-app-anonymous .mx-main-wrapper {
     margin-left: 0;
 }
@@ -598,9 +577,7 @@ h1, h2, h3, h4, .display {
     background: transparent;
 }
 
-/* =====================================================================
-   RESPONSIVE — mobile (< 768 px)
-   ===================================================================== */
+/* Responsive móvil */
 @media (max-width: 767.98px) {
     .mx-sidebar {
         transform: translateX(-100%);
@@ -628,9 +605,7 @@ h1, h2, h3, h4, .display {
     }
 }
 
-/* =====================================================================
-   UTILIDADES
-   ===================================================================== */
+/* Utilidades */
 .text-mono-label {
     font-family: var(--font-mono);
     font-size: 0.6875rem;
@@ -670,9 +645,7 @@ h1, h2, h3, h4, .display {
     box-shadow: 0 2px 0 var(--xp-gold-dark);
 }
 
-/* =====================================================================
-   LEGADO — compatibilidad con plantilla original
-   ===================================================================== */
+/* Legado */
 .body-content {
     padding: 1.5rem;
 }
@@ -681,9 +654,7 @@ h1, h2, h3, h4, .display {
     white-space: normal;
 }
 
-/* =====================================================================
-   LANDING PAGE (Home)
-   ===================================================================== */
+/* Landing page */
 .mx-hero {
     background-color: var(--board);
     color: var(--paper);
@@ -737,10 +708,7 @@ h1, h2, h3, h4, .display {
     color: var(--xp-gold-dark);
 }
 
-/* =====================================================================
-   UTILIDADES DE COLOR PARA LAS VISTAS
-   Existen para que ninguna vista escriba un color en style="..."
-   ===================================================================== */
+/* Utilidades de color para las vistas */
 .mx-section-title,
 .mx-card-title {
     color: var(--ink);

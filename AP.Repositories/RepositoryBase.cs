@@ -13,7 +13,6 @@ namespace AP.Repositories
         T GetById(int id);
         void Add(T entity);
         void Update(T entity);
-        void Delete(int id);
         void Save();
     }
 
@@ -51,14 +50,6 @@ namespace AP.Repositories
         public virtual void Update(T entity)
         {
             Context.Entry(entity).State = EntityState.Modified;
-            Save();
-        }
-
-        public virtual void Delete(int id)
-        {
-            var entity = GetById(id);
-            if (entity == null) return;
-            Context.Set<T>().Remove(entity);
             Save();
         }
 

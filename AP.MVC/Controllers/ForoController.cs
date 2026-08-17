@@ -23,12 +23,22 @@ namespace AP.MVC.Controllers
         }
 
         // GET: Foro
-        public ActionResult Index()
+        public ActionResult Index(int pagina = 1, int tamanoPagina = 10)
         {
-            var publicaciones = _foroBusiness.GetActivasRecientes();
+            var publicaciones = _foroBusiness.GetActivasRecientes(pagina, tamanoPagina);
             var usuarioId = User.Identity.GetUserId();
             var esAdmin = User.IsInRole("Admin");
-            var viewModels = publicaciones.Select(p => MapToViewModel(p, usuarioId, esAdmin)).ToList();
+            var viewModels = new AP.Models.ResultadoPaginado<PublicacionViewModel>
+            {
+                Elementos = publicaciones.Elementos
+                    .Select(p => MapToViewModel(p, usuarioId, esAdmin))
+                    .ToList(),
+                PaginaActual = publicaciones.PaginaActual,
+                TamanoPagina = publicaciones.TamanoPagina,
+                TotalRegistros = publicaciones.TotalRegistros,
+                TotalPaginas = publicaciones.TotalPaginas
+            };
+
             return View(viewModels);
         }
 
@@ -147,7 +157,8 @@ namespace AP.MVC.Controllers
         // POST: Foro/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id)
+        public ActionResult Delete(
+            int id)
         {
             try
             {

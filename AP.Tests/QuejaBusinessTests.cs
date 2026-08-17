@@ -16,13 +16,14 @@ namespace AP.Tests
             public Queja Agregada { get; private set; }
             public Queja Actualizada { get; private set; }
 
-            public IEnumerable<Queja> GetActivas() => new List<Queja>();
-            public IEnumerable<Queja> GetPorUsuario(string usuarioId) => new List<Queja>();
+            public IEnumerable<Queja> GetActivas(int pagina, int tamanoPagina) => new List<Queja>();
+            public int ContarActivas() => 0;
+            public IEnumerable<Queja> GetPorUsuario(string usuarioId, int pagina, int tamanoPagina) => new List<Queja>();
+            public int ContarPorUsuario(string usuarioId) => 0;
             public IEnumerable<Queja> GetAll() => new List<Queja>();
             public Queja GetById(int id) => Existente != null && Existente.QuejaId == id ? Existente : null;
             public void Add(Queja entity) => Agregada = entity;
             public void Update(Queja entity) => Actualizada = entity;
-            public void Delete(int id) { }
             public void Save() { }
         }
 

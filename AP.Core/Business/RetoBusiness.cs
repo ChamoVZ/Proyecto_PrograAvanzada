@@ -39,6 +39,16 @@ namespace AP.Core.Business
             return new List<Reto> { _repositoryReto.GetById(id) };
         }
 
+        public ResultadoPaginado<Reto> GetRetosPaginados(int pagina, int tamanoPagina)
+        {
+            var total = _repositoryReto.Contar();
+            return ResultadoPaginado<Reto>.Crear(
+                pagina,
+                tamanoPagina,
+                total,
+                _repositoryReto.GetPagina);
+        }
+
         public bool SaveOrUpdate(Reto reto)
         {
             // Regla de negocio: vive AQUÍ, no en el controller ni en la vista.

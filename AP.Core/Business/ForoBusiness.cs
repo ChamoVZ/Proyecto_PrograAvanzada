@@ -30,9 +30,14 @@ namespace AP.Core.Business
             _repository = repository;
         }
 
-        public IEnumerable<Publicacion> GetActivasRecientes()
+        public ResultadoPaginado<Publicacion> GetActivasRecientes(int pagina, int tamanoPagina)
         {
-            return _repository.GetActivasRecientes();
+            var total = _repository.ContarActivas();
+            return ResultadoPaginado<Publicacion>.Crear(
+                pagina,
+                tamanoPagina,
+                total,
+                _repository.GetActivasRecientes);
         }
 
         public Publicacion GetPorId(int id)

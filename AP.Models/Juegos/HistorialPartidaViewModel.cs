@@ -8,5 +8,7 @@ namespace AP.Models.Juegos
         public bool Acertado { get; set; }
         public int TiempoEmpleadoSegundos { get; set; }
         public int XpGanado { get; set; }
+        public string Modo { get; set; }
+        public string TituloReto { get; set; }
     }
 }

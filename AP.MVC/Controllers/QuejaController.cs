@@ -23,20 +23,26 @@ namespace AP.MVC.Controllers
         }
 
         // GET: Queja
-        public ActionResult Index()
+        public ActionResult Index(int pagina = 1, int tamanoPagina = 10)
         {
             var usuarioId = User.Identity.GetUserId();
 
             // Admin y Support ven todas las quejas; el jugador solo ve las suyas.
             var quejas = User.IsInRole("Admin") || User.IsInRole("Support")
-                ? _quejaBusiness.GetTodas()
-                : _quejaBusiness.GetPorUsuario(usuarioId);
+                ? _quejaBusiness.GetTodas(pagina, tamanoPagina)
+                : _quejaBusiness.GetPorUsuario(usuarioId, pagina, tamanoPagina);
 
             var esAdmin = User.IsInRole("Admin");
-            var viewModels = quejas
-                .OrderByDescending(q => q.FechaCreacion)
+            var viewModels = new AP.Models.ResultadoPaginado<QuejaViewModel>
+            {
+                Elementos = quejas.Elementos
                 .Select(q => MapToViewModel(q, usuarioId, esAdmin))
-                .ToList();
+                .ToList(),
+                PaginaActual = quejas.PaginaActual,
+                TamanoPagina = quejas.TamanoPagina,
+                TotalRegistros = quejas.TotalRegistros,
+                TotalPaginas = quejas.TotalPaginas
+            };
 
             return View(viewModels);
         }
@@ -141,7 +147,8 @@ namespace AP.MVC.Controllers
         // POST: Queja/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id)
+        public ActionResult Delete(
+            int id)
         {
             try
             {

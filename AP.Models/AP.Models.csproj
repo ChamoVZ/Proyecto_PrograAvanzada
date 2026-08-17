@@ -44,8 +44,10 @@
   <ItemGroup>
     <Compile Include="Buzon\QuejaViewModel.cs" />
     <Compile Include="Comunidad\PublicacionViewModel.cs" />
+    <Compile Include="Juegos\FiltroHistorialViewModel.cs" />
     <Compile Include="Juegos\HistorialPartidaViewModel.cs" />
     <Compile Include="Juegos\MarcadorViewModel.cs" />
+    <Compile Include="Juegos\MarcadoresPaginaViewModel.cs" />
     <Compile Include="Juegos\ModoJuegoViewModel.cs" />
     <Compile Include="Juegos\ResponderContrarrelojViewModel.cs" />
     <Compile Include="Juegos\ResponderRetoViewModel.cs" />
@@ -53,8 +55,15 @@
     <Compile Include="Juegos\ResultadoJuegoViewModel.cs" />
     <Compile Include="Juegos\RetoJuegoViewModel.cs" />
     <Compile Include="Juegos\RetoViewModel.cs" />
+    <Compile Include="ResultadoPaginado.cs" />
     <Compile Include="Soporte\SolicitudTIViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AP.Data\AP.Data.csproj">
+      <Project>{AF07FA5D-3F04-477B-BA72-5A02422B0BA9}</Project>
+      <Name>AP.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

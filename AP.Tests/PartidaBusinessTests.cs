@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using AP.Core.Business;
 using AP.Core.Business.Estrategias;
 using AP.Core.Exceptions;
@@ -11,31 +12,95 @@ namespace AP.Tests
     [TestClass]
     public class PartidaBusinessTests
     {
+        private class RegistroHistorial
+        {
+            public string UsuarioId { get; set; }
+            public HistorialUsuario Datos { get; set; }
+        }
+
         private class FakeRepositoryReto : IRepositoryReto
         {
             public Reto Reto { get; set; }
 
             public IEnumerable<Reto> GetActivosPorModo(ModoJuego modo) => new List<Reto>();
+            public IEnumerable<Reto> GetPagina(int pagina, int tamanoPagina) => new List<Reto>();
+            public int Contar() => 0;
             public IEnumerable<Reto> GetAll() => new List<Reto>();
             public Reto GetById(int id) => Reto != null && Reto.RetoId == id ? Reto : null;
             public void Add(Reto entity) { }
             public void Update(Reto entity) { }
-            public void Delete(int id) { }
             public void Save() { }
         }
 
         private class FakeRepositoryPartida : IRepositoryPartida
         {
             public Partida Agregada { get; private set; }
+            public List<RegistroHistorial> Historial { get; } = new List<RegistroHistorial>();
 
-            public IEnumerable<Partida> GetHistorialPorUsuario(string usuarioId) => new List<Partida>();
-            public IEnumerable<RankingUsuario> GetRankingGlobal() => new List<RankingUsuario>();
+            public IEnumerable<HistorialUsuario> GetHistorialPorUsuario(
+                string usuarioId,
+                bool? resultado,
+                ModoJuego? modo,
+                System.DateTime? desde,
+                System.DateTime? hasta,
+                int pagina,
+                int tamanoPagina)
+            {
+                return FiltrarHistorial(usuarioId, resultado, modo, desde, hasta)
+                    .OrderByDescending(h => h.FechaJuego)
+                    .Skip((pagina - 1) * tamanoPagina)
+                    .Take(tamanoPagina)
+                    .ToList();
+            }
+            public int ContarHistorialPorUsuario(
+                string usuarioId,
+                bool? resultado,
+                ModoJuego? modo,
+                System.DateTime? desde,
+                System.DateTime? hasta)
+            {
+                return FiltrarHistorial(usuarioId, resultado, modo, desde, hasta).Count();
+            }
+            public IEnumerable<RankingUsuario> GetRankingGlobal(int pagina, int tamanoPagina) => new List<RankingUsuario>();
+            public int ContarRankingGlobal() => 0;
             public IEnumerable<Partida> GetAll() => new List<Partida>();
             public Partida GetById(int id) => null;
             public void Add(Partida entity) => Agregada = entity;
             public void Update(Partida entity) { }
-            public void Delete(int id) { }
             public void Save() { }
+
+            private IEnumerable<HistorialUsuario> FiltrarHistorial(
+                string usuarioId,
+                bool? resultado,
+                ModoJuego? modo,
+                System.DateTime? desde,
+                System.DateTime? hasta)
+            {
+                var query = Historial.Where(h => h.UsuarioId == usuarioId);
+
+                if (resultado.HasValue)
+                {
+                    query = query.Where(h => h.Datos.Acertado == resultado.Value);
+                }
+
+                if (modo.HasValue)
+                {
+                    query = query.Where(h => h.Datos.Modo == modo.Value);
+                }
+
+                if (desde.HasValue)
+                {
+                    query = query.Where(h => h.Datos.FechaJuego >= desde.Value.Date);
+                }
+
+                if (hasta.HasValue)
+                {
+                    var hastaExclusiva = hasta.Value.Date.AddDays(1);
+                    query = query.Where(h => h.Datos.FechaJuego < hastaExclusiva);
+                }
+
+                return query.Select(h => h.Datos);
+            }
         }
 
         private static PartidaBusiness CrearBusiness(Reto reto, FakeRepositoryPartida partidas)
@@ -44,6 +109,31 @@ namespace AP.Tests
                 new FakeRepositoryReto { Reto = reto },
                 partidas,
                 new IModoJuegoStrategy[] { new ContrarrelojStrategy() });
+        }
+
+        private static PartidaBusiness CrearBusinessHistorial(FakeRepositoryPartida partidas)
+        {
+            return new PartidaBusiness(new FakeRepositoryReto(), partidas);
+        }
+
+        private static RegistroHistorial NuevoRegistro(
+            string usuarioId,
+            bool acertado,
+            ModoJuego modo,
+            System.DateTime fecha,
+            string titulo)
+        {
+            return new RegistroHistorial
+            {
+                UsuarioId = usuarioId,
+                Datos = new HistorialUsuario
+                {
+                    FechaJuego = fecha,
+                    Acertado = acertado,
+                    Modo = modo,
+                    TituloReto = titulo
+                }
+            };
         }
 
         [TestMethod]
@@ -107,6 +197,108 @@ namespace AP.Tests
             Assert.ThrowsExactly<AppException>(() =>
                 business.ResolverReto(10, "usuario-1", "*", 10, ModoJuego.Contrarreloj));
             Assert.IsNull(partidas.Agregada);
+        }
+
+        [TestMethod]
+        public void GetHistorial_FiltroPorResultado_DevuelveSoloAcertadas()
+        {
+            var repositorio = new FakeRepositoryPartida();
+            repositorio.Historial.Add(NuevoRegistro("usuario-1", true, ModoJuego.OperadorPerdido, System.DateTime.Today, "Acierto"));
+            repositorio.Historial.Add(NuevoRegistro("usuario-1", false, ModoJuego.OperadorPerdido, System.DateTime.Today, "Fallo"));
+            var business = CrearBusinessHistorial(repositorio);
+
+            var resultado = business.GetHistorial("usuario-1", true, null, null, null, 1, 10);
+
+            Assert.AreEqual(1, resultado.TotalRegistros);
+            Assert.IsTrue(resultado.Elementos.All(h => h.Acertado));
+        }
+
+        [TestMethod]
+        public void GetHistorial_FiltroPorModo_DevuelveSoloElModoElegido()
+        {
+            var repositorio = new FakeRepositoryPartida();
+            repositorio.Historial.Add(NuevoRegistro("usuario-1", true, ModoJuego.Contrarreloj, System.DateTime.Today, "Contrarreloj"));
+            repositorio.Historial.Add(NuevoRegistro("usuario-1", true, ModoJuego.SecuenciasLogicas, System.DateTime.Today, "Secuencia"));
+            var business = CrearBusinessHistorial(repositorio);
+
+            var resultado = business.GetHistorial(
+                "usuario-1",
+                null,
+                ModoJuego.SecuenciasLogicas,
+                null,
+                null,
+                1,
+                10);
+
+            Assert.AreEqual(1, resultado.TotalRegistros);
+            Assert.AreEqual(ModoJuego.SecuenciasLogicas, resultado.Elementos.Single().Modo);
+        }
+
+        [TestMethod]
+        public void GetHistorial_RangoInvertido_LanzaExcepcion()
+        {
+            var business = CrearBusinessHistorial(new FakeRepositoryPartida());
+
+            Assert.ThrowsExactly<AppException>(() => business.GetHistorial(
+                "usuario-1",
+                null,
+                null,
+                new System.DateTime(2026, 8, 18),
+                new System.DateTime(2026, 8, 17),
+                1,
+                10));
+        }
+
+        [TestMethod]
+        public void GetHistorial_FechaHasta_IncluyeTodoElDia()
+        {
+            var repositorio = new FakeRepositoryPartida();
+            repositorio.Historial.Add(NuevoRegistro(
+                "usuario-1",
+                true,
+                ModoJuego.Contrarreloj,
+                new System.DateTime(2026, 8, 17, 23, 59, 59),
+                "Dentro"));
+            repositorio.Historial.Add(NuevoRegistro(
+                "usuario-1",
+                true,
+                ModoJuego.Contrarreloj,
+                new System.DateTime(2026, 8, 18, 0, 0, 0),
+                "Fuera"));
+            var business = CrearBusinessHistorial(repositorio);
+
+            var resultado = business.GetHistorial(
+                "usuario-1",
+                null,
+                null,
+                null,
+                new System.DateTime(2026, 8, 17),
+                1,
+                10);
+
+            Assert.AreEqual(1, resultado.TotalRegistros);
+            Assert.AreEqual("Dentro", resultado.Elementos.Single().TituloReto);
+        }
+
+        [TestMethod]
+        public void GetHistorial_FiltroNoIncluyePartidasDeOtroUsuario()
+        {
+            var repositorio = new FakeRepositoryPartida();
+            repositorio.Historial.Add(NuevoRegistro("usuario-1", true, ModoJuego.OperadorPerdido, System.DateTime.Today, "Propia"));
+            repositorio.Historial.Add(NuevoRegistro("usuario-2", true, ModoJuego.OperadorPerdido, System.DateTime.Today, "Ajena"));
+            var business = CrearBusinessHistorial(repositorio);
+
+            var resultado = business.GetHistorial(
+                "usuario-1",
+                true,
+                ModoJuego.OperadorPerdido,
+                null,
+                null,
+                1,
+                10);
+
+            Assert.AreEqual(1, resultado.TotalRegistros);
+            Assert.AreEqual("Propia", resultado.Elementos.Single().TituloReto);
         }
     }
 }

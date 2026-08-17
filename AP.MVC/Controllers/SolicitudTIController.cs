@@ -26,18 +26,24 @@ namespace AP.MVC.Controllers
         }
 
         // GET: SolicitudTI
-        public ActionResult Index()
+        public ActionResult Index(int pagina = 1, int tamanoPagina = 10)
         {
             var usuarioId = User.Identity.GetUserId();
             var solicitudes = User.IsInRole("Admin") || User.IsInRole("Support")
-                ? _solicitudTIBusiness.GetTodas()
-                : _solicitudTIBusiness.GetPorUsuario(usuarioId);
+                ? _solicitudTIBusiness.GetTodas(pagina, tamanoPagina)
+                : _solicitudTIBusiness.GetPorUsuario(usuarioId, pagina, tamanoPagina);
 
             var esAdmin = User.IsInRole("Admin");
-            var viewModels = solicitudes
-                .OrderByDescending(s => s.FechaCreacion)
+            var viewModels = new AP.Models.ResultadoPaginado<SolicitudTIViewModel>
+            {
+                Elementos = solicitudes.Elementos
                 .Select(s => MapToViewModel(s, usuarioId, esAdmin))
-                .ToList();
+                .ToList(),
+                PaginaActual = solicitudes.PaginaActual,
+                TamanoPagina = solicitudes.TamanoPagina,
+                TotalRegistros = solicitudes.TotalRegistros,
+                TotalPaginas = solicitudes.TotalPaginas
+            };
 
             return View(viewModels);
         }
@@ -143,7 +149,8 @@ namespace AP.MVC.Controllers
         // POST: SolicitudTI/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id)
+        public ActionResult Delete(
+            int id)
         {
             try
             {
