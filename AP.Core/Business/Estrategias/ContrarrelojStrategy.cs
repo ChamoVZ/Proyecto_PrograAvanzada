@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using AP.Data.Entities;
 
 namespace AP.Core.Business.Estrategias

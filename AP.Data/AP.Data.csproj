@@ -55,41 +55,10 @@
     <Compile Include="Entities\Reto.cs" />
     <Compile Include="Entities\SolicitudTI.cs" />
     <Compile Include="MathemaXContext.cs" />
-    <Compile Include="Migrations\202606100557149_Inicial.cs" />
-    <Compile Include="Migrations\202606100557149_Inicial.Designer.cs">
-      <DependentUpon>202606100557149_Inicial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202607060454319_InicializarForo.cs" />
-    <Compile Include="Migrations\202607060454319_InicializarForo.Designer.cs">
-      <DependentUpon>202607060454319_InicializarForo.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202607060547568_InicializarSolicitudTI.cs" />
-    <Compile Include="Migrations\202607060547568_InicializarSolicitudTI.Designer.cs">
-      <DependentUpon>202607060547568_InicializarSolicitudTI.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202607110533551_InicializarQueja.cs" />
-    <Compile Include="Migrations\202607110533551_InicializarQueja.Designer.cs">
-      <DependentUpon>202607110533551_InicializarQueja.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\202606100557149_Inicial.resx">
-      <DependentUpon>202606100557149_Inicial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202607060454319_InicializarForo.resx">
-      <DependentUpon>202607060454319_InicializarForo.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202607060547568_InicializarSolicitudTI.resx">
-      <DependentUpon>202607060547568_InicializarSolicitudTI.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202607110533551_InicializarQueja.resx">
-      <DependentUpon>202607110533551_InicializarQueja.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\EntityFramework.6.5.1\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" />

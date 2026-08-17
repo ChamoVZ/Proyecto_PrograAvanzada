@@ -1,4 +1,4 @@
-using AP.Core.Business.Estrategias;
+﻿using AP.Core.Business.Estrategias;
 using AP.Data.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

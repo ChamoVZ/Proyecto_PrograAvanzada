@@ -24,10 +24,10 @@ Plataforma web de agilidad mental y ejercicios matemáticos. Proyecto final del 
 
 ```
 AP.sln
-├── AP.Data          → entidades EF, DbContext, migraciones
+├── AP.Data          → entidades EF y DbContext
 ├── AP.Repositories  → patrón repositorio (genérico + específicos)
 ├── AP.Core          → lógica de negocio, excepciones, validaciones
-├── AP.Services      → servicios auxiliares (email, chatbot)
+├── AP.Services      → servicios auxiliares (chatbot de soporte)
 ├── AP.Models        → ViewModels y DTOs para las vistas
 ├── AP.MVC           → controllers, vistas Razor, Identity, configuración
 └── AP.Tests         → pruebas unitarias con MSTest
@@ -59,6 +59,8 @@ Abrir SQL Server Management Studio, conectarse a `localhost` y ejecutar los scri
 1) _db/MathemaX_Init.sql                        → crea la base MathemaX con las tablas base y datos de ejemplo
 2) _db/scripts/2026-07-12_experiencia_y_retos.sql → agrega columnas de experiencia (ExperienciaTotal, Nivel) y siembra retos de los modos de juego
 3) _db/scripts/2026-07-27_desactivar_retos_duplicados.sql → desactiva retos duplicados de un seed viejo (en una base nueva no hace nada)
+4) _db/scripts/2026-08-12_activo_en_quejas_y_solicitudes.sql → agrega la columna Activo a Quejas y SolicitudTIs, para el borrado lógico
+5) _db/scripts/2026-08-16_retos_variados_por_modo.sql → carga 25 retos más, para que los tres modos tengan variedad en las cinco dificultades
 ```
 
 El segundo script valida que el primero ya se haya corrido, así que no se puede ejecutar solo. Las columnas de experiencia se agregan por script porque viven en la tabla de Identity (`AspNetUsers`), que no usa el inicializador de EF.
@@ -90,9 +92,3 @@ Si SQL Server usa instancia con nombre: `Data Source=.\SQLEXPRESS`
 **5. Correr el proyecto**
 
 Presionar `F5` o el botón de inicio en Visual Studio.
-
----
-
-Para el flujo de trabajo con Git ver: [`_documentos/FLUJO_GIT.md`](_documentos/FLUJO_GIT.md)
-
-Para el estado del proyecto ver: [`BITACORA.md`](BITACORA.md)

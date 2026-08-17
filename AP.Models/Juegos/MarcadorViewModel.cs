@@ -1,4 +1,4 @@
-namespace AP.Models.Juegos
+﻿namespace AP.Models.Juegos
 {
     public class MarcadorViewModel
     {

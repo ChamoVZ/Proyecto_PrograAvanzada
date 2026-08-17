@@ -1,4 +1,4 @@
-using AP.Data.Entities;
+﻿using AP.Data.Entities;
 
 namespace AP.Core.Business.Estrategias
 {

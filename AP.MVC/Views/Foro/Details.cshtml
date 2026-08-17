@@ -1,5 +1,4 @@
 ﻿@model AP.Models.Comunidad.PublicacionViewModel
-@using Microsoft.AspNet.Identity
 
 @{
     ViewBag.Title = "Detalle de Publicación";
@@ -10,9 +9,9 @@
         <div class="col-md-8">
             <div class="card shadow-sm border-0">
                 <div class="card-body p-4">
-                    <h3 class="card-title fw-bold" style="color: var(--color-ink);">@Model.Titulo</h3>
+                    <h3 class="card-title fw-bold mx-card-title">@Model.Titulo</h3>
                     <h6 class="card-subtitle mb-3 text-muted">
-                        <i class="bi bi-person-circle me-1"></i> @Model.NombreAutor &bull;
+                        <i class="bi bi-person-circle me-1"></i> @Model.NombreAutor &middot;
                         <i class="bi bi-calendar-event me-1"></i> @Model.FechaPublicacion.ToString("dd/MM/yyyy HH:mm")
                     </h6>
                     <hr />
@@ -20,7 +19,7 @@
                 </div>
                 <div class="card-footer bg-white border-top-0 d-flex justify-content-end gap-2 pb-3">
                     <a href="@Url.Action("Index")" class="btn btn-secondary">Volver</a>
-                    @if (Model.UsuarioId == User.Identity.GetUserId() || User.IsInRole("Admin"))
+                    @if (Model.PuedeModificar)
                     {
                         <a href="@Url.Action("Edit", new { id = Model.PublicacionId })" class="btn btn-outline-primary">Editar</a>
                         using (Html.BeginForm("Delete", "Foro", new { id = Model.PublicacionId }, FormMethod.Post, new { onsubmit = "return confirm('¿Eliminar esta publicación?');" }))

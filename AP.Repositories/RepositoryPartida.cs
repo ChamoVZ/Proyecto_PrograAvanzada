@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using AP.Data;
 using AP.Data.Entities;
@@ -14,33 +14,81 @@ namespace AP.Repositories
         public int Aciertos { get; set; }
     }
 
+    public class HistorialUsuario
+    {
+        public System.DateTime FechaJuego { get; set; }
+        public bool Acertado { get; set; }
+        public int TiempoEmpleadoSegundos { get; set; }
+        public int XpGanado { get; set; }
+        public ModoJuego Modo { get; set; }
+        public string TituloReto { get; set; }
+    }
+
     // SOLID: ISP - contrato especifico de partidas; solo expone el historial y el ranking que su cliente necesita.
     public interface IRepositoryPartida : IRepositoryBase<Partida>
     {
-        IEnumerable<Partida> GetHistorialPorUsuario(string usuarioId);
-        IEnumerable<RankingUsuario> GetRankingGlobal();
+        IEnumerable<HistorialUsuario> GetHistorialPorUsuario(
+            string usuarioId,
+            bool? resultado,
+            ModoJuego? modo,
+            System.DateTime? desde,
+            System.DateTime? hasta,
+            int pagina,
+            int tamanoPagina);
+        int ContarHistorialPorUsuario(
+            string usuarioId,
+            bool? resultado,
+            ModoJuego? modo,
+            System.DateTime? desde,
+            System.DateTime? hasta);
+        IEnumerable<RankingUsuario> GetRankingGlobal(int pagina, int tamanoPagina);
+        int ContarRankingGlobal();
     }
 
     // SOLID: LSP - hereda el CRUD generico de RepositoryBase sin alterar su comportamiento.
     public class RepositoryPartida : RepositoryBase<Partida>, IRepositoryPartida
     {
-        public RepositoryPartida()
-        {
-        }
-
         public RepositoryPartida(MathemaXContext context) : base(context)
         {
         }
 
-        public IEnumerable<Partida> GetHistorialPorUsuario(string usuarioId)
+        public IEnumerable<HistorialUsuario> GetHistorialPorUsuario(
+            string usuarioId,
+            bool? resultado,
+            ModoJuego? modo,
+            System.DateTime? desde,
+            System.DateTime? hasta,
+            int pagina,
+            int tamanoPagina)
         {
-            return Context.Partidas
-                .Where(p=>p.UsuarioId == usuarioId)
-                .OrderByDescending(p=>p.FechaJuego)
+            return FiltrarHistorial(usuarioId, resultado, modo, desde, hasta)
+                .OrderByDescending(p => p.FechaJuego)
+                .ThenByDescending(p => p.PartidaId)
+                .Skip((pagina - 1) * tamanoPagina)
+                .Take(tamanoPagina)
+                .Select(p => new HistorialUsuario
+                {
+                    FechaJuego = p.FechaJuego,
+                    Acertado = p.Acertado,
+                    TiempoEmpleadoSegundos = p.TiempoEmpleadoSegundos,
+                    XpGanado = p.XpGanado,
+                    Modo = p.Reto.Modo,
+                    TituloReto = p.Reto.Titulo
+                })
                 .ToList();
         }
 
-        public IEnumerable<RankingUsuario> GetRankingGlobal()
+        public int ContarHistorialPorUsuario(
+            string usuarioId,
+            bool? resultado,
+            ModoJuego? modo,
+            System.DateTime? desde,
+            System.DateTime? hasta)
+        {
+            return FiltrarHistorial(usuarioId, resultado, modo, desde, hasta).Count();
+        }
+
+        public IEnumerable<RankingUsuario> GetRankingGlobal(int pagina, int tamanoPagina)
         {
             return Context.Partidas
                 .GroupBy(p => p.UsuarioId)
@@ -52,7 +100,49 @@ namespace AP.Repositories
                     Aciertos = g.Sum(p => p.Acertado ? 1 : 0)
                 })
                 .OrderByDescending(r => r.ExperienciaTotal)
+                .ThenBy(r => r.UsuarioId)
+                .Skip((pagina - 1) * tamanoPagina)
+                .Take(tamanoPagina)
                 .ToList();
+        }
+
+        public int ContarRankingGlobal()
+        {
+            return Context.Partidas.Select(p => p.UsuarioId).Distinct().Count();
+        }
+
+        private IQueryable<Partida> FiltrarHistorial(
+            string usuarioId,
+            bool? resultado,
+            ModoJuego? modo,
+            System.DateTime? desde,
+            System.DateTime? hasta)
+        {
+            var query = Context.Partidas.Where(p => p.UsuarioId == usuarioId);
+
+            if (resultado.HasValue)
+            {
+                query = query.Where(p => p.Acertado == resultado.Value);
+            }
+
+            if (modo.HasValue)
+            {
+                query = query.Where(p => p.Reto.Modo == modo.Value);
+            }
+
+            if (desde.HasValue)
+            {
+                var desdeInclusive = desde.Value.Date;
+                query = query.Where(p => p.FechaJuego >= desdeInclusive);
+            }
+
+            if (hasta.HasValue)
+            {
+                var hastaExclusiva = hasta.Value.Date.AddDays(1);
+                query = query.Where(p => p.FechaJuego < hastaExclusiva);
+            }
+
+            return query;
         }
     }
 }

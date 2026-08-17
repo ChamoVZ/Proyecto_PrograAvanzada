@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
 using AP.Core.Business;
+using AP.Data;
 using AP.Data.Entities;
 using AP.Models.Comunidad;
 using Microsoft.AspNet.Identity;
@@ -11,28 +12,40 @@ namespace AP.MVC.Controllers
     [Authorize]
     public class ForoController : BaseController
     {
+        // El contexto es del controller: se abre uno solo por request y se libera al final.
+        private readonly MathemaXContext _context;
         private readonly ForoBusiness _foroBusiness;
-        // Para inyectar el repositorio manualmente como en Reto
+
         public ForoController()
         {
-            _foroBusiness = new ForoBusiness();
+            _context = new MathemaXContext();
+            _foroBusiness = new ForoBusiness(_context);
         }
 
-        // GET: Foro
-        public ActionResult Index()
+        public ActionResult Index(int pagina = 1, int tamanoPagina = 10)
         {
-            var publicaciones = _foroBusiness.GetActivasRecientes();
-            var viewModels = publicaciones.Select(MapToViewModel).ToList();
+            var publicaciones = _foroBusiness.GetActivasRecientes(pagina, tamanoPagina);
+            var usuarioId = User.Identity.GetUserId();
+            var esAdmin = User.IsInRole("Admin");
+            var viewModels = new AP.Models.ResultadoPaginado<PublicacionViewModel>
+            {
+                Elementos = publicaciones.Elementos
+                    .Select(p => MapToViewModel(p, usuarioId, esAdmin))
+                    .ToList(),
+                PaginaActual = publicaciones.PaginaActual,
+                TamanoPagina = publicaciones.TamanoPagina,
+                TotalRegistros = publicaciones.TotalRegistros,
+                TotalPaginas = publicaciones.TotalPaginas
+            };
+
             return View(viewModels);
         }
 
-        // GET: Foro/Create
         public ActionResult Create()
         {
             return View(new PublicacionViewModel { Activo = true });
         }
 
-        // POST: Foro/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(PublicacionViewModel model)
@@ -50,7 +63,6 @@ namespace AP.MVC.Controllers
                 publicacion.UsuarioId = User.Identity.GetUserId();
                 publicacion.CreatedBy = User.Identity.Name;
 
-                // Save aplica reglas de negocio y arroja AppException si hay error
                 _foroBusiness.Save(publicacion);
                 
                 return RedirectToAction("Index");
@@ -67,7 +79,6 @@ namespace AP.MVC.Controllers
             }
         }
 
-        // GET: Foro/Details/5
         public ActionResult Details(int id)
         {
             var publicacion = _foroBusiness.GetPorId(id);
@@ -76,10 +87,15 @@ namespace AP.MVC.Controllers
                 return HttpNotFound();
             }
 
-            return View(MapToViewModel(publicacion));
+            // Una publicación desactivada no debe seguir siendo visible por URL directa, salvo para moderación.
+            if (!publicacion.Activo && !User.IsInRole("Admin"))
+            {
+                return HttpNotFound();
+            }
+
+            return View(MapToViewModel(publicacion, User.Identity.GetUserId(), User.IsInRole("Admin")));
         }
 
-        // GET: Foro/Edit/5
         public ActionResult Edit(int id)
         {
             var publicacion = _foroBusiness.GetPorId(id);
@@ -88,16 +104,17 @@ namespace AP.MVC.Controllers
                 return HttpNotFound();
             }
 
-            if (!PuedeModificar(publicacion))
+            var usuarioId = User.Identity.GetUserId();
+            var esAdmin = User.IsInRole("Admin");
+            if (!_foroBusiness.PuedeModificar(publicacion, usuarioId, esAdmin))
             {
-                TempData["ErrorMessage"] = "Solo el autor puede modificar esta publicación.";
+                TempData["ErrorMessage"] = "Solo el autor o un administrador pueden modificar esta publicación.";
                 return RedirectToAction("Index");
             }
 
-            return View(MapToViewModel(publicacion));
+            return View(MapToViewModel(publicacion, usuarioId, esAdmin));
         }
 
-        // POST: Foro/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(PublicacionViewModel model)
@@ -113,12 +130,6 @@ namespace AP.MVC.Controllers
                 return HttpNotFound();
             }
 
-            if (!PuedeModificar(publicacion))
-            {
-                TempData["ErrorMessage"] = "Solo el autor puede modificar esta publicación.";
-                return RedirectToAction("Index");
-            }
-
             try
             {
                 // Recargamos la entidad y solo tocamos lo editable, así no perdemos UsuarioId ni la auditoría de creación.
@@ -126,7 +137,7 @@ namespace AP.MVC.Controllers
                 publicacion.Contenido = model.Contenido;
                 publicacion.ModifiedBy = User.Identity.Name;
 
-                _foroBusiness.Actualizar(publicacion);
+                _foroBusiness.Actualizar(publicacion, User.Identity.GetUserId(), User.IsInRole("Admin"));
                 return RedirectToAction("Index");
             }
             catch (AP.Core.Exceptions.AppException ex)
@@ -136,39 +147,40 @@ namespace AP.MVC.Controllers
             }
         }
 
-        // POST: Foro/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id)
+        public ActionResult Delete(
+            int id)
         {
-            var publicacion = _foroBusiness.GetPorId(id);
-            if (publicacion == null)
+            try
             {
-                return HttpNotFound();
+                _foroBusiness.Desactivar(id, User.Identity.GetUserId(), User.IsInRole("Admin"));
+            }
+            catch (AP.Core.Exceptions.AppException ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
             }
 
-            if (!PuedeModificar(publicacion))
-            {
-                TempData["ErrorMessage"] = "Solo el autor puede eliminar esta publicación.";
-                return RedirectToAction("Index");
-            }
-
-            _foroBusiness.Desactivar(id);
             return RedirectToAction("Index");
         }
 
-        // El autor gestiona su publicación; el Admin puede moderar cualquiera.
-        private bool PuedeModificar(Publicacion publicacion)
+        protected override void Dispose(bool disposing)
         {
-            return publicacion.UsuarioId == User.Identity.GetUserId() || User.IsInRole("Admin");
+            if (disposing)
+            {
+                _context.Dispose();
+            }
+
+            base.Dispose(disposing);
         }
 
         #region Mapeo Manual
 
-        private PublicacionViewModel MapToViewModel(Publicacion entity)
+        private PublicacionViewModel MapToViewModel(Publicacion entity, string usuarioId, bool esAdmin)
         {
             return new PublicacionViewModel
             {
+                PuedeModificar = _foroBusiness.PuedeModificar(entity, usuarioId, esAdmin),
                 PublicacionId = entity.PublicacionId,
                 UsuarioId = entity.UsuarioId,
                 Titulo = entity.Titulo,

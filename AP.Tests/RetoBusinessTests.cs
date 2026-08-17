@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using AP.Core.Business;
 using AP.Core.Exceptions;
 using AP.Data.Entities;
@@ -17,12 +17,11 @@ namespace AP.Tests
             public Reto Actualizado;
 
             public IEnumerable<Reto> GetActivosPorModo(ModoJuego modo) => new List<Reto>();
-            public IEnumerable<Reto> GetAll() => new List<Reto>();
+            public IEnumerable<Reto> GetPagina(int pagina, int tamanoPagina) => new List<Reto>();
+            public int Contar() => 0;
             public Reto GetById(int id) => null;
             public void Add(Reto entity) => Agregado = entity;
             public void Update(Reto entity) => Actualizado = entity;
-            public void Delete(int id) { }
-            public void Save() { }
         }
 
         private static Reto NuevoReto(int id, int dificultad, int tiempoLimite)

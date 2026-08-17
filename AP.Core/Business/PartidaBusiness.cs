@@ -27,6 +27,16 @@ namespace AP.Core.Business
         public int Aciertos { get; set; }
     }
 
+    public class HistorialPartida
+    {
+        public DateTime FechaJuego { get; set; }
+        public bool Acertado { get; set; }
+        public int TiempoEmpleadoSegundos { get; set; }
+        public int XpGanado { get; set; }
+        public ModoJuego Modo { get; set; }
+        public string TituloReto { get; set; }
+    }
+
     // DP: Strategy - actua como contexto: elige la estrategia del modo y corre el flujo comun sin condicionales.
     public class PartidaBusiness
     {
@@ -35,16 +45,13 @@ namespace AP.Core.Business
         private readonly Dictionary<ModoJuego, IModoJuegoStrategy> _estrategias;
         private static readonly Random _random = new Random();
 
-        public PartidaBusiness()
-            : this(new RepositoryReto(), new RepositoryPartida(), EstrategiasPorDefecto())
-        {
-        }
-
         public PartidaBusiness(IRepositoryReto repositoryReto, IRepositoryPartida repositoryPartida)
             : this(repositoryReto, repositoryPartida, EstrategiasPorDefecto())
         {
         }
 
+        // Un solo contexto para los dos repositorios, y lo libera quien lo abrio: el controller
+        // en su Dispose, o el using de la transaccion compartida.
         public PartidaBusiness(MathemaXContext context)
             : this(new RepositoryReto(context), new RepositoryPartida(context), EstrategiasPorDefecto())
         {
@@ -140,22 +147,71 @@ namespace AP.Core.Business
             };
         }
 
-        public IEnumerable<Partida> GetHistorial(string usuarioId)
+        public ResultadoPaginado<HistorialPartida> GetHistorial(
+            string usuarioId,
+            bool? resultado,
+            ModoJuego? modo,
+            DateTime? desde,
+            DateTime? hasta,
+            int pagina,
+            int tamanoPagina)
         {
-            return _repositoryPartida.GetHistorialPorUsuario(usuarioId);
+            if (string.IsNullOrWhiteSpace(usuarioId))
+                throw new AppException("No se pudo identificar al usuario del historial.");
+
+            if (modo.HasValue && !Enum.IsDefined(typeof(ModoJuego), modo.Value))
+                throw new AppException("El modo de juego seleccionado no es válido.");
+
+            if (desde.HasValue && hasta.HasValue && desde.Value.Date > hasta.Value.Date)
+                throw new AppException("La fecha desde no puede ser posterior a la fecha hasta.");
+
+            var total = _repositoryPartida.ContarHistorialPorUsuario(
+                usuarioId,
+                resultado,
+                modo,
+                desde,
+                hasta);
+
+            return ResultadoPaginado<HistorialPartida>.Crear(
+                pagina,
+                tamanoPagina,
+                total,
+                (paginaActual, tamanoActual) => _repositoryPartida
+                    .GetHistorialPorUsuario(
+                        usuarioId,
+                        resultado,
+                        modo,
+                        desde,
+                        hasta,
+                        paginaActual,
+                        tamanoActual)
+                    .Select(h => new HistorialPartida
+                    {
+                        FechaJuego = h.FechaJuego,
+                        Acertado = h.Acertado,
+                        TiempoEmpleadoSegundos = h.TiempoEmpleadoSegundos,
+                        XpGanado = h.XpGanado,
+                        Modo = h.Modo,
+                        TituloReto = h.TituloReto
+                    }));
         }
 
-        public IEnumerable<RankingGlobal> GetRankingGlobal()
+        public ResultadoPaginado<RankingGlobal> GetRankingGlobal(int pagina, int tamanoPagina)
         {
-            return _repositoryPartida.GetRankingGlobal()
-                .Select(r => new RankingGlobal
-                {
-                    UsuarioId = r.UsuarioId,
-                    ExperienciaTotal = r.ExperienciaTotal,
-                    PartidasJugadas = r.PartidasJugadas,
-                    Aciertos = r.Aciertos
-                })
-                .ToList();
+            var total = _repositoryPartida.ContarRankingGlobal();
+            return ResultadoPaginado<RankingGlobal>.Crear(
+                pagina,
+                tamanoPagina,
+                total,
+                (paginaActual, tamanoActual) => _repositoryPartida
+                    .GetRankingGlobal(paginaActual, tamanoActual)
+                    .Select(r => new RankingGlobal
+                    {
+                        UsuarioId = r.UsuarioId,
+                        ExperienciaTotal = r.ExperienciaTotal,
+                        PartidasJugadas = r.PartidasJugadas,
+                        Aciertos = r.Aciertos
+                    }));
         }
 
         // Modos soportados hoy; agregar uno nuevo es sumarlo a esta lista.

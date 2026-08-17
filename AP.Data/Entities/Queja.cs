@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace AP.Data.Entities
@@ -45,6 +45,8 @@ namespace AP.Data.Entities
         public EstadoQueja Estado { get; set; }
 
         public DateTime FechaCreacion { get; set; }
+
+        public bool Activo { get; set; }
 
         // Auditoria (mismo patron que Publicacion y SolicitudTI)
         public DateTime CreatedAt { get; set; }

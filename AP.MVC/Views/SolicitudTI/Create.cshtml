@@ -32,7 +32,7 @@
 
                         <div class="mb-4">
                             @Html.LabelFor(model => model.Descripcion, new { @class = "form-label fw-bold" })
-                            @Html.TextAreaFor(model => model.Descripcion, new { @class = "form-control", rows = 6, placeholder = "Describe el problema con el mayor detalle posible." })
+                            @Html.TextAreaFor(model => model.Descripcion, new { @class = "form-control", rows = 6, placeholder = "Describa el problema con el mayor detalle posible." })
                             @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
                         </div>
 
@@ -53,7 +53,7 @@
                     <h4 class="card-title mb-0"><i class="bi bi-chat-dots me-2"></i>Asistente</h4>
                 </div>
                 <div class="card-body">
-                    <!-- Mejora futura: hacer este panel interactivo con las preguntas del usuario. -->
+                    <!-- La respuesta se recalcula al enviar el formulario, sobre lo que el usuario escribió. -->
                     <p class="mb-0">@ViewBag.RespuestaAsistente</p>
                 </div>
             </div>
