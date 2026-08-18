@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using AP.Core.Exceptions;
+using AP.Data;
 using AP.Data.Entities;
 using AP.Repositories;
 
@@ -12,9 +13,10 @@ namespace AP.Core.Business
         // SOLID: DIP - depende de la abstraccion IRepositoryQueja, no de la implementacion concreta.
         private readonly IRepositoryQueja _repository;
 
-        public QuejaBusiness()
+        // Para compartir el contexto con otro Business dentro de la misma transaccion.
+        public QuejaBusiness(MathemaXContext context)
         {
-            _repository = new RepositoryQueja();
+            _repository = new RepositoryQueja(context);
         }
 
         // Inyeccion manual para pruebas o cambios futuros sin tocar el controller.
@@ -23,19 +25,30 @@ namespace AP.Core.Business
             _repository = repository;
         }
 
-        public IEnumerable<Queja> GetTodas()
+        public ResultadoPaginado<Queja> GetTodas(int pagina, int tamanoPagina)
         {
-            return _repository.GetAll();
+            var total = _repository.ContarActivas();
+            return ResultadoPaginado<Queja>.Crear(
+                pagina,
+                tamanoPagina,
+                total,
+                _repository.GetActivas);
         }
 
-        public IEnumerable<Queja> GetPorUsuario(string usuarioId)
+        public Queja GetPorId(int id)
         {
-            return _repository.GetPorUsuario(usuarioId);
+            return _repository.GetById(id);
         }
 
-        public IEnumerable<Queja> GetPorEstado(EstadoQueja estado)
+        public ResultadoPaginado<Queja> GetPorUsuario(string usuarioId, int pagina, int tamanoPagina)
         {
-            return _repository.GetPorEstado(estado);
+            var total = _repository.ContarPorUsuario(usuarioId);
+            return ResultadoPaginado<Queja>.Crear(
+                pagina,
+                tamanoPagina,
+                total,
+                (paginaActual, tamanoActual) =>
+                    _repository.GetPorUsuario(usuarioId, paginaActual, tamanoActual));
         }
 
         public void Save(Queja queja)
@@ -58,10 +71,61 @@ namespace AP.Core.Business
             }
 
             queja.Estado = EstadoQueja.Pendiente;
+            queja.Activo = true;
             queja.CreatedAt = DateTime.Now;
 
             _repository.Add(queja);
-            _repository.Save();
+        }
+
+        // Quien puede editar y quien puede eliminar se decide aca; el controller y la vista
+        // solo consultan el resultado.
+        public bool PuedeEditar(Queja queja, string usuarioId)
+        {
+            // Una vez que soporte la movio de Pendiente, el autor ya no la toca.
+            return queja != null
+                && queja.UsuarioId == usuarioId
+                && queja.Estado == EstadoQueja.Pendiente;
+        }
+
+        public bool PuedeEliminar(Queja queja, string usuarioId, bool esAdmin)
+        {
+            return queja != null && (esAdmin || queja.UsuarioId == usuarioId);
+        }
+
+        public void Actualizar(Queja queja, string usuarioId)
+        {
+            if (queja == null)
+                throw new AppException("La queja no puede ser nula.");
+
+            if (!PuedeEditar(queja, usuarioId))
+                throw new AppException("Solo el autor puede editar su queja, y solo mientras siga pendiente.");
+
+            if (string.IsNullOrWhiteSpace(queja.Asunto))
+                throw new AppException("El asunto de la queja es obligatorio.");
+
+            if (string.IsNullOrWhiteSpace(queja.Descripcion))
+                throw new AppException("La descripción de la queja es obligatoria.");
+
+            if (!Enum.IsDefined(typeof(CategoriaQueja), queja.Categoria))
+                throw new AppException("La categoría seleccionada no es válida.");
+
+            queja.LastModified = DateTime.Now;
+            _repository.Update(queja);
+        }
+
+        public void Desactivar(int id, string usuarioId, bool esAdmin)
+        {
+            var queja = _repository.GetById(id);
+            if (queja == null)
+                throw new AppException("La queja que intenta eliminar no existe.");
+
+            if (!PuedeEliminar(queja, usuarioId, esAdmin))
+                throw new AppException("Solo el autor o un administrador pueden eliminar esta queja.");
+
+            // Borrado logico: el registro se conserva pero deja de listarse en el buzon.
+            queja.Activo = false;
+            queja.LastModified = DateTime.Now;
+            _repository.Update(queja);
         }
 
         public void CambiarEstado(int id, EstadoQueja nuevoEstado)

@@ -16,6 +16,8 @@ namespace AP.Models.Juegos
         [Display(Name = "Modo de juego")]
         public int Modo { get; set; }
 
+        public string NombreModo { get; set; }
+
         [Required(ErrorMessage = "El enunciado es obligatorio.")]
         [StringLength(500)]
         [Display(Name = "Enunciado")]

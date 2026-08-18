@@ -51,10 +51,14 @@
 
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChatbotServiceTests.cs" />
     <Compile Include="EstrategiasTests.cs" />
     <Compile Include="ExperienciaBusinessTests.cs" />
+    <Compile Include="ForoBusinessTests.cs" />
     <Compile Include="PartidaBusinessTests.cs" />
+    <Compile Include="QuejaBusinessTests.cs" />
     <Compile Include="RetoBusinessTests.cs" />
+    <Compile Include="SolicitudTIBusinessTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -69,6 +73,10 @@
     <ProjectReference Include="..\AP.Core\AP.Core.csproj">
       <Project>{C3692650-3F4E-4DD3-9EDC-35360AF1CEA6}</Project>
       <Name>AP.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AP.Services\AP.Services.csproj">
+      <Project>{CA02B696-8683-4A35-BD82-9A1BEF756CD7}</Project>
+      <Name>AP.Services</Name>
     </ProjectReference>
   </ItemGroup>
 

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AP.Models.Juegos.RetoViewModel>
+﻿@model AP.Models.ResultadoPaginado<AP.Models.Juegos.RetoViewModel>
 
 @{
     ViewBag.Title = "Mantenimiento de Retos";
@@ -31,15 +31,14 @@
                 </tr>
             </thead>
             <tbody>
-                @if (Model != null && Model.Any())
+                @if (Model != null && Model.Elementos.Any())
                 {
-                    foreach (var item in Model)
+                    foreach (var item in Model.Elementos)
                     {
                         <tr>
                             <td>@Html.DisplayFor(modelItem => item.Titulo)</td>
                             <td>
-                                <!-- Mapeo simple del int al string del Enum -->
-                                @(((AP.Data.Entities.ModoJuego)item.Modo).ToString())
+                                @item.NombreModo
                             </td>
                             <td>@item.Dificultad</td>
                             <td>@item.TiempoLimiteSegundos seg</td>
@@ -56,10 +55,10 @@
                             <td class="text-end">
                                 <a href="@Url.Action("Edit", new { id = item.RetoId })" class="btn btn-sm btn-outline-secondary">Editar</a>
                                 
-                                <!-- Formulario para Eliminar con confirmación básica -->
-                                <form action="@Url.Action("Delete", new { id = item.RetoId })" method="post" style="display:inline;" onsubmit="return confirm('¿Está seguro que desea eliminar este reto?');">
+                                <!-- El reto no se borra: se desactiva para no perder las partidas jugadas -->
+                                <form action="@Url.Action("Delete", new { id = item.RetoId })" method="post" style="display:inline;" onsubmit="return confirm('¿Está seguro que desea desactivar este reto?');">
                                     @Html.AntiForgeryToken()
-                                    <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Desactivar</button>
                                 </form>
                             </td>
                         </tr>
@@ -74,4 +73,9 @@
             </tbody>
         </table>
     </div>
+    @Html.Partial("_Paginacion", Model, new ViewDataDictionary
+    {
+        { "ParametroPagina", "pagina" },
+        { "ParametroTamano", "tamanoPagina" }
+    })
 </div>

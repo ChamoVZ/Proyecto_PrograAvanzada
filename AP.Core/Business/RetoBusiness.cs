@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using AP.Core.Exceptions;
+using AP.Data;
 using AP.Data.Entities;
 using AP.Repositories;
 
@@ -13,9 +13,10 @@ namespace AP.Core.Business
         // SOLID: DIP - depende de la abstraccion IRepositoryReto, no de la implementacion concreta.
         private readonly IRepositoryReto _repositoryReto;
 
-        public RetoBusiness()
+        // El contexto lo abre y lo libera el controller, para que no quede colgado tras el request.
+        public RetoBusiness(MathemaXContext context)
         {
-            _repositoryReto = new RepositoryReto();
+            _repositoryReto = new RepositoryReto(context);
         }
 
         // Constructor para unit tests: permite inyectar un mock del repositorio
@@ -24,17 +25,19 @@ namespace AP.Core.Business
             _repositoryReto = repositoryReto;
         }
 
-        public IEnumerable<Reto> GetRetos(int id = 0)
+        public Reto GetRetoPorId(int id)
         {
-            if (id == 0)
-                return _repositoryReto.GetAll();
-
-            return new List<Reto> { _repositoryReto.GetById(id) };
+            return _repositoryReto.GetById(id);
         }
 
-        public IEnumerable<Reto> GetRetosPorModo(ModoJuego modo)
+        public ResultadoPaginado<Reto> GetRetosPaginados(int pagina, int tamanoPagina)
         {
-            return _repositoryReto.GetActivosPorModo(modo);
+            var total = _repositoryReto.Contar();
+            return ResultadoPaginado<Reto>.Crear(
+                pagina,
+                tamanoPagina,
+                total,
+                _repositoryReto.GetPagina);
         }
 
         public bool SaveOrUpdate(Reto reto)
@@ -45,6 +48,10 @@ namespace AP.Core.Business
 
             if (reto.TiempoLimiteSegundos <= 0)
                 throw new AppException("El reto debe tener un tiempo límite mayor a cero.");
+
+            // Sin esto se guarda un reto con un modo que ningún controlador consulta, y queda invisible.
+            if (!Enum.IsDefined(typeof(ModoJuego), reto.Modo))
+                throw new AppException("El modo de juego seleccionado no es válido.");
 
             if (reto.RetoId == 0)
             {
@@ -61,9 +68,17 @@ namespace AP.Core.Business
             return true;
         }
 
-        public void Delete(int id)
+        public void Desactivar(int id)
         {
-            _repositoryReto.Delete(id);
+            var reto = _repositoryReto.GetById(id);
+            if (reto == null)
+                throw new AppException("El reto que intenta desactivar no existe.");
+
+            // Borrado lógico: el FK de Partidas está en cascada, así que un borrado físico se llevaría
+            // el historial jugado y dejaría el marcador desincronizado del perfil.
+            reto.Activo = false;
+            reto.LastModified = DateTime.Now;
+            _repositoryReto.Update(reto);
         }
     }
 }

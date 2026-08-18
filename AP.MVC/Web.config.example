@@ -19,10 +19,14 @@
     <add key="webpages:Enabled" value="false" />
     <add key="ClientValidationEnabled" value="true" />
     <add key="UnobtrusiveJavaScriptEnabled" value="true" />
+    <!-- Claves de los usuarios semilla. Si una clave no se configura, ese usuario no se crea. -->
+    <add key="Seed:AdminPassword" value="CambiarEsta1!" />
+    <add key="Seed:PlayerPassword" value="CambiarEsta2!" />
+    <add key="Seed:SupportPassword" value="CambiarEsta3!" />
   </appSettings>
   <system.web>
     <authentication mode="None" />
-    <compilation debug="true" targetFramework="4.8" />
+    <compilation debug="true" optimizeCompilations="true" targetFramework="4.8" />
     <httpRuntime targetFramework="4.8" />
     <!-- Sin esto ASP.NET lee las vistas con el codepage ANSI de Windows y las tildes salen mal -->
     <globalization requestEncoding="utf-8" responseEncoding="utf-8" fileEncoding="utf-8" culture="es-CR" uiCulture="es-CR" />
@@ -36,10 +40,6 @@
     <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
       <dependentAssembly>
         <assemblyIdentity name="Microsoft.Owin.Security" publicKeyToken="31bf3856ad364e35" />
-        <bindingRedirect oldVersion="0.0.0.0-4.2.2.0" newVersion="4.2.2.0" />
-      </dependentAssembly>
-      <dependentAssembly>
-        <assemblyIdentity name="Microsoft.Owin.Security.OAuth" publicKeyToken="31bf3856ad364e35" />
         <bindingRedirect oldVersion="0.0.0.0-4.2.2.0" newVersion="4.2.2.0" />
       </dependentAssembly>
       <dependentAssembly>

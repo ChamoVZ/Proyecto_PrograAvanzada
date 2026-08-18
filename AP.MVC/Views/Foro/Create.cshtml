@@ -26,7 +26,7 @@
 
                         <div class="mb-3">
                             @Html.LabelFor(model => model.Titulo, new { @class = "form-label fw-bold" })
-                            @Html.TextBoxFor(model => model.Titulo, new { @class = "form-control", placeholder = "Escribe un título descriptivo..." })
+                            @Html.TextBoxFor(model => model.Titulo, new { @class = "form-control", placeholder = "Escriba un título descriptivo..." })
                             @Html.ValidationMessageFor(model => model.Titulo, "", new { @class = "text-danger" })
                         </div>
 
@@ -36,7 +36,7 @@
                             @Html.ValidationMessageFor(model => model.Contenido, "", new { @class = "text-danger" })
                         </div>
 
-                        <!-- El campo Activo se envía oculto o checkeado por defecto -->
+                        <!-- Va oculto: toda publicación nueva nace activa y el borrado lógico lo maneja el Business. -->
                         @Html.HiddenFor(model => model.Activo)
 
                         <div class="d-flex justify-content-end gap-2">

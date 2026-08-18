@@ -1,8 +1,8 @@
-@{
+﻿@{
     var controladorActual = ViewContext.RouteData.Values["controller"]?.ToString();
 
     // "Jugar" abre el selector, pero debe quedar resaltado tambien mientras se
-    // juega cualquier modo. SecuenciasLogicas se deja listo para cuando exista.
+    // juega cualquiera de los tres modos.
     var controladoresDeJuego = new[] { "Juego", "OperadorPerdido", "Contrarreloj", "SecuenciasLogicas" };
     var jugandoAhora = controladoresDeJuego.Contains(controladorActual);
 }
@@ -12,12 +12,33 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title — MathemaX</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400..905;1,400..905&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="preload"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+          as="style"
+          crossorigin="anonymous"
+          onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    </noscript>
     @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
 </head>
 <body class="mx-app @(!Request.IsAuthenticated ? "mx-app-anonymous" : "")">
+
+    <div class="mx-game-decor" aria-hidden="true">
+        <span class="mx-game-token mx-game-token-operator">
+            <span class="mx-game-token-label">Operador perdido</span>
+            <span class="mx-game-token-equation">8 ? 4 = 2</span>
+        </span>
+        <span class="mx-game-token mx-game-token-timer">
+            <span class="mx-game-token-value">30s</span>
+            <span class="mx-game-token-label">Contrarreloj</span>
+        </span>
+        <span class="mx-game-token mx-game-token-sequence">
+            <span class="mx-game-token-label">Secuencia</span>
+            <span class="mx-game-token-equation">2 &middot; 4 &middot; 6 &middot; ?</span>
+        </span>
+        <span class="mx-game-token mx-game-token-xp">+10 XP</span>
+    </div>
 
     @if (Request.IsAuthenticated)
     {
@@ -123,7 +144,7 @@
         <footer class="mx-footer">
             <p>
                 &copy; @DateTime.Now.Year MathemaX &mdash; SC-601 Universidad Fidélitas | 
-                <a href="@Url.Action("Equipo", "Home")" style="color: var(--color-terracotta); text-decoration: none;">Acerca del Equipo</a>
+                <a href="@Url.Action("Equipo", "Home")">Acerca del Equipo</a>
             </p>
         </footer>
     </div>

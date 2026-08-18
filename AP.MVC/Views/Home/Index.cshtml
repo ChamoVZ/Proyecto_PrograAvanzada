@@ -2,27 +2,26 @@
     ViewBag.Title = "Entrenamiento Mental";
 }
 
-<!-- Hero Section -->
 <div class="mx-hero text-center py-5 mb-5">
     <span class="mx-hero-op" style="font-size:200px; top:-50px; left:-30px;">&#247;</span>
     <span class="mx-hero-op" style="font-size:150px; bottom:-40px; right:0;">&times;</span>
     <span class="mx-hero-op" style="font-size:120px; top:20px; right:60px;">+</span>
     <div class="container py-5">
-        <h1 class="display-3 fw-bold mb-3" style="color: var(--color-terracotta);">MathemaX</h1>
-        <p class="lead mb-4" style="color: var(--color-ink-muted);">
-            Despierta tu agilidad mental con los retos matemáticos más desafiantes.<br />
-            Demuestra tu destreza, acumula XP y domina los marcadores.
+        <h1 class="display-3 fw-bold mb-3 mx-hero-title">MathemaX</h1>
+        <p class="lead mb-4 mx-hero-lead">
+            Despierte su agilidad mental con los retos matemáticos más desafiantes.<br />
+            Demuestre su destreza, acumule XP y domine los marcadores.
         </p>
         <div>
             @if (Request.IsAuthenticated)
             {
-                <a href="@Url.Action("Index", "Juego")" class="btn-mx-primary btn-lg shadow-sm">
+                <a href="@Url.Action("Index", "Juego")" class="btn-mx-primary btn-lg">
                     <i class="bi bi-play-circle me-2"></i>Comenzar a jugar
                 </a>
             }
             else
             {
-                <a href="@Url.Action("Login", "Account")" class="btn-mx-primary btn-lg shadow-sm">
+                <a href="@Url.Action("Login", "Account")" class="btn-mx-primary btn-lg">
                     <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión
                 </a>
             }
@@ -30,9 +29,8 @@
     </div>
 </div>
 
-<!-- Seccion: Modos de Juego -->
 <div class="container mb-5">
-    <h2 class="text-center mb-5" style="color: var(--color-ink);">Modos de Juego</h2>
+    <h2 class="text-center mb-5 mx-section-title">Modos de Juego</h2>
     <div class="row g-4">
 
         <!-- Operador Perdido -->
@@ -45,18 +43,17 @@
                         </div>
                     </div>
                     <h4 class="card-title fw-bold">
-                        <a href="@Url.Action("Jugar", "OperadorPerdido")" class="stretched-link text-decoration-none" style="color: inherit;">
+                        <a href="@Url.Action("Jugar", "OperadorPerdido")" class="stretched-link">
                             Operador Perdido
                         </a>
                     </h4>
                     <p class="card-text text-muted">
-                        Descubre cuál es el operador matemático (+, -, *, /) que falta para que la ecuación tenga sentido. ¡Piensa rápido!
+                        Descubra cuál es el operador matemático (+, -, *, /) que falta para que la ecuación tenga sentido. ¡Piense rápido!
                     </p>
                 </div>
             </div>
         </div>
 
-        <!-- Contrarreloj -->
         <div class="col-md-4">
             <div class="card h-100 shadow-sm border-0 mx-mode-card">
                 <div class="card-body text-center p-4">
@@ -66,18 +63,17 @@
                         </div>
                     </div>
                     <h4 class="card-title fw-bold">
-                        <a href="@Url.Action("Jugar", "Contrarreloj")" class="stretched-link text-decoration-none" style="color: inherit;">
+                        <a href="@Url.Action("Jugar", "Contrarreloj")" class="stretched-link">
                             Contrarreloj
                         </a>
                     </h4>
                     <p class="card-text text-muted">
-                        Resuelve la mayor cantidad de retos matemáticos antes de que se acabe el tiempo. La presión está al máximo.
+                        Resuelva la mayor cantidad de retos matemáticos antes de que se acabe el tiempo. La presión está al máximo.
                     </p>
                 </div>
             </div>
         </div>
 
-        <!-- Secuencias Lógicas -->
         <div class="col-md-4">
             <div class="card h-100 shadow-sm border-0 mx-mode-card">
                 <div class="card-body text-center p-4">
@@ -86,9 +82,13 @@
                             <i class="bi bi-sort-numeric-down"></i>
                         </div>
                     </div>
-                    <h4 class="card-title fw-bold">Secuencias Lógicas</h4>
+                    <h4 class="card-title fw-bold">
+                        <a href="@Url.Action("Jugar", "SecuenciasLogicas")" class="stretched-link">
+                            Secuencias Lógicas
+                        </a>
+                    </h4>
                     <p class="card-text text-muted">
-                        Encuentra el patrón oculto en una serie de números y descubre cuál es el siguiente paso lógico.
+                        Encuentre el patrón oculto en una serie de números y descubra cuál es el siguiente paso lógico.
                     </p>
                 </div>
             </div>
@@ -97,9 +97,8 @@
     </div>
 </div>
 
-<!-- Seccion: XP y Marcadores -->
 <div class="container mb-5">
-    <div class="card shadow-sm border-0 mx-xp-card" style="background-color: var(--color-parchment-dark);">
+    <div class="card shadow-sm border-0 mx-xp-card">
         <div class="card-body p-5">
             <div class="row align-items-center">
                 <div class="col-md-8 text-md-start text-center mb-4 mb-md-0">
@@ -111,7 +110,7 @@
                     </p>
                 </div>
                 <div class="col-md-4 text-center">
-                    <i class="bi bi-trophy" style="font-size: 5rem; color: var(--color-ochre);"></i>
+                    <i class="bi bi-trophy mx-xp-icon"></i>
                 </div>
             </div>
         </div>

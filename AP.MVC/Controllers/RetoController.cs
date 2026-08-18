@@ -2,38 +2,44 @@
 using System.Linq;
 using System.Web.Mvc;
 using AP.Core.Business;
+using AP.Data;
 using AP.Data.Entities;
 using AP.Models.Juegos;
 
 namespace AP.MVC.Controllers
 {
-    // Proteger todo el controlador: solo el rol Admin puede dar mantenimiento a los retos.
     [Authorize(Roles = "Admin")]
     public class RetoController : BaseController
     {
+        private readonly MathemaXContext _context;
         private readonly RetoBusiness _retoBusiness;
 
         public RetoController()
         {
-            _retoBusiness = new RetoBusiness();
+            _context = new MathemaXContext();
+            _retoBusiness = new RetoBusiness(_context);
         }
 
-        // GET: Reto
-        public ActionResult Index()
+        public ActionResult Index(int pagina = 1, int tamanoPagina = 10)
         {
-            var retos = _retoBusiness.GetRetos();
-            var viewModels = retos.Select(MapToViewModel).ToList();
+            var retos = _retoBusiness.GetRetosPaginados(pagina, tamanoPagina);
+            var viewModels = new AP.Models.ResultadoPaginado<RetoViewModel>
+            {
+                Elementos = retos.Elementos.Select(MapToViewModel).ToList(),
+                PaginaActual = retos.PaginaActual,
+                TamanoPagina = retos.TamanoPagina,
+                TotalRegistros = retos.TotalRegistros,
+                TotalPaginas = retos.TotalPaginas
+            };
             
             return View(viewModels);
         }
 
-        // GET: Reto/Create
         public ActionResult Create()
         {
             return View(new RetoViewModel { Activo = true });
         }
 
-        // POST: Reto/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(RetoViewModel model)
@@ -45,7 +51,6 @@ namespace AP.MVC.Controllers
 
             var reto = MapToEntity(model);
             
-            // Auditoría: seteamos quién está creando el registro
             reto.CreatedBy = User.Identity.Name;
 
             _retoBusiness.SaveOrUpdate(reto);
@@ -53,10 +58,9 @@ namespace AP.MVC.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: Reto/Edit/5
         public ActionResult Edit(int id)
         {
-            var reto = _retoBusiness.GetRetos(id).FirstOrDefault();
+            var reto = _retoBusiness.GetRetoPorId(id);
             if (reto == null)
             {
                 return HttpNotFound();
@@ -66,14 +70,12 @@ namespace AP.MVC.Controllers
             return View(model);
         }
 
-        // POST: Reto/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(RetoViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                // Extraer el primer error del ModelState para mostrarlo
                 var firstError = ModelState.Values.SelectMany(v => v.Errors).FirstOrDefault();
                 if (firstError != null)
                 {
@@ -82,14 +84,12 @@ namespace AP.MVC.Controllers
                 return View(model);
             }
 
-            // Buscar la entidad existente para no perder CreatedAt, CreatedBy, etc.
-            var reto = _retoBusiness.GetRetos(model.RetoId).FirstOrDefault();
+            var reto = _retoBusiness.GetRetoPorId(model.RetoId);
             if (reto == null)
             {
                 return HttpNotFound();
             }
 
-            // Actualizar solo los campos modificables
             reto.Titulo = model.Titulo;
             reto.Modo = (ModoJuego)model.Modo;
             reto.Enunciado = model.Enunciado;
@@ -98,7 +98,6 @@ namespace AP.MVC.Controllers
             reto.TiempoLimiteSegundos = model.TiempoLimiteSegundos;
             reto.Activo = model.Activo;
             
-            // Auditoría: seteamos quién está modificando el registro
             reto.ModifiedBy = User.Identity.Name;
 
             _retoBusiness.SaveOrUpdate(reto);
@@ -106,13 +105,23 @@ namespace AP.MVC.Controllers
             return RedirectToAction("Index");
         }
 
-        // POST: Reto/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id)
+        public ActionResult Delete(
+            int id)
         {
-            _retoBusiness.Delete(id);
+            _retoBusiness.Desactivar(id);
             return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _context.Dispose();
+            }
+
+            base.Dispose(disposing);
         }
 
         #region Mapeo Manual
@@ -124,12 +133,26 @@ namespace AP.MVC.Controllers
                 RetoId = entity.RetoId,
                 Titulo = entity.Titulo,
                 Modo = (int)entity.Modo,
+                NombreModo = GetNombreModo(entity.Modo),
                 Enunciado = entity.Enunciado,
                 RespuestaCorrecta = entity.RespuestaCorrecta,
                 Dificultad = entity.Dificultad,
                 TiempoLimiteSegundos = entity.TiempoLimiteSegundos,
                 Activo = entity.Activo
             };
+        }
+
+        private string GetNombreModo(ModoJuego modo)
+        {
+            switch (modo)
+            {
+                case ModoJuego.OperadorPerdido:
+                    return "Operador Perdido";
+                case ModoJuego.SecuenciasLogicas:
+                    return "Secuencias Lógicas";
+                default:
+                    return "Contrarreloj";
+            }
         }
 
         private Reto MapToEntity(RetoViewModel model)

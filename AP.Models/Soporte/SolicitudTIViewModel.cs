@@ -30,5 +30,11 @@ namespace AP.Models.Soporte
 
         [Display(Name = "Estado")]
         public string NombreEstado { get; set; }
+
+        // Los resuelve el controller preguntandole a SolicitudTIBusiness, para que la vista
+        // no vuelva a escribir la regla de autorizacion.
+        public bool PuedeEditar { get; set; }
+
+        public bool PuedeEliminar { get; set; }
     }
 }

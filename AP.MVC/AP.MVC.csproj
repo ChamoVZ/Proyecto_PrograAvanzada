@@ -144,22 +144,7 @@
       <HintPath>..\packages\Microsoft.Owin.Security.4.2.2\lib\net45\Microsoft.Owin.Security.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Owin.Security.Cookies">
-      <HintPath>..\packages\Microsoft.Owin.Security.Facebook.4.2.2\lib\net45\Microsoft.Owin.Security.Facebook.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security.Cookies">
       <HintPath>..\packages\Microsoft.Owin.Security.Cookies.4.2.2\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security.Google">
-      <HintPath>..\packages\Microsoft.Owin.Security.Google.4.2.2\lib\net45\Microsoft.Owin.Security.Google.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security.Twitter">
-      <HintPath>..\packages\Microsoft.Owin.Security.Twitter.4.2.2\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount">
-      <HintPath>..\packages\Microsoft.Owin.Security.MicrosoftAccount.4.2.2\lib\net45\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security.OAuth">
-      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.4.2.2\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +160,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JuegoController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\SecuenciasLogicasController.cs" />
     <Compile Include="Controllers\MarcadorController.cs" />
     <Compile Include="Controllers\OperadorPerdidoController.cs" />
     <Compile Include="Controllers\QuejaController.cs" />
@@ -227,11 +213,8 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\marcadores.js" />
     <Content Include="Web.config" />
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -239,44 +222,37 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Foro\Details.cshtml" />
+    <Content Include="Views\Foro\Edit.cshtml" />
+    <Content Include="Views\Home\Equipo.cshtml" />
+    <Content Include="Views\Marcador\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Juego\Index.cshtml" />
     <Content Include="Views\Foro\Index.cshtml" />
     <Content Include="Views\Foro\Create.cshtml" />
     <Content Include="Views\SolicitudTI\Index.cshtml" />
     <Content Include="Views\SolicitudTI\Create.cshtml" />
+    <Content Include="Views\SolicitudTI\Edit.cshtml" />
     <Content Include="Views\Queja\Index.cshtml" />
     <Content Include="Views\Queja\Create.cshtml" />
+    <Content Include="Views\Queja\Edit.cshtml" />
     <Content Include="Views\Reto\Index.cshtml" />
     <Content Include="Views\Reto\Create.cshtml" />
     <Content Include="Views\Reto\Edit.cshtml" />
     <Content Include="Views\Reto\_FormReto.cshtml" />
-    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
-    <Content Include="Views\Account\ConfirmEmail.cshtml" />
-    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
-    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
-    <Content Include="Views\Account\ForgotPassword.cshtml" />
-    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\Account\ResetPassword.cshtml" />
-    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\SendCode.cshtml" />
-    <Content Include="Views\Account\VerifyCode.cshtml" />
-    <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
     <Content Include="Views\Manage\ChangePassword.cshtml" />
     <Content Include="Views\Manage\Index.cshtml" />
-    <Content Include="Views\Manage\ManageLogins.cshtml" />
-    <Content Include="Views\Manage\SetPassword.cshtml" />
-    <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\_Paginacion.cshtml" />
     <Content Include="Views\OperadorPerdido\Jugar.cshtml" />
     <Content Include="Views\OperadorPerdido\Resultado.cshtml" />
     <Content Include="Views\Contrarreloj\Jugar.cshtml" />
     <Content Include="Views\Contrarreloj\Resultado.cshtml" />
+    <Content Include="Views\SecuenciasLogicas\Jugar.cshtml" />
+    <Content Include="Views\SecuenciasLogicas\Resultado.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -312,6 +288,10 @@
     <ProjectReference Include="..\AP.Core\AP.Core.csproj">
       <Project>{c3692650-3f4e-4dd3-9edc-35360af1cea6}</Project>
       <Name>AP.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AP.Repositories\AP.Repositories.csproj">
+      <Project>{1e5544eb-a980-42d3-8665-23a11332e218}</Project>
+      <Name>AP.Repositories</Name>
     </ProjectReference>
     <ProjectReference Include="..\AP.Data\AP.Data.csproj">
       <Project>{af07fa5d-3f04-477b-ba72-5a02422b0ba9}</Project>

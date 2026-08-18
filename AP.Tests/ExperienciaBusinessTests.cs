@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using AP.Core.Business;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

@@ -1,4 +1,4 @@
--- MathemaX — limpieza de retos duplicados por titulos sin tilde
+﻿-- MathemaX — limpieza de retos duplicados por titulos sin tilde
 --
 -- Contexto: 2026-07-12_experiencia_y_retos.sql sembraba los mismos retos que
 -- MathemaX_Init.sql pero con los titulos sin tilde ("Operador perdido basico"),

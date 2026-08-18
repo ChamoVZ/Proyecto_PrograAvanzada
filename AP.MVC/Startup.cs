@@ -1,3 +1,4 @@
+﻿using System.Configuration;
 using AP.MVC.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -18,46 +19,53 @@ namespace AP.MVC
 
         private void CreateRoles()
         {
-            // Instanciamos el contexto y el manejador de roles
-            var context = new ApplicationDbContext();
-            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
-
-            // Creamos los roles si no existen (idempotente)
-            // Esto permite usar [Authorize(Roles = "Admin")] en los controladores para restringir el acceso.
-            string[] roleNames = { "Admin", "Player", "Support" };
-
-            foreach (var roleName in roleNames)
+            using (var context = new ApplicationDbContext())
+            using (var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context)))
             {
-                if (!roleManager.RoleExists(roleName))
+                string[] roleNames = { "Admin", "Player", "Support" };
+
+                foreach (var roleName in roleNames)
                 {
-                    var role = new IdentityRole { Name = roleName };
-                    roleManager.Create(role);
+                    if (!roleManager.RoleExists(roleName))
+                    {
+                        var role = new IdentityRole { Name = roleName };
+                        roleManager.Create(role);
+                    }
                 }
             }
         }
 
         // Crea un usuario de prueba por cada rol si no existen (idempotente).
-        // Credenciales documentadas en _documentos/CREDENCIALES.md. Solo para uso local.
+        // Las claves salen del Web.config local, que no se versiona. Solo para uso local.
         private void CreateUsers()
         {
-            var context = new ApplicationDbContext();
-            var userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(context));
-
-            SeedUser(userManager, "admin@mathemax.local", "Admin123!", "Admin");
-            SeedUser(userManager, "player@mathemax.local", "Player123!", "Player");
-            SeedUser(userManager, "support@mathemax.local", "Support123!", "Support");
+            using (var context = new ApplicationDbContext())
+            using (var userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(context)))
+            {
+                SeedUser(userManager, "admin@mathemax.local", "Seed:AdminPassword", "Admin");
+                SeedUser(userManager, "player@mathemax.local", "Seed:PlayerPassword", "Player");
+                SeedUser(userManager, "support@mathemax.local", "Seed:SupportPassword", "Support");
+            }
         }
 
-        private void SeedUser(ApplicationUserManager userManager, string email, string password, string rol)
+        private void SeedUser(ApplicationUserManager userManager, string email, string claveAppSetting, string rol)
         {
+            // Sin la clave configurada el usuario no se siembra, para no dejar credenciales en el repositorio.
+            var password = ConfigurationManager.AppSettings[claveAppSetting];
+            if (string.IsNullOrWhiteSpace(password))
+                return;
+
             if (userManager.FindByName(email) != null)
                 return;
 
+            // CreateUsers arma el UserManager a mano, sin pasar por ApplicationUserManager.Create,
+            // asi que la politica de bloqueo de IdentityConfig no se aplica sola.
             var user = new ApplicationUser
             {
                 UserName = email,
                 Email = email,
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                LockoutEnabled = true
             };
 
             var resultado = userManager.Create(user, password);

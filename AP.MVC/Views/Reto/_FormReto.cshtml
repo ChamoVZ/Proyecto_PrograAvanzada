@@ -1,4 +1,4 @@
-@model AP.Models.Juegos.RetoViewModel
+﻿@model AP.Models.Juegos.RetoViewModel
 
 @Html.AntiForgeryToken()
 
@@ -11,8 +11,12 @@
 
     <div class="col-md-6 mb-3">
         @Html.LabelFor(model => model.Modo, new { @class = "form-label" })
-        <!-- Usamos EnumHelper para generar el DropDown desde el Enum ModoJuego -->
-        @Html.DropDownListFor(model => model.Modo, EnumHelper.GetSelectList(typeof(AP.Data.Entities.ModoJuego)), "Seleccione un modo...", new { @class = "form-select" })
+        @Html.DropDownListFor(model => model.Modo, new[]
+        {
+            new SelectListItem { Text = "Operador Perdido", Value = "1" },
+            new SelectListItem { Text = "Contrarreloj", Value = "2" },
+            new SelectListItem { Text = "Secuencias Lógicas", Value = "3" }
+        }, "Seleccione un modo...", new { @class = "form-select" })
         @Html.ValidationMessageFor(model => model.Modo, "", new { @class = "text-danger" })
     </div>
 </div>

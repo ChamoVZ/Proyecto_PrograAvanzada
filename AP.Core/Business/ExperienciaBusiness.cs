@@ -50,13 +50,6 @@ namespace AP.Core.Business
             return nivel;
         }
 
-        public int XpFaltanteParaSiguienteNivel(int experienciaTotal)
-        {
-            int nivelActual = CalcularNivelPorXp(experienciaTotal);
-            int xpSiguienteNivel = XpRequeridoParaNivel(nivelActual + 1);
-            return xpSiguienteNivel - experienciaTotal;
-        }
-
         public ResultadoExperiencia AplicarResultadoPartida(int experienciaActual, int nivelActual, int xpGanado)
         {
             int nuevaExperiencia = experienciaActual + xpGanado;

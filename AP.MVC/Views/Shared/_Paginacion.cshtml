@@ -1,0 +1,86 @@
+﻿@using System
+@using System.Linq
+@using System.Web.Routing
+@model AP.Models.IResultadoPaginado
+
+@{
+    var parametroPagina = ViewData["ParametroPagina"] as string ?? "pagina";
+    var parametroTamano = ViewData["ParametroTamano"] as string ?? "tamanoPagina";
+    var clavesQuery = Request.QueryString.AllKeys
+        .Where(clave => !string.IsNullOrWhiteSpace(clave))
+        .ToList();
+    Func<int, string> urlPagina = numero =>
+    {
+        var valores = new RouteValueDictionary();
+        foreach (var clave in clavesQuery)
+        {
+            valores[clave] = Request.QueryString[clave];
+        }
+
+        valores[parametroPagina] = numero;
+        valores[parametroTamano] = Model.TamanoPagina;
+        return Url.Action(null, valores);
+    };
+    var paginaInicial = Math.Max(1, Model.PaginaActual - 2);
+    var paginaFinal = Math.Min(Model.TotalPaginas, paginaInicial + 4);
+    paginaInicial = Math.Max(1, paginaFinal - 4);
+}
+
+@if (Model.TotalRegistros > 0)
+{
+    <div class="mx-pagination-toolbar d-flex flex-wrap justify-content-between align-items-center gap-3 mt-4">
+        <form method="get" action="@Url.Action(null)" class="d-flex align-items-center gap-2">
+            @foreach (var clave in clavesQuery.Where(clave =>
+                !string.Equals(clave, parametroPagina, StringComparison.OrdinalIgnoreCase)
+                && !string.Equals(clave, parametroTamano, StringComparison.OrdinalIgnoreCase)))
+            {
+                <input type="hidden" name="@clave" value="@Request.QueryString[clave]" />
+            }
+            <label for="@parametroTamano" class="form-label mb-0 text-nowrap">Por página</label>
+            @Html.DropDownList(
+                parametroTamano,
+                new SelectList(new[] { 10, 20 }, Model.TamanoPagina),
+                new { @class = "form-select form-select-sm", onchange = "this.form.submit()", aria_label = "Registros por página" })
+        </form>
+
+        @if (Model.TotalPaginas > 1)
+        {
+            <nav aria-label="Navegación del listado">
+                <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item @(Model.PaginaActual == 1 ? "disabled" : null)">
+                        <a class="page-link" href="@(Model.PaginaActual == 1 ? null : urlPagina(Model.PaginaActual - 1))">Anterior</a>
+                    </li>
+
+                    @if (paginaInicial > 1)
+                    {
+                        <li class="page-item"><a class="page-link" href="@urlPagina(1)">1</a></li>
+                        if (paginaInicial > 2)
+                        {
+                            <li class="page-item disabled"><span class="page-link">…</span></li>
+                        }
+                    }
+
+                    @for (var numero = paginaInicial; numero <= paginaFinal; numero++)
+                    {
+                        <li class="page-item @(numero == Model.PaginaActual ? "active" : null)">
+                            <a class="page-link" href="@urlPagina(numero)">@numero</a>
+                        </li>
+                    }
+
+                    @if (paginaFinal < Model.TotalPaginas)
+                    {
+                        if (paginaFinal < Model.TotalPaginas - 1)
+                        {
+                            <li class="page-item disabled"><span class="page-link">…</span></li>
+                        }
+                        <li class="page-item"><a class="page-link" href="@urlPagina(Model.TotalPaginas)">@Model.TotalPaginas</a></li>
+                    }
+
+                    <li class="page-item @(Model.PaginaActual == Model.TotalPaginas ? "disabled" : null)">
+                        <a class="page-link" href="@(Model.PaginaActual == Model.TotalPaginas ? null : urlPagina(Model.PaginaActual + 1))">Siguiente</a>
+                    </li>
+                </ul>
+            </nav>
+        }
+    </div>
+}
